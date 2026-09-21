@@ -1,0 +1,60 @@
+name: Update data and deploy
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub may run this a few minutes late; that's normal
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer run waits instead of cancelling one mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site
+          cp index.html compare.html site.js site.css tailwind-config.js _site/
+          cp favicon.ico favicon.png favicon-32.png apple-touch-icon.png _site/
+          cp -r assets _site/assets && rm -f _site/assets/README.md
+          cp scripts/config.static.js _site/config.js
+
+      - name: Collect data
+        run: node scripts/collect.mjs
+        env:
+          OUT_DIR: _site
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
