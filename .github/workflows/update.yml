@@ -1,8 +1,6 @@
 name: Update data and deploy
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"   # GitHub may run this a few minutes late; that's normal
   push:
     branches: [main]
   workflow_dispatch:
