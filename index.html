@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Games · ROBLOX CCU Tracker</title>
+<meta name="description" content="Live concurrent player counts for every tracked Roblox game, with stored history.">
+<meta name="theme-color" content="#0b0d17">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tailwind-config.js"></script>
+
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
+
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+  <section class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">All Games</h1>
+      <p class="text-sm text-slate-400 mt-1">Every game tracked here, live. Player counts refresh every 5 minutes.</p>
+    </div>
+    <dl class="flex items-stretch gap-3">
+      <div class="bg-roblox-cardBg border border-roblox-cardBorder rounded-xl px-4 py-2.5">
+        <dt class="text-xs text-slate-400">Players right now</dt>
+        <dd class="text-lg font-extrabold text-white tabular-nums" id="totalPlayers">—</dd>
+      </div>
+      <div class="bg-roblox-cardBg border border-roblox-cardBorder rounded-xl px-4 py-2.5">
+        <dt class="text-xs text-slate-400">Games tracked</dt>
+        <dd class="text-lg font-extrabold text-white tabular-nums" id="gameCount">—</dd>
+      </div>
+    </dl>
+  </section>
+
+  <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
+
+  <section id="tiles" class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-label="Tracked games"></section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(() => {
+  "use strict";
+
+  const { CATALOG, $, fmt, setText, iconFor } = Tracker;
+  Tracker.mountChrome("all");
+
+  const HOUR = 3600 * 1000;
+  const DAY = 24 * HOUR;
+
+  /* ---------- tiles ---------- */
+
+  const statCell = (id, label, iconHtml) => `
+    <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-800/40">
+      <span class="text-slate-400 block mb-0.5">${iconHtml}${label}</span>
+      <span class="font-bold text-slate-200 tabular-nums" id="${id}">—</span>
+    </div>`;
+
+  function tileHtml(game) {
+    const s = game.slug;
+    return `
+    <article class="game-card tile bg-roblox-cardBg rounded-2xl p-5 sm:p-6 flex flex-col gap-4 overflow-hidden"
+             id="tile-${s}" style="--accent:${game.accent};--rgb:${game.rgb};--thumb:url('assets/${s}-thumbnail.png')">
+      <div class="art"></div>
+
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-center gap-4 min-w-0">
+          <img id="icon-${s}" src="${iconFor(s)}" alt="${game.label} icon"
+               onerror="this.onerror=null;this.src='assets/${s}-icon.png'"
+               class="tile-icon w-16 h-16 rounded-xl object-cover shadow-md bg-slate-900 shrink-0">
+          <div class="min-w-0">
+            <span class="tile-tag text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full">${game.short}</span>
+            <h2 id="name-${s}" class="text-lg sm:text-xl font-bold mt-1 text-white drop-shadow leading-snug break-words" title="${game.label}">${game.label}</h2>
+            <a href="${game.url}" target="_blank" rel="noopener"
+               class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-0.5 transition-colors">
+              Open on Roblox <i class="fi fi-rr-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+        <span id="rating-${s}" class="hidden shrink-0 items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-200" title="Roblox like ratio">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-accent" aria-hidden="true"><path d="M7 10v11H3V10h4zm0 0 4-8a2.5 2.5 0 0 1 2.5 2.5V8H19a2 2 0 0 1 2 2.3l-1.3 8A2 2 0 0 1 17.7 20H7"/></svg>
+          <span id="ratingValue-${s}">—</span>
+        </span>
+      </div>
+
+      <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 backdrop-blur-sm">
+        <div class="flex justify-between items-center gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider">
+          <span>Players in game</span>
+          <span id="trend-${s}" class="normal-case tracking-normal font-semibold"></span>
+        </div>
+        <div class="tile-ccu text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums mt-1" id="ccu-${s}">—</div>
+        <div class="mt-3">
+          <div class="spark" id="spark-${s}"></div>
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+            <span>24h ago</span><span>now</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
+        ${statCell("peak24-" + s, "24h peak", '<i class="fi fi-rr-chat-arrow-grow tile-accent mr-1"></i>')}
+        ${statCell("peak7-" + s, "7d peak", '<i class="fi fi-rr-crown text-amber-400 mr-1"></i>')}
+        ${statCell("visits-" + s, "Visits", '<i class="fi fi-rs-eye tile-accent mr-1"></i>')}
+        ${statCell("favs-" + s, "Favourites", '<i class="fi fi-rr-star text-amber-400 mr-1"></i>')}
+      </div>
+    </article>`;
+  }
+
+  $("tiles").innerHTML = CATALOG.map(tileHtml).join("");
+  $("gameCount").textContent = String(CATALOG.length);
+
+  /* ---------- live numbers ---------- */
+
+  let latest = new Map(); // slug -> live game payload
+
+  function paintLive(payload) {
+    latest = new Map((payload.games || []).map((game) => [game.slug, game]));
+
+    for (const game of CATALOG) {
+      const s = game.slug;
+      const data = latest.get(s);
+      if (!data) continue;
+
+      setText($("ccu-" + s), fmt(data.playing));
+      $("peak24-" + s).textContent = fmt(data.peak24h);
+      $("peak7-" + s).textContent = fmt(data.peak7d);
+      $("visits-" + s).textContent = fmt(data.visits);
+      $("favs-" + s).textContent = fmt(data.favorites);
+
+      const rating = $("rating-" + s);
+      if (typeof data.ratingPercent === "number") {
+        $("ratingValue-" + s).textContent = data.ratingPercent + "%";
+        rating.classList.remove("hidden");
+        rating.classList.add("inline-flex");
+      }
+
+      // The icon and name follow whatever the game currently uses on Roblox;
+      // the local file / catalog label are only the fallback.
+      if (data.iconUrl) $("icon-" + s).src = data.iconUrl;
+      if (data.liveName) {
+        $("name-" + s).textContent = data.liveName;
+        $("name-" + s).title = data.liveName;
+      }
+    }
+
+    $("totalPlayers").textContent = fmt(payload.totalPlaying);
+    if (payload.source === "database") {
+      $("notice").textContent = payload.warning || "Roblox did not respond — showing the last stored reading.";
+      $("notice").classList.remove("hidden");
+    } else {
+      $("notice").classList.add("hidden");
+    }
+
+    paintTrends();
+  }
+
+  /* ---------- 24h sparklines + 1h trend ---------- */
+
+  let history = new Map(); // slug -> [{ x, y }]
+
+  function sparkline(points, game) {
+    const W = 300, H = 64, PAD = 5;
+    const minX = Date.now() - DAY;
+    const ys = points.map((p) => p.y);
+    const lo = Math.min(...ys), hi = Math.max(...ys);
+    const margin = (hi - lo) * 0.15 || hi * 0.1 || 1;
+    const yMin = Math.max(0, lo - margin), yMax = hi + margin;
+
+    const xOf = (t) => Math.min(W, Math.max(0, ((t - minX) / DAY) * W));
+    const yOf = (v) => PAD + (H - PAD * 2) * (1 - (v - yMin) / (yMax - yMin));
+
+    const line = points.map((p, i) => `${i ? "L" : "M"}${xOf(p.x).toFixed(1)} ${yOf(p.y).toFixed(1)}`).join(" ");
+    const first = points[0], last = points[points.length - 1];
+    const area = `${line} L${xOf(last.x).toFixed(1)} ${H} L${xOf(first.x).toFixed(1)} ${H} Z`;
+    const gid = "sg-" + game.slug;
+
+    const svg = `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="${game.accent}" stop-opacity="0.32"/>
+            <stop offset="1" stop-color="${game.accent}" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${area}" fill="url(#${gid})"/>
+        <path d="${line}" fill="none" stroke="${game.accent}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg>`;
+
+    const dot = `<span class="spark-dot" style="left:${(xOf(last.x) / W * 100).toFixed(2)}%;top:${(yOf(last.y) / H * 100).toFixed(2)}%"></span>`;
+    return svg + dot;
+  }
+
+  function paintSparks() {
+    for (const game of CATALOG) {
+      const host = $("spark-" + game.slug);
+      const points = history.get(game.slug) || [];
+      host.innerHTML = points.length >= 2
+        ? sparkline(points, game)
+        : `<div class="h-full flex items-center justify-center text-xs text-slate-500">Collecting history…</div>`;
+    }
+    paintTrends();
+  }
+
+  // Change over the last hour: the live count against the stored reading
+  // closest to one hour ago (needs at least ~an hour of history).
+  function paintTrends() {
+    for (const game of CATALOG) {
+      const el = $("trend-" + game.slug);
+      const points = history.get(game.slug) || [];
+      const data = latest.get(game.slug);
+      if (!points.length || !data) { el.textContent = ""; continue; }
+
+      const target = Date.now() - HOUR;
+      let nearest = points[0];
+      for (const p of points) {
+        if (Math.abs(p.x - target) < Math.abs(nearest.x - target)) nearest = p;
+      }
+      if (Math.abs(nearest.x - target) > 15 * 60 * 1000) { el.textContent = ""; continue; }
+
+      const diff = data.playing - nearest.y;
+      if (diff === 0) {
+        el.textContent = "no change in 1h";
+        el.className = "normal-case tracking-normal font-semibold text-slate-400";
+      } else {
+        el.textContent = `${diff > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(diff))} in 1h`;
+        el.className = "normal-case tracking-normal font-semibold " + (diff > 0 ? "text-emerald-400" : "text-rose-400");
+      }
+    }
+  }
+
+  async function loadHistory() {
+    try {
+      const res = await fetch(Tracker.CONFIG.history("1d"), { cache: "no-store" });
+      const payload = await res.json();
+      history = new Map(CATALOG.map((game) => [
+        game.slug,
+        ((payload.series && payload.series[game.slug]) || []).map((row) => ({ x: new Date(row.t).getTime(), y: row.playing })),
+      ]));
+    } catch (error) {
+      console.error("History request failed:", error);
+    }
+    paintSparks();
+  }
+
+  Tracker.onLive(paintLive);
+  Tracker.every(() => { Tracker.loadLive(); loadHistory(); });
+})();
+</script>
+</body>
+</html>

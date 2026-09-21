@@ -1,0 +1,110 @@
+/* Shared styles for every page (All Games + Compare). */
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0b0d17;
+  color: #f3f4f6;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0b0d17; }
+::-webkit-scrollbar-thumb { background: #262d4a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3b456e; }
+
+:focus-visible { outline: 2px solid #00f0ff; outline-offset: 2px; }
+
+/* ---------- Compare page glows ---------- */
+.glow-bgs { box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
+.glow-bgsi { box-shadow: 0 0 20px rgba(255, 0, 127, 0.2); }
+.text-glow-bgs { text-shadow: 0 0 12px rgba(0, 240, 255, 0.6); }
+.text-glow-bgsi { text-shadow: 0 0 12px rgba(255, 0, 127, 0.6); }
+
+/* ---------- Game artwork (compare cards + All Games tiles) ----------
+   The thumbnail file sits behind the content, dimmed and faded to the left
+   so the numbers stay readable over any image. */
+.game-card { position: relative; isolation: isolate; }
+.game-card .art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--thumb);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.32;
+}
+.game-card .art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, #15192d 30%, rgba(21, 25, 45, 0.55) 100%);
+}
+
+/* ---------- Live status dot (header) ---------- */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #34d399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  animation: livePulse 2s ease-out infinite;
+}
+.live-dot[data-state="warn"] { background: #fbbf24; animation: none; }
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(52, 211, 153, 0); }
+}
+
+/* A number that just changed briefly brightens, so a refresh is visible. */
+.flash { animation: numFlash 0.9s ease-out; }
+@keyframes numFlash {
+  0% { filter: brightness(2); }
+  100% { filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot, .flash { animation: none; }
+}
+
+/* ---------- All Games tiles ---------- */
+.tile {
+  --accent: #00f0ff;
+  --rgb: 0, 240, 255;
+  border: 1px solid rgba(var(--rgb), 0.28);
+  box-shadow: 0 0 22px rgba(var(--rgb), 0.14);
+}
+.tile-icon { border: 1px solid rgba(var(--rgb), 0.4); }
+.tile-tag {
+  color: var(--accent);
+  background: rgba(var(--rgb), 0.1);
+  border: 1px solid rgba(var(--rgb), 0.25);
+}
+.tile-ccu {
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(var(--rgb), 0.55);
+}
+.tile-link:hover { color: var(--accent); }
+.tile-accent { color: var(--accent); }
+
+.spark { position: relative; height: 4rem; }
+.spark svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.spark-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px rgba(var(--rgb), 0.25);
+}
+
+/* Compare cards with no game picked yet. */
+.tile.tile-empty {
+  border-style: dashed;
+  border-color: rgba(var(--rgb), 0.35);
+  box-shadow: none;
+}
+
+/* Compare chart: horizontal drags scrub the chart, vertical drags still scroll the page. */
+.chart-wrap { touch-action: pan-y; }
+.chart-wrap svg text { user-select: none; }
+.chart-line { filter: drop-shadow(0 0 3px var(--c)); }
