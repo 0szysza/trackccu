@@ -25,6 +25,7 @@ const DIGEST_EVERY_MS = 55 * 60 * 1000;
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const GAMES = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
+for (const game of GAMES) game.color ??= 65535; // default Discord embed colour (BGS blue)
 
 /* ---------- Roblox ---------- */
 
@@ -65,6 +66,10 @@ async function fetchLive(games) {
       ...game,
       liveName: detail.name ?? null,
       creator: detail.creator?.name ?? null,
+      creatorId: detail.creator?.id ?? null,
+      creatorType: detail.creator?.type ?? null,
+      createdAt: detail.created ?? null,
+      updatedAt: detail.updated ?? null,
       playing: detail.playing,
       visits: detail.visits ?? null,
       favorites: detail.favoritedCount ?? null,
@@ -191,7 +196,8 @@ const payloadGames = live.map((game) => {
   const votes = (game.upVotes ?? 0) + (game.downVotes ?? 0);
   return {
     slug: game.slug, universeId: game.universeId, placeId: game.placeId, name: game.name,
-    liveName: game.liveName, creator: game.creator, playing: game.playing,
+    liveName: game.liveName, creator: game.creator, creatorId: game.creatorId, creatorType: game.creatorType,
+    createdAt: game.createdAt, updatedAt: game.updatedAt, playing: game.playing,
     visits: game.visits, favorites: game.favorites, upVotes: game.upVotes, downVotes: game.downVotes,
     iconUrl: game.iconUrl,
     ratingPercent: votes > 0 ? Math.round(((game.upVotes ?? 0) / votes) * 100) : null,

@@ -1,6 +1,6 @@
 # ROBLOX CCU Tracker
 
-Dwie strony: **All Games** (`index.html`) i **Compare** (`compare.html`). Dane o graczach pochodzą z oficjalnego API Robloxa.
+Strony: **Games** (`games.html`, pod adresem `/games`), **Compare** (`compare.html`, pod adresem `/compare`) i strona pojedynczej gry pod `/games/<placeId>` (np. `/games/2512643572`). `index.html` to lekkie przekierowanie na `/games`, żeby sam root strony też działał. Dane o graczach pochodzą z oficjalnego API Robloxa.
 
 Repo obsługuje dwa sposoby hostowania. Strony są te same, różni się tylko źródło danych (`config.js`).
 
@@ -31,8 +31,23 @@ Do wiedzy:
 
 Zostaje jak dotąd. `config.js` wskazuje na `/api/live` i `/api/history`, cron ma `*/5`. Webhook Discorda: zmienna `DISCORD_WEBHOOK_URL` (test: `ADMIN_KEY` i `/api/discord-test?key=...`).
 
-## Dodawanie gry
+## Dodawanie gry (GitHub Pages)
 
-1. `scripts/games.json` (GitHub) oraz `SEEDS` w `lib/games.ts` (Netlify),
-2. `CATALOG` na górze `site.js`,
-3. `<slug>-thumbnail.png` i `<slug>-icon.png` w `assets/`.
+Wystarczy dopisać grę do `scripts/games.json` — nic więcej nie trzeba ręcznie zmieniać:
+
+```json
+{ "slug": "nowagra", "placeId": "123456789", "name": "Nazwa gry", "short": "NG" }
+```
+
+Wymagane pola to `slug`, `placeId`, `name`, `short`. `universeId` i `color` są opcjonalne (`universeId` dociąga się i zapamiętuje sam, `color` to tylko kolor embeda na Discordzie, domyślnie niebieski jak BGS). Ikonka (`assets/<slug>-icon.png`) i miniaturka (`assets/<slug>-thumbnail.png`) też są opcjonalne — bez nich strona pokazuje ikonkę wprost z Robloxa, a w ostateczności generyczną ikonkę strony.
+
+Po zapisaniu `games.json`:
+
+- **Nic nie trzeba uruchamiać ręcznie** — workflow (`.github/workflows/update.yml`) przy każdym przebiegu (co ~5 min) sam odświeża listę gier w `site.js` i generuje stronę `games/<placeId>/` dla nowej gry (krok "Sync games", `scripts/sync-games.mjs`).
+- Do podglądu lokalnego (otwierając pliki w przeglądarce) trzeba jednak odpalić `node scripts/sync-games.mjs` samemu — to jedyny moment, kiedy to jest potrzebne.
+
+Skąd biorą się strony `games/<placeId>/`: to zawsze ta sama, w pełni generyczna strona (`scripts/game-template.html`) skopiowana do folderu każdej gry — cały jej wygląd (nazwa, statystyki, właściciel, data utworzenia/aktualizacji) jest wyliczany w locie z adresu URL i z danych `live.json`, więc nie ma czego ręcznie edytować per gra.
+
+## Dodawanie gry (Netlify)
+
+Tu bez zmian: `SEEDS` w `lib/games.ts` i `<slug>-thumbnail.png` / `<slug>-icon.png` w `assets/` (Netlify ma osobny, niezależny kod i nie korzysta z `scripts/games.json`).

@@ -65,12 +65,22 @@ body {
   .live-dot, .flash { animation: none; }
 }
 
-/* ---------- All Games tiles ---------- */
+/* ---------- Games tiles ---------- */
 .tile {
   --accent: #00f0ff;
   --rgb: 0, 240, 255;
   border: 1px solid rgba(var(--rgb), 0.28);
   box-shadow: 0 0 22px rgba(var(--rgb), 0.14);
+}
+
+/* Clickable tiles (Games page) grow very slightly on hover/focus. */
+.tile-clickable { cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.tile-clickable:hover,
+.tile-clickable:focus-visible { transform: translateY(-2px) scale(1.015); }
+.tile-clickable.tile-hidden { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .tile-clickable { transition: none; }
+  .tile-clickable:hover, .tile-clickable:focus-visible { transform: none; }
 }
 .tile-icon { border: 1px solid rgba(var(--rgb), 0.4); }
 .tile-tag {

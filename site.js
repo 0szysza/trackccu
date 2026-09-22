@@ -6,23 +6,45 @@
 
   const REFRESH_MS = 5 * 60 * 1000;
 
+  // Root-relative path prefix. Root pages (games.html, compare.html,
+  // index.html) don't set this, so it defaults to "". Nested pages (each
+  // game's own page, two folders deep at games/<id>/index.html) set
+  // `window.SITE_ROOT = "../../";` before loading this file, so every path
+  // built below still points at the real site root.
+  const ROOT = window.SITE_ROOT || "";
+
   // Data sources come from config.js (Netlify API by default, static JSON on GitHub Pages).
   const CONFIG = window.TRACKER_CONFIG || {
     live: () => "/api/live",
     history: (range) => "/api/history?range=" + range,
   };
 
-  // Every game this tracker can show. `accent`/`rgb` colour the All Games
-  // tiles; the Compare page uses fixed slot colours instead (a = cyan, b = pink).
-  // To add a game: add it here, in SEEDS in lib/games.ts, and drop
-  // <slug>-thumbnail.png / <slug>-icon.png into /assets.
+  // Every tracked game now shares one accent colour (BGS's light blue) —
+  // the Compare page still uses its own fixed slot colours (cyan/pink).
+  const ACCENT = "#00f0ff";
+  const ACCENT_RGB = "0, 240, 255";
+
+  // To add a game: edit scripts/games.json, then run
+  // `node scripts/sync-games.mjs` (or just push — the GitHub Actions
+  // workflow runs it automatically every ~5 minutes). That script rewrites
+  // the block below and generates that game's games/<placeId>/ page.
+  // Do not hand-edit between the markers — it gets overwritten.
+  /* GENERATED:CATALOG:START */
   const CATALOG = [
-    { slug: "bgs", label: "Bubble Gum Simulator", short: "BGS", url: "https://www.roblox.com/games/2512643572/", accent: "#00f0ff", rgb: "0, 240, 255" },
-    { slug: "bgsi", label: "Bubble Gum Simulator INFINITY", short: "BGSI", url: "https://www.roblox.com/games/85896571713843/", accent: "#ff007f", rgb: "255, 0, 127" },
-    { slug: "jailbreak", label: "Jailbreak", short: "JB", url: "https://www.roblox.com/games/606849621/Jailbreak", accent: "#ffb020", rgb: "255, 176, 32" },
-    { slug: "petsim99", label: "Pet Simulator 99", short: "PS99", url: "https://www.roblox.com/games/8737899170/Pet-Simulator-99", accent: "#a78bfa", rgb: "167, 139, 250" },
+    { slug: "bgs", placeId: "2512643572", label: "Bubble Gum Simulator", short: "BGS" },
+    { slug: "bgsi", placeId: "85896571713843", label: "Bubble Gum Simulator INFINITY", short: "BGSI" },
+    { slug: "jailbreak", placeId: "606849621", label: "Jailbreak", short: "JB" },
+    { slug: "petsim99", placeId: "8737899170", label: "Pet Simulator 99", short: "PS99" },
   ];
+/* GENERATED:CATALOG:END */
+  for (const game of CATALOG) {
+    game.url = `https://www.roblox.com/games/${game.placeId}/`;
+    game.accent = ACCENT;
+    game.rgb = ACCENT_RGB;
+  }
+
   const bySlug = new Map(CATALOG.map((game) => [game.slug, game]));
+  const byPlaceId = new Map(CATALOG.map((game) => [String(game.placeId), game]));
 
   const $ = (id) => document.getElementById(id);
   const nf = new Intl.NumberFormat("en-US");
@@ -40,6 +62,13 @@
   const clockFmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
   const dayLabel = (ms) => dayFmt.format(new Date(ms)).toUpperCase();
   const clockLabel = (ms) => clockFmt.format(new Date(ms));
+  const dateLabel = (iso) => {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    return Number.isFinite(d.getTime())
+      ? new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(d)
+      : "—";
+  };
 
   // Sets text and briefly brightens the element when the value changed
   // (but not on the first fill from the "—" placeholder).
@@ -61,8 +90,11 @@
   const listeners = new Set();
 
   // The icon a game currently uses on Roblox, or the local file until the
-  // first /api/live response (or if Roblox has none).
-  const iconFor = (slug) => liveIcons.get(slug) || `assets/${slug}-icon.png`;
+  // first /api/live response (or if Roblox has none) — and if that local
+  // file doesn't exist either (a freshly added game with no custom assets
+  // yet), the generic site icon so nothing shows a broken image.
+  const iconFor = (slug) => liveIcons.get(slug) || `${ROOT}assets/${slug}-icon.png`;
+  const iconFallback = `${ROOT}favicon.png`;
 
   async function loadLive() {
     try {
@@ -110,11 +142,11 @@
 
   const NAV = [
     {
-      key: "all", href: "index.html", label: "All Games",
+      key: "games", href: ROOT + "games", label: "Games",
       icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>',
     },
     {
-      key: "compare", href: "compare.html", label: "Compare",
+      key: "compare", href: ROOT + "compare", label: "Compare",
       icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13m0 0-3-3m3 3-3 3M17 17H4m0 0 3-3m-3 3 3 3"/></svg>',
     },
   ];
@@ -125,7 +157,7 @@
       header.innerHTML = `
 <header class="border-b border-roblox-cardBorder bg-roblox-cardBg/90 backdrop-blur-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center gap-x-6 gap-y-3">
-    <a href="index.html" class="order-1 flex items-center gap-3 shrink-0" aria-label="ROBLOX CCU Tracker — All Games">
+    <a href="${ROOT}games" class="order-1 flex items-center gap-3 shrink-0" aria-label="ROBLOX CCU Tracker — Games">
       <i class="fi fi-rr-globe text-4xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-tr from-roblox-bgs to-roblox-bgsi"></i>
       <div>
         <div class="text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-tight">ROBLOX CCU Tracker</div>
@@ -202,7 +234,8 @@
   setInterval(paintStatus, 1000);
 
   window.Tracker = {
-    REFRESH_MS, CONFIG, CATALOG, bySlug, $, fmt, compact, dayLabel, clockLabel,
-    setText, iconFor, loadLive, onLive, every, mountChrome, live,
+    REFRESH_MS, CONFIG, CATALOG, bySlug, byPlaceId, ROOT, ACCENT, ACCENT_RGB,
+    $, fmt, compact, dayLabel, clockLabel, dateLabel,
+    setText, iconFor, iconFallback, loadLive, onLive, every, mountChrome, live,
   };
 })();
