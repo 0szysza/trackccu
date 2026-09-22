@@ -37,6 +37,11 @@ jobs:
           cp -r assets _site/assets && rm -f _site/assets/README.md
           cp scripts/config.static.js _site/config.js
 
+      - name: Generate game pages
+        run: node scripts/sync-games.mjs
+        env:
+          OUT_DIR: _site
+
       - name: Collect data
         run: node scripts/collect.mjs
         env:
