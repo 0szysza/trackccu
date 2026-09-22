@@ -1,6 +1,0 @@
-[
-  { "slug": "bgs", "placeId": "2512643572", "universeId": "892043755", "name": "Bubble Gum Simulator", "short": "BGS", "color": 65535 },
-  { "slug": "bgsi", "placeId": "85896571713843", "universeId": "6504986360", "name": "Bubble Gum Simulator INFINITY", "short": "BGSI", "color": 16711807 },
-  { "slug": "jailbreak", "placeId": "606849621", "name": "Jailbreak", "short": "JB", "color": 16756768 },
-  { "slug": "petsim99", "placeId": "8737899170", "name": "Pet Simulator 99", "short": "PS99", "color": 10979834 }
-]
