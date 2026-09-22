@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare · ROBLOX CCU Tracker</title>
+<meta name="description" content="Compare live concurrent player counts of any two tracked Roblox games, with stored history.">
+<meta name="theme-color" content="#0b0d17">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tailwind-config.js"></script>
+
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
+
+<div id="site-header"></div>
+
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+  <section>
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compare</h1>
+    <p class="text-sm text-slate-400 mt-1">Pick any two games to see who's ahead right now, how the players split between them, and how the gap has moved over time.</p>
+  </section>
+
+  <!-- Game pickers. Slot colours are fixed (left = cyan, right = pink); only the game changes. -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+    <div class="relative">
+      <div class="flex items-center gap-2 bg-slate-900 border border-roblox-bgs/30 rounded-xl px-3 py-2.5 focus-within:border-roblox-bgs/70 transition">
+        <i class="fi fi-rs-search text-roblox-bgs text-sm"></i>
+        <input type="text" class="picker-input bg-transparent outline-none text-sm text-slate-200 placeholder-slate-500 w-full" placeholder="Search" autocomplete="off" aria-label="Search for the first game" data-slot="a">
+      </div>
+      <div class="picker-dropdown hidden absolute z-30 mt-1.5 w-full bg-slate-900 border border-roblox-cardBorder rounded-xl overflow-hidden shadow-2xl" data-slot="a"></div>
+    </div>
+    <div class="relative">
+      <div class="flex items-center gap-2 bg-slate-900 border border-roblox-bgsi/30 rounded-xl px-3 py-2.5 focus-within:border-roblox-bgsi/70 transition">
+        <i class="fi fi-rs-search text-roblox-bgsi text-sm"></i>
+        <input type="text" class="picker-input bg-transparent outline-none text-sm text-slate-200 placeholder-slate-500 w-full" placeholder="Search" autocomplete="off" aria-label="Search for the second game" data-slot="b">
+      </div>
+      <div class="picker-dropdown hidden absolute z-30 mt-1.5 w-full bg-slate-900 border border-roblox-cardBorder rounded-xl overflow-hidden shadow-2xl" data-slot="b"></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="cards"></div>
+
+  <!-- Who's ahead + share of combined players -->
+  <div class="bg-gradient-to-r from-roblox-cardBg via-slate-900 to-roblox-cardBg border border-roblox-cardBorder rounded-xl p-4 space-y-4">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3 self-start md:self-auto">
+        <i class="fi fi-rr-trophy text-amber-400 text-xl"></i>
+        <div>
+          <span class="text-xs text-slate-400 uppercase tracking-wide font-semibold">Currently ahead</span>
+          <h3 class="text-base font-bold text-slate-100" id="leader-text">Pick two games to compare</h3>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 bg-slate-950/80 px-4 py-2 rounded-lg border border-slate-800 w-full md:w-auto justify-center">
+        <span class="text-xs text-slate-400">Lead:</span>
+        <span class="text-lg font-black text-slate-500 tabular-nums" id="diff-count">—</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between text-[11px] font-semibold mb-2">
+        <span class="text-roblox-bgs" id="shareLabel-a">—</span>
+        <span class="text-roblox-bgsi" id="shareLabel-b">—</span>
+      </div>
+      <!-- Each side's width is its share of the two games' combined players.
+           The grey bar never moves: it stands at 50%, so whoever's colour
+           crosses it is ahead. -->
+      <div class="relative">
+        <div class="w-full h-3 rounded-full overflow-hidden bg-slate-950 border border-slate-800 flex">
+          <div id="shareBar-a" class="h-full bg-slate-700 transition-all duration-700 ease-out" style="width:50%"></div>
+          <div id="shareBar-b" class="h-full bg-slate-800 transition-all duration-700 ease-out" style="width:50%"></div>
+        </div>
+        <div class="absolute left-1/2 -top-2 -bottom-2 w-[3px] -translate-x-1/2 rounded-full bg-slate-400 shadow-[0_0_0_2px_#15192d]" aria-hidden="true"></div>
+      </div>
+      <div class="relative h-4 mt-1.5">
+        <span class="absolute left-1/2 -translate-x-1/2 text-[10px] font-semibold text-slate-500">50%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-4 sm:p-6 shadow-2xl">
+
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800" id="ranges" role="group" aria-label="Time range">
+        <button type="button" data-range="1d" aria-pressed="true" class="range-btn">1D</button>
+        <button type="button" data-range="7d" aria-pressed="false" class="range-btn">7D</button>
+        <button type="button" data-range="all" aria-pressed="false" class="range-btn">All</button>
+      </div>
+      <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800" id="modes" role="group" aria-label="Chart type">
+        <button type="button" data-mode="players" aria-pressed="true" class="mode-btn">Players</button>
+        <button type="button" data-mode="share" aria-pressed="false" class="mode-btn">Share</button>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <h3 class="text-sm font-semibold text-slate-200" id="chartTitle">Concurrent players</h3>
+      <div class="flex flex-wrap gap-2 mt-2.5" id="chartStats"></div>
+    </div>
+
+    <div class="chart-wrap w-full relative h-[320px] sm:h-[380px] mt-4" id="chartWrap">
+      <div id="chartHost" class="absolute inset-0"></div>
+      <div id="chartTooltip" class="hidden absolute z-10 pointer-events-none bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs shadow-xl whitespace-nowrap"></div>
+      <div id="chartNote" class="absolute inset-0 hidden items-center justify-center text-sm text-slate-500 text-center px-6"></div>
+    </div>
+
+    <p class="text-[11px] text-slate-500 mt-3">Sampled every 5 minutes from the official Roblox API. Each point is the average for its time slot.</p>
+  </div>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(() => {
+  "use strict";
+
+  const { CATALOG, CONFIG, bySlug, $, fmt, compact, dayLabel, clockLabel, setText, iconFor } = Tracker;
+  Tracker.mountChrome("compare");
+
+  // Slot colours are fixed (a = cyan, b = pink); only which game sits in a
+  // slot changes. Nothing is remembered between visits: both slots start
+  // empty every time the page loads.
+  const SLOTS = ["a", "b"];
+  const SLOT = {
+    a: { color: "#00f0ff", rgb: "0, 240, 255" },
+    b: { color: "#ff007f", rgb: "255, 0, 127" },
+  };
+  const selection = { a: null, b: null };
+
+  const picked = () => SLOTS
+    .filter((slot) => selection[slot])
+    .map((slot) => ({ slot, slug: selection[slot], game: bySlug.get(selection[slot]), color: SLOT[slot].color }));
+
+  const show = (el, on, display = "flex") => {
+    el.classList.toggle("hidden", !on);
+    el.classList.toggle(display, on);
+  };
+
+  /* ---------- cards ---------- */
+
+  const statCell = (id, label, iconHtml) => `
+    <div class="bg-slate-900/60 p-2 rounded-lg border border-slate-800/40">
+      <span class="text-slate-400 block mb-0.5">${iconHtml}${label}</span>
+      <span class="font-bold text-slate-200 tabular-nums" id="${id}">—</span>
+    </div>`;
+
+  function cardHtml(slot) {
+    const c = SLOT[slot];
+    return `
+    <div class="game-card tile tile-empty bg-roblox-cardBg rounded-2xl p-5 sm:p-6 overflow-hidden min-h-[19rem] flex flex-col"
+         id="card-${slot}" style="--accent:${c.color};--rgb:${c.rgb}">
+      <div class="art"></div>
+
+      <div id="empty-${slot}" class="flex-1 flex flex-col items-center justify-center text-center gap-2">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="tile-accent" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <p class="text-base font-semibold text-slate-200">Pick a game</p>
+        <p class="text-sm text-slate-400">Search above and choose one to fill this side.</p>
+      </div>
+
+      <div id="body-${slot}" class="hidden flex-1 flex-col justify-between gap-4">
+        <div>
+          <div class="flex items-start justify-between gap-3 mb-4">
+            <div class="flex items-center gap-4 min-w-0">
+              <img id="icon-${slot}" src="" alt=""
+                   onerror="this.onerror=null;this.src='assets/'+this.dataset.slug+'-icon.png'"
+                   class="tile-icon w-16 h-16 rounded-xl object-cover shadow-md bg-slate-900 shrink-0">
+              <div class="min-w-0">
+                <span class="tile-tag text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full" id="tag-${slot}">—</span>
+                <h2 class="text-lg sm:text-xl font-bold mt-1 text-white drop-shadow leading-snug break-words" id="name-${slot}">—</h2>
+                <a href="#" target="_blank" rel="noopener" id="link-${slot}"
+                   class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-0.5 transition-colors">
+                  Open on Roblox <i class="fi fi-rr-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+              </div>
+            </div>
+            <button type="button" id="clear-${slot}" aria-label="Remove this game" title="Remove this game"
+                    class="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 backdrop-blur-sm">
+            <div class="flex justify-between items-center text-xs text-slate-400 font-medium uppercase tracking-wider">
+              <span>Players in game</span>
+              <span class="text-[10px] text-slate-500">Live</span>
+            </div>
+            <div class="flex items-baseline justify-between gap-3 mt-1">
+              <div class="tile-ccu text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums" id="ccu-${slot}">—</div>
+              <span class="text-xs font-semibold px-2 py-1 rounded bg-slate-800 text-slate-300" id="share-${slot}">—% share</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
+          ${statCell("peak24-" + slot, "24h peak", '<i class="fi fi-rr-chat-arrow-grow tile-accent mr-1"></i>')}
+          ${statCell("peak7-" + slot, "7d peak", '<i class="fi fi-rr-chat-arrow-grow text-amber-400 mr-1"></i>')}
+          ${statCell("visits-" + slot, "Visits", '<i class="fi fi-rs-eye tile-accent mr-1"></i>')}
+          ${statCell("favs-" + slot, "Favourites", '<i class="fi fi-rr-star text-amber-400 mr-1"></i>')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  $("cards").innerHTML = SLOTS.map(cardHtml).join("");
+
+  function paintCard(slot) {
+    const slug = selection[slot];
+    const game = slug ? bySlug.get(slug) : null;
+    const filled = Boolean(game);
+
+    show($("empty-" + slot), !filled);
+    show($("body-" + slot), filled);
+    $("card-" + slot).classList.toggle("tile-empty", !filled);
+    $("card-" + slot).style.setProperty("--thumb", filled ? `url('assets/${slug}-thumbnail.png')` : "none");
+    if (!filled) return;
+
+    $("name-" + slot).textContent = game.label;
+    $("tag-" + slot).textContent = game.short;
+    $("link-" + slot).href = game.url;
+    const icon = $("icon-" + slot);
+    icon.dataset.slug = slug;
+    icon.src = iconFor(slug);
+    icon.alt = game.label + " icon";
+
+    // Clear stale numbers until the cached payload fills them again.
+    ["ccu", "peak24", "peak7", "visits", "favs"].forEach((field) => { $(field + "-" + slot).textContent = "—"; });
+    $("share-" + slot).textContent = "—% share";
+  }
+
+  /* ---------- pickers ---------- */
+
+  function closeDropdowns() {
+    document.querySelectorAll(".picker-dropdown").forEach((el) => el.classList.add("hidden"));
+  }
+
+  function matchingGames(slot) {
+    const input = document.querySelector(`.picker-input[data-slot="${slot}"]`);
+    const other = selection[slot === "a" ? "b" : "a"];
+    const query = input.value.trim().toLowerCase();
+
+    return CATALOG
+      .filter((game) => game.slug !== other)
+      .filter((game) => !query ||
+        game.label.toLowerCase().includes(query) ||
+        game.short.toLowerCase().includes(query) ||
+        game.slug.includes(query));
+  }
+
+  function renderDropdown(slot) {
+    const dropdown = document.querySelector(`.picker-dropdown[data-slot="${slot}"]`);
+    const options = matchingGames(slot);
+
+    dropdown.innerHTML = options.length
+      ? options.map((game) => `
+          <button type="button" data-slug="${game.slug}"
+            class="picker-option w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800 focus-visible:bg-slate-800 transition flex items-center gap-3">
+            <img src="${iconFor(game.slug)}" alt="" width="32" height="32"
+                 onerror="this.onerror=null;this.src='assets/${game.slug}-icon.png'"
+                 class="w-8 h-8 rounded-lg object-cover bg-slate-800 shrink-0">
+            <span class="flex-1 min-w-0 truncate">${game.label}</span>
+            <span class="text-[10px] font-semibold text-slate-400 bg-slate-800 rounded px-1.5 py-0.5 shrink-0">${game.short}</span>
+            ${game.slug === selection[slot] ? '<i class="fi fi-rr-check text-emerald-400 text-xs"></i>' : ""}
+          </button>`).join("")
+      : `<div class="px-3 py-2 text-sm text-slate-500">No matching game</div>`;
+
+    dropdown.querySelectorAll(".picker-option").forEach((button) => {
+      button.addEventListener("click", () => setGame(slot, button.dataset.slug));
+    });
+  }
+
+  // Everything (cards, banner, chart) redraws from cached data, so changing
+  // a game never waits on the network.
+  function setGame(slot, slug) {
+    const input = document.querySelector(`.picker-input[data-slot="${slot}"]`);
+    input.value = "";
+    input.blur();
+    closeDropdowns();
+
+    if (slug !== null && !bySlug.has(slug)) return;
+    if (selection[slot] === slug) return;
+
+    selection[slot] = slug;
+    paintCard(slot);
+    applyLive();
+    drawChart();
+  }
+
+  function setupPickers() {
+    document.querySelectorAll(".picker-input").forEach((input) => {
+      const slot = input.dataset.slot;
+      const dropdown = document.querySelector(`.picker-dropdown[data-slot="${slot}"]`);
+
+      input.addEventListener("focus", () => {
+        closeDropdowns();
+        renderDropdown(slot);
+        dropdown.classList.remove("hidden");
+      });
+      input.addEventListener("input", () => {
+        renderDropdown(slot);
+        dropdown.classList.remove("hidden");
+      });
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          const first = matchingGames(slot)[0];
+          if (first) setGame(slot, first.slug);
+        } else if (event.key === "Escape") {
+          input.value = "";
+          input.blur();
+          closeDropdowns();
+        }
+      });
+    });
+
+    SLOTS.forEach((slot) => $("clear-" + slot).addEventListener("click", () => setGame(slot, null)));
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".picker-input") && !event.target.closest(".picker-dropdown")) {
+        closeDropdowns();
+      }
+    });
+  }
+
+  /* ---------- live numbers + who's ahead ---------- */
+
+  function paintBanner(active) {
+    const leaderText = $("leader-text");
+    const diffCount = $("diff-count");
+
+    if (active.length < 2) {
+      leaderText.textContent = active.length === 1 ? "Pick a second game to compare" : "Pick two games to compare";
+      diffCount.textContent = "—";
+      diffCount.className = "text-lg font-black text-slate-500 tabular-nums";
+      $("shareBar-a").style.width = "50%";
+      $("shareBar-b").style.width = "50%";
+      $("shareBar-a").style.background = "";
+      $("shareBar-b").style.background = "";
+      $("shareBar-a").className = "h-full bg-slate-700 transition-all duration-700 ease-out";
+      $("shareBar-b").className = "h-full bg-slate-800 transition-all duration-700 ease-out";
+      $("shareLabel-a").textContent = active[0] && active[0].slot === "a" ? bySlug.get(active[0].slug).short : "—";
+      $("shareLabel-b").textContent = active[0] && active[0].slot === "b" ? bySlug.get(active[0].slug).short : "—";
+      return;
+    }
+
+    const [a, b] = active;
+    $("shareBar-a").className = "h-full transition-all duration-700 ease-out";
+    $("shareBar-b").className = "h-full transition-all duration-700 ease-out";
+    $("shareBar-a").style.background = SLOT.a.color;
+    $("shareBar-b").style.background = SLOT.b.color;
+    $("shareBar-a").style.width = a.share + "%";
+    $("shareBar-b").style.width = b.share + "%";
+    $("shareLabel-a").textContent = `${bySlug.get(a.slug).short} — ${Math.round(a.share)}%`;
+    $("shareLabel-b").textContent = `${bySlug.get(b.slug).short} — ${Math.round(b.share)}%`;
+
+    const diff = Math.abs(a.playing - b.playing);
+    if (diff === 0) {
+      leaderText.textContent = "Dead even right now";
+      diffCount.textContent = "0";
+      diffCount.className = "text-lg font-black text-slate-300 tabular-nums";
+      return;
+    }
+
+    const lead = a.playing > b.playing ? a : b;
+    const color = SLOT[lead.slot].color;
+    leaderText.innerHTML = `<span class="font-extrabold" style="color:${color}">${bySlug.get(lead.slug).label}</span> is ahead`;
+    diffCount.textContent = "+" + fmt(diff);
+    diffCount.className = "text-lg font-black tabular-nums";
+    diffCount.style.color = color;
+  }
+
+  // Share % is relative to just the two selected games (the API's own
+  // sharePercent covers every tracked game).
+  function applyLive() {
+    const payload = Tracker.live.payload;
+    const bySlugLive = new Map(((payload && payload.games) || []).map((g) => [g.slug, g]));
+    const rows = picked().map((p) => ({ ...p, live: bySlugLive.get(p.slug) }));
+    const withData = rows.filter((r) => r.live);
+    const pairTotal = withData.reduce((sum, r) => sum + r.live.playing, 0);
+    const active = [];
+
+    for (const row of withData) {
+      const { slot, live: game } = row;
+      const share = pairTotal > 0 ? Math.round((game.playing / pairTotal) * 1000) / 10 : 50;
+      active.push({ slot, slug: row.slug, playing: game.playing, share });
+
+      setText($("ccu-" + slot), fmt(game.playing));
+      $("peak24-" + slot).textContent = fmt(game.peak24h);
+      $("peak7-" + slot).textContent = fmt(game.peak7d);
+      $("visits-" + slot).textContent = fmt(game.visits);
+      $("favs-" + slot).textContent = fmt(game.favorites);
+      $("share-" + slot).textContent = withData.length === 2 ? Math.round(share) + "% share" : "—% share";
+
+      // The icon and name follow whatever the game currently uses on Roblox.
+      if (game.iconUrl) $("icon-" + slot).src = game.iconUrl;
+      if (game.liveName) $("name-" + slot).textContent = game.liveName;
+    }
+
+    paintBanner(active);
+  }
+
+  /* ---------- chart ---------- */
+  // Two views of the same history:
+  //   Players — each game's player count as a line over an area glow, with
+  //             the latest value tagged at the right edge.
+  //   Share   — the two games stacked to 100%, with the same fixed grey 50%
+  //             line as the bar above, so you can see when the lead changed.
+  // Drawn as SVG at the container's real pixel size (redrawn on resize), so
+  // text is never stretched.
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const svgEl = (tag, attrs, parent) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const key in attrs) el.setAttribute(key, attrs[key]);
+    if (parent) parent.appendChild(el);
+    return el;
+  };
+
+  let range = "1d";
+  let mode = "players";
+  const cache = {}; // range -> payload
+  let chart = null; // geometry + data of what is currently drawn
+
+  const ACTIVE_BTN = "bg-slate-700 text-white shadow-sm";
+  const IDLE_BTN = "text-slate-500 hover:text-slate-300";
+
+  function paintToggles() {
+    for (const button of $("ranges").querySelectorAll(".range-btn")) {
+      const active = button.dataset.range === range;
+      button.setAttribute("aria-pressed", String(active));
+      button.className = "range-btn px-3 py-1 text-xs font-semibold rounded-lg transition " + (active ? ACTIVE_BTN : IDLE_BTN);
+    }
+    for (const button of $("modes").querySelectorAll(".mode-btn")) {
+      const active = button.dataset.mode === mode;
+      button.setAttribute("aria-pressed", String(active));
+      button.className = "mode-btn px-3 py-1 text-xs font-semibold rounded-lg transition " + (active ? ACTIVE_BTN : IDLE_BTN);
+    }
+    $("chartTitle").textContent = mode === "players" ? "Concurrent players" : "Share of the two games' players";
+  }
+
+  function niceStep(rough) {
+    if (rough <= 0) return 1;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rough)));
+    const n = rough / magnitude;
+    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * magnitude;
+  }
+
+  // 3–6 gridline intervals, whichever leaves the least empty space on top.
+  function niceScale(maxY) {
+    let best = null;
+    for (const count of [4, 3, 5, 6]) {
+      const step = niceStep(Math.max(1, maxY) / count);
+      const top = step * count;
+      if (!best || top < best.top * 0.98) best = { step, count, top };
+    }
+    return best;
+  }
+
+  function nearest(points, t) {
+    let lo = 0, hi = points.length - 1;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (points[mid].x < t) lo = mid; else hi = mid;
+    }
+    return Math.abs(points[lo].x - t) <= Math.abs(points[hi].x - t) ? points[lo] : points[hi];
+  }
+
+  const seriesFor = (payload) => picked().map((p) => ({
+    ...p,
+    points: ((payload.series && payload.series[p.slug]) || []).map((row) => ({ x: Date.parse(row.t), y: row.playing, peak: row.peak })),
+  }));
+
+  // For the share view: pair each point of A with B's point in the same time slot.
+  function sharePairs(a, b, bucketMs) {
+    if (!a.points.length || !b.points.length) return [];
+    const pairs = [];
+    for (const pa of a.points) {
+      const pb = nearest(b.points, pa.x);
+      if (Math.abs(pb.x - pa.x) > bucketMs * 1.5) continue;
+      const total = pa.y + pb.y;
+      if (total <= 0) continue;
+      pairs.push({ x: pa.x, a: pa.y, b: pb.y, share: (pa.y / total) * 100 });
+    }
+    return pairs;
+  }
+
+  function paintStats(series) {
+    const host = $("chartStats");
+    host.innerHTML = series.map((s) => {
+      if (!s.points.length) return "";
+      let sum = 0, peak = 0, low = Infinity;
+      for (const p of s.points) { sum += p.y; peak = Math.max(peak, p.peak); low = Math.min(low, p.y); }
+      const cell = (label, value) => `<span class="text-slate-400">${label} <b class="text-slate-100 tabular-nums">${fmt(value)}</b></span>`;
+      return `<div class="flex flex-wrap items-center gap-x-5 gap-y-1 rounded-lg px-3 py-2 bg-slate-950/50 border border-slate-800/60 text-xs">
+        <span class="inline-flex items-center gap-2 font-bold" style="color:${s.color}"><span class="w-2.5 h-2.5 rounded-full" style="background:${s.color}"></span>${s.game.short}</span>
+        ${cell("avg", Math.round(sum / s.points.length))}${cell("peak", peak)}${cell("low", low)}
+      </div>`;
+    }).join("");
+  }
+
+  function setNote(message) {
+    const note = $("chartNote");
+    note.textContent = message || "";
+    show(note, Boolean(message));
+  }
+
+  function axisLabel(ms, spanMs) {
+    return spanMs <= 2 * 86400000 ? clockLabel(ms) : dayLabel(ms);
+  }
+
+  function drawChart() {
+    paintToggles();
+    const host = $("chartHost");
+    host.innerHTML = "";
+    chart = null;
+    hideHover();
+
+    const games = picked();
+    const payload = cache[range];
+    const series = payload ? seriesFor(payload) : games.map((g) => ({ ...g, points: [] }));
+    paintStats(series);
+
+    if (games.length === 0) return setNote("Pick two games above to compare them here.");
+    if (mode === "share" && games.length < 2) return setNote("Pick a second game to see how the players split between the two.");
+    if (!payload) return setNote("Loading history…");
+
+    const bucketMs = (payload.bucketSeconds || 300) * 1000;
+    const pairs = mode === "share" ? sharePairs(series[0], series[1], bucketMs) : null;
+    const hasData = mode === "share" ? pairs.length > 0 : series.some((s) => s.points.length > 0);
+    if (!hasData) return setNote("No history stored for this range yet.");
+    setNote(null);
+
+    const w = Math.max(host.clientWidth, 260);
+    const h = Math.max(host.clientHeight, 200);
+    const narrow = w < 560;
+    const pad = { top: 14, right: narrow ? 14 : 72, bottom: 26, left: narrow ? 40 : 48 };
+    const plotW = w - pad.left - pad.right;
+    const plotH = h - pad.top - pad.bottom;
+
+    const xs = mode === "share" ? pairs.map((p) => p.x) : series.flatMap((s) => s.points.map((p) => p.x));
+    let minX = Math.min(...xs), maxX = Math.max(...xs);
+    if (minX === maxX) { minX -= 3600000; maxX += 3600000; }
+    const xOf = (t) => pad.left + ((t - minX) / (maxX - minX)) * plotW;
+
+    let ticks, yTop, fmtTick;
+    if (mode === "share") {
+      yTop = 100; ticks = [0, 25, 50, 75, 100]; fmtTick = (v) => v + "%";
+    } else {
+      const maxY = Math.max(...series.flatMap((s) => s.points.map((p) => p.y)));
+      const scale = niceScale(maxY);
+      yTop = scale.top;
+      ticks = Array.from({ length: scale.count + 1 }, (_, i) => scale.step * i);
+      fmtTick = compact;
+    }
+    const yOf = (v) => pad.top + plotH - (Math.min(v, yTop) / yTop) * plotH;
+
+    const svg = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, class: "block", role: "img",
+      "aria-label": mode === "share" ? "Share of players over time" : "Concurrent players over time" });
+    const defs = svgEl("defs", {}, svg);
+
+    // gridlines + y labels (left)
+    for (const value of ticks) {
+      const y = yOf(value);
+      const isHalf = mode === "share" && value === 50;
+      svgEl("line", {
+        x1: pad.left, x2: w - pad.right, y1: y.toFixed(1), y2: y.toFixed(1),
+        stroke: isHalf ? "rgba(148,163,184,0.7)" : "rgba(148,163,184,0.12)",
+        "stroke-width": isHalf ? 2 : 1, "stroke-dasharray": isHalf ? "6 5" : "0",
+      }, svg);
+      const label = svgEl("text", {
+        x: pad.left - 8, y: (y + 3.5).toFixed(1), "text-anchor": "end",
+        fill: isHalf ? "#cbd5e1" : "#64748b", "font-size": 11, "font-weight": isHalf ? 700 : 400, "font-family": "Inter, sans-serif",
+      }, svg);
+      label.textContent = fmtTick(value);
+    }
+
+    // x labels
+    const span = maxX - minX;
+    const tickCount = narrow ? 3 : 6;
+    for (let i = 0; i < tickCount; i++) {
+      const t = minX + (span * (i + 0.5)) / tickCount;
+      const label = svgEl("text", {
+        x: xOf(t).toFixed(1), y: h - 7, "text-anchor": "middle",
+        fill: "#64748b", "font-size": 10.5, "font-family": "Inter, sans-serif",
+      }, svg);
+      label.textContent = axisLabel(t, span);
+    }
+
+    const chips = []; // right-edge value tags: { y, text, color }
+    const line = (pts, key) => pts.map((p, i) => `${i ? "L" : "M"}${xOf(p.x).toFixed(1)} ${yOf(p[key]).toFixed(1)}`).join(" ");
+
+    if (mode === "players") {
+      series.forEach((s, i) => {
+        if (!s.points.length) return;
+        const gid = "grad-" + s.slot;
+        const grad = svgEl("linearGradient", { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+        svgEl("stop", { offset: 0, "stop-color": s.color, "stop-opacity": 0.28 }, grad);
+        svgEl("stop", { offset: 1, "stop-color": s.color, "stop-opacity": 0 }, grad);
+
+        const d = line(s.points, "y");
+        const first = s.points[0], last = s.points[s.points.length - 1];
+        svgEl("path", { d: `${d} L${xOf(last.x).toFixed(1)} ${yOf(0).toFixed(1)} L${xOf(first.x).toFixed(1)} ${yOf(0).toFixed(1)} Z`, fill: `url(#${gid})` }, svg);
+        const path = svgEl("path", {
+          d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round", class: "chart-line",
+        }, svg);
+        path.style.setProperty("--c", s.color);
+
+        svgEl("circle", { cx: xOf(last.x).toFixed(1), cy: yOf(last.y).toFixed(1), r: 3.5, fill: s.color, stroke: "#15192d", "stroke-width": 2 }, svg);
+        chips.push({ y: yOf(last.y), text: fmt(last.y), color: s.color });
+      });
+    } else {
+      const [sa, sb] = series;
+      const base = yOf(0);
+      const top = yOf(100);
+      const first = pairs[0], last = pairs[pairs.length - 1];
+      const boundary = line(pairs, "share");
+
+      svgEl("path", { d: `${boundary} L${xOf(last.x).toFixed(1)} ${base.toFixed(1)} L${xOf(first.x).toFixed(1)} ${base.toFixed(1)} Z`, fill: sa.color, "fill-opacity": 0.3 }, svg);
+      svgEl("path", { d: `${boundary} L${xOf(last.x).toFixed(1)} ${top.toFixed(1)} L${xOf(first.x).toFixed(1)} ${top.toFixed(1)} Z`, fill: sb.color, "fill-opacity": 0.3 }, svg);
+      svgEl("path", { d: boundary, fill: "none", stroke: "#f1f5f9", "stroke-width": 1.8, "stroke-linejoin": "round" }, svg);
+
+      // the fixed 50% line sits on top so the boundary visibly crosses it
+      svgEl("line", { x1: pad.left, x2: w - pad.right, y1: yOf(50).toFixed(1), y2: yOf(50).toFixed(1), stroke: "rgba(148,163,184,0.7)", "stroke-width": 2, "stroke-dasharray": "6 5" }, svg);
+
+      svgEl("circle", { cx: xOf(last.x).toFixed(1), cy: yOf(last.share).toFixed(1), r: 3.5, fill: "#f1f5f9", stroke: "#15192d", "stroke-width": 2 }, svg);
+      chips.push({ y: yOf(last.share / 2), text: Math.round(last.share) + "%", color: sa.color });
+      chips.push({ y: yOf((100 + last.share) / 2), text: Math.round(100 - last.share) + "%", color: sb.color });
+    }
+
+    // Right-edge value tags (wide screens only), nudged apart if they'd overlap.
+    if (!narrow) {
+      chips.sort((p, q) => p.y - q.y);
+      for (let i = 1; i < chips.length; i++) {
+        if (chips[i].y - chips[i - 1].y < 22) chips[i].y = chips[i - 1].y + 22;
+      }
+      for (const chip of chips) {
+        const cw = chip.text.length * 6.8 + 14;
+        svgEl("rect", { x: w - pad.right + 8, y: (chip.y - 10).toFixed(1), width: cw.toFixed(1), height: 20, rx: 6, fill: chip.color }, svg);
+        const label = svgEl("text", {
+          x: (w - pad.right + 8 + cw / 2).toFixed(1), y: (chip.y + 4).toFixed(1), "text-anchor": "middle",
+          fill: "#0b0d17", "font-size": 11, "font-weight": 700, "font-family": "Inter, sans-serif",
+        }, svg);
+        label.textContent = chip.text;
+      }
+    }
+
+    // hover crosshair
+    const cross = svgEl("line", { y1: pad.top, y2: pad.top + plotH, stroke: "rgba(226,232,240,0.4)", "stroke-width": 1, visibility: "hidden" }, svg);
+    const dots = (mode === "share" ? [0] : series.map((_, i) => i)).map((i) =>
+      svgEl("circle", { r: 4.5, fill: mode === "share" ? "#f1f5f9" : series[i].color, stroke: "#15192d", "stroke-width": 2, visibility: "hidden" }, svg));
+
+    host.appendChild(svg);
+    chart = { mode, series, pairs, bucketMs, pad, plotW, w, minX, maxX, xOf, yOf, cross, dots, span };
+  }
+
+  /* ---------- hover ---------- */
+
+  const wrap = $("chartWrap");
+  const tooltip = $("chartTooltip");
+
+  function hideHover() {
+    tooltip.classList.add("hidden");
+    if (!chart) return;
+    chart.cross.setAttribute("visibility", "hidden");
+    chart.dots.forEach((dot) => dot.setAttribute("visibility", "hidden"));
+  }
+
+  function onMove(event) {
+    if (!chart) return;
+    const rect = wrap.getBoundingClientRect();
+    const relX = event.clientX - rect.left;
+    if (relX < chart.pad.left - 6 || relX > chart.w - chart.pad.right + 6) return hideHover();
+
+    const t = chart.minX + ((relX - chart.pad.left) / chart.plotW) * (chart.maxX - chart.minX);
+    let anchorX;
+    let body = "";
+
+    if (chart.mode === "players") {
+      const anchorSeries = chart.series.find((s) => s.points.length);
+      anchorX = nearest(anchorSeries.points, t).x;
+      const rows = [];
+      chart.series.forEach((s, i) => {
+        if (!s.points.length) return;
+        const p = nearest(s.points, anchorX);
+        chart.dots[i].setAttribute("cx", chart.xOf(p.x).toFixed(1));
+        chart.dots[i].setAttribute("cy", chart.yOf(p.y).toFixed(1));
+        chart.dots[i].setAttribute("visibility", "visible");
+        rows.push({ s, p });
+      });
+      body = rows.map(({ s, p }) =>
+        `<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background:${s.color}"></span>${s.game.short}: <b class="tabular-nums">${fmt(p.y)}</b></div>`).join("");
+      if (rows.length === 2 && rows[0].p.y !== rows[1].p.y) {
+        const lead = rows[0].p.y > rows[1].p.y ? rows[0] : rows[1];
+        body += `<div class="mt-1 pt-1 border-t border-slate-800 text-slate-400">${lead.s.game.short} leads by <b class="tabular-nums text-slate-200">${fmt(Math.abs(rows[0].p.y - rows[1].p.y))}</b></div>`;
+      }
+    } else {
+      const p = nearest(chart.pairs, t);
+      anchorX = p.x;
+      chart.dots[0].setAttribute("cx", chart.xOf(p.x).toFixed(1));
+      chart.dots[0].setAttribute("cy", chart.yOf(p.share).toFixed(1));
+      chart.dots[0].setAttribute("visibility", "visible");
+      const [sa, sb] = chart.series;
+      const row = (s, share, count) =>
+        `<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background:${s.color}"></span>${s.game.short}: <b class="tabular-nums">${share.toFixed(1)}%</b> <span class="text-slate-500">(${fmt(count)})</span></div>`;
+      body = row(sa, p.share, p.a) + row(sb, 100 - p.share, p.b);
+    }
+
+    const px = chart.xOf(anchorX);
+    chart.cross.setAttribute("x1", px.toFixed(1));
+    chart.cross.setAttribute("x2", px.toFixed(1));
+    chart.cross.setAttribute("visibility", "visible");
+
+    const dayOnly = chart.bucketMs >= 86400000;
+    const when = dayOnly ? dayLabel(anchorX) : `${dayLabel(anchorX)} · ${clockLabel(anchorX)}`;
+    tooltip.innerHTML = `<div class="text-slate-400 mb-1">${when}</div>${body}`;
+    tooltip.classList.remove("hidden");
+
+    const flip = px > rect.width - 190;
+    tooltip.style.top = "8px";
+    tooltip.style.left = (flip ? px - 14 : px + 14) + "px";
+    tooltip.style.transform = flip ? "translateX(-100%)" : "translateX(0)";
+  }
+
+  wrap.addEventListener("pointermove", onMove);
+  wrap.addEventListener("pointerdown", onMove);
+  wrap.addEventListener("pointerleave", hideHover);
+  wrap.addEventListener("pointercancel", hideHover);
+
+  // Keep text crisp when the window (or phone orientation) changes.
+  if (typeof ResizeObserver === "function") {
+    let size = "";
+    new ResizeObserver(() => {
+      const next = wrap.clientWidth + "x" + wrap.clientHeight;
+      if (next === size) return;
+      size = next;
+      requestAnimationFrame(drawChart);
+    }).observe(wrap);
+  }
+
+  /* ---------- data ---------- */
+
+  async function loadHistory() {
+    const key = range;
+    try {
+      const res = await fetch(CONFIG.history(key), { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      cache[key] = await res.json();
+      if (key === range) drawChart();
+    } catch (error) {
+      console.error("History request failed:", error);
+      if (!cache[key] && key === range && picked().length) setNote("Couldn't load the history. It will retry automatically.");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    SLOTS.forEach(paintCard);
+    setupPickers();
+    paintToggles();
+    drawChart();
+    Tracker.onLive(applyLive);
+    Tracker.every(() => { Tracker.loadLive(); loadHistory(); });
+
+    $("ranges").addEventListener("click", (event) => {
+      const button = event.target.closest(".range-btn");
+      if (!button || button.dataset.range === range) return;
+      range = button.dataset.range;
+      drawChart();     // instant if this range is already cached
+      loadHistory();
+    });
+
+    $("modes").addEventListener("click", (event) => {
+      const button = event.target.closest(".mode-btn");
+      if (!button || button.dataset.mode === mode) return;
+      mode = button.dataset.mode;
+      drawChart();
+    });
+  });
+})();
+</script>
+</body>
+</html>
