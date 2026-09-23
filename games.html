@@ -102,17 +102,17 @@
     const s = game.slug;
     const href = `${ROOT}games/${game.placeId}/`;
     return `
-    <article class="game-card games-card tile tile-clickable bg-roblox-cardBg rounded-2xl p-5 sm:p-6 flex flex-col gap-4 overflow-hidden"
+    <article class="game-card games-card tile tile-clickable bg-roblox-cardBg rounded-2xl flex flex-col overflow-hidden"
              id="tile-${s}" data-slug="${s}" data-href="${href}" role="link" tabindex="0"
              aria-label="Open ${game.label}'s page"
              style="--accent:${game.accent};--rgb:${game.rgb}">
 
-      <div class="games-card-header flex items-start justify-between gap-3">
-        <div class="flex items-start gap-4 min-w-0 flex-1">
+      <div class="games-card-header flex items-start justify-between">
+        <div class="games-card-main flex items-start min-w-0 flex-1">
           <img id="icon-${s}" src="${iconFor(s)}" alt="${game.label} icon"
                data-fallback="0"
-               class="tile-icon w-16 h-16 rounded-xl object-cover shadow-md bg-slate-900 shrink-0">
-          <div class="min-w-0 flex-1">
+               class="tile-icon games-card-icon object-cover bg-slate-900 shrink-0">
+          <div class="games-card-title min-w-0 flex-1">
             <h2 id="name-${s}" class="text-lg sm:text-xl font-bold text-white drop-shadow leading-snug break-words" title="${game.label}">${game.label}</h2>
             <a href="${game.url}" target="_blank" rel="noopener" data-stop="1"
                class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-1.5 transition-colors">
@@ -129,7 +129,7 @@
         </div>
       </div>
 
-      <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 backdrop-blur-sm">
+      <div class="games-card-stats bg-slate-900/80 rounded-xl p-4 border border-slate-800 backdrop-blur-sm">
         <div class="flex justify-between items-start gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider">
           <span>Players in game</span>
           <span class="flex flex-col items-end gap-1">
@@ -146,7 +146,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
+      <div class="games-card-metrics grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
         ${statCell("peak24-" + s, "24h peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon tile-accent mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
         ${statCell("peak7-" + s, "7d peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
         ${statCell("visits-" + s, "Visits", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon tile-accent mr-1" aria-hidden="true" ><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`)}

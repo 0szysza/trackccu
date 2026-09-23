@@ -49,6 +49,12 @@ jobs:
           SITE_URL: ${{ steps.pages.outputs.base_url }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
+      - name: Collect game passes and badges
+        run: node scripts/collect-extras.mjs
+        env:
+          OUT_DIR: _site
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

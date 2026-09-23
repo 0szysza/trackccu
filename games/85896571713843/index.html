@@ -27,19 +27,20 @@
   <div id="page" class="hidden space-y-6">
     <section class="game-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
       <div class="game-detail-hero-layout">
-        <div class="flex flex-col justify-between gap-7 min-w-0 p-5 sm:p-7">
-          <div class="flex items-start gap-4 sm:gap-5 min-w-0">
-            <img id="icon" src="" alt="" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow-xl">
-            <div class="min-w-0 pt-1">
-              <div class="flex flex-wrap items-center gap-2"><span id="tag" class="game-short-tag">—</span><span class="text-xs text-slate-500">Tracked live</span></div>
-              <h1 id="name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-2 leading-tight break-words">—</h1>
+        <div class="game-detail-info flex flex-col justify-between gap-7 min-w-0">
+          <span id="tag" class="game-short-tag game-detail-tag">—</span>
+          <div class="game-detail-heading flex items-start min-w-0">
+            <img id="icon" src="" alt="" class="game-detail-icon object-cover bg-slate-900 shrink-0">
+            <div class="game-detail-title min-w-0">
+              <span class="text-xs text-slate-500">Tracked live</span>
+              <h1 id="name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-1 leading-tight break-words">—</h1>
               <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
                 <span class="owner-line"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>by <span id="owner">—</span></span></span><span class="hidden sm:inline text-slate-700">•</span>
                 <a id="link" href="#" target="_blank" rel="noopener" class="tile-link inline-flex items-center gap-1">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
               </div>
             </div>
           </div>
-          <div>
+          <div class="game-detail-players">
             <p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Players right now</p>
             <div class="flex flex-wrap items-end gap-4 mt-1"><div id="ccu" class="text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs">—</div><div class="flex flex-col gap-1 text-sm font-semibold pb-2"><span id="trend1h"></span><span id="trend24h"></span></div></div>
           </div>
@@ -80,6 +81,24 @@
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Tracked since</span><strong id="trackingSince" class="block text-xl text-white mt-1">—</strong><small id="trackingExact" class="block text-xs text-slate-500 mt-1">—</small></div>
       </div>
       <div class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>About</p><h2 class="text-lg font-bold text-white mt-1">Game description</h2><p id="description" class="text-sm leading-7 text-slate-400 mt-4 whitespace-pre-line">No description available.</p></div>
+    </section>
+
+    <section class="collectibles-section bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6" aria-labelledby="collectiblesTitle">
+      <div class="collectibles-header">
+        <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Extras</p><h2 id="collectiblesTitle" class="text-lg font-bold text-white mt-1">Game passes &amp; badges</h2></div>
+        <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
+          <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Game passes</button>
+          <button id="badgesTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Badges</button>
+        </div>
+      </div>
+      <div class="collectibles-options">
+        <p id="collectiblesCount" class="text-xs text-slate-500" aria-live="polite">Loading…</p>
+        <label id="offsaleControl" class="offsale-toggle"><input id="showOffsale" type="checkbox"><span class="offsale-switch" aria-hidden="true"></span>Show offsale</label>
+      </div>
+      <div id="collectiblesPanel" role="tabpanel" aria-labelledby="passesTab">
+        <div id="collectiblesGrid" class="collectibles-grid"></div>
+        <p id="collectiblesMessage" class="collectibles-message" role="status">Loading game passes…</p>
+      </div>
     </section>
   </div>
 </main>
@@ -175,6 +194,65 @@
     if(request===chartRequest)drawChart();
   }
   async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
+
+  let extras=null, collectiblesTab="passes";
+  const robuxIcon='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="m7 2 15 5-5 15L2 17 7 2Zm3.5 8.5-1 3 3 1 1-3-3-1Z"/></svg>';
+  function dateRow(label, stamp){
+    const row=document.createElement("div");row.className="collectible-date-row";
+    const heading=document.createElement("span");heading.textContent=label;
+    const time=document.createElement("time");time.className="collectible-date";time.tabIndex=0;
+    time.textContent=relativeTime(stamp);
+    if(stamp){time.dateTime=stamp;time.dataset.exact=fullDateTime(stamp);time.setAttribute("aria-label",`${label}: ${fullDateTime(stamp)}`);}
+    row.append(heading,time);return row;
+  }
+  function collectibleCard(item,kind){
+    const card=document.createElement("article");card.className="collectible-card";
+    const art=document.createElement("div");art.className="collectible-art";
+    if(item.iconUrl){
+      const img=document.createElement("img");img.src=item.iconUrl;img.alt="";img.loading="lazy";
+      img.onerror=()=>{img.remove();art.classList.add("collectible-art-empty");};art.append(img);
+    }else art.classList.add("collectible-art-empty");
+    const nameLine=document.createElement("div");nameLine.className="collectible-name-line";
+    const name=document.createElement("h3");name.textContent=item.name||"Untitled";nameLine.append(name);
+    if(kind==="passes"){
+      const price=document.createElement("span");price.className=item.isForSale?"collectible-price":"collectible-offsale";
+      if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}
+      else price.textContent="Offsale";
+      nameLine.append(price);
+    }
+    const dates=document.createElement("div");dates.className="collectible-dates";
+    dates.append(dateRow("Created",item.created),dateRow("Updated",item.updated));
+    card.append(art,nameLine,dates);return card;
+  }
+  function renderCollectibles(){
+    const passes=collectiblesTab==="passes";
+    $("passesTab").setAttribute("aria-selected",String(passes));
+    $("badgesTab").setAttribute("aria-selected",String(!passes));
+    $("passesTab").tabIndex=passes?0:-1;$("badgesTab").tabIndex=passes?-1:0;
+    $("collectiblesPanel").setAttribute("aria-labelledby",passes?"passesTab":"badgesTab");
+    $("offsaleControl").hidden=!passes;
+    const list=extras?(passes?extras.passes||[]:extras.badges||[]):[];
+    const visible=passes&&!$("showOffsale").checked?list.filter(item=>item.isForSale):list;
+    $("collectiblesGrid").replaceChildren(...visible.map(item=>collectibleCard(item,collectiblesTab)));
+    $("collectiblesCount").textContent=extras?`${fmt(visible.length)} ${passes?"game passes":"badges"}`:"Loading…";
+    const message=$("collectiblesMessage");
+    message.hidden=Boolean(visible.length);
+    if(!visible.length)message.textContent=!extras?"Loading…":extras.error?"Couldn't load this collection right now.":passes&&!$("showOffsale").checked&&list.length?"No game passes are on sale. Turn on Show offsale to see the rest.":`No ${passes?"game passes":"badges"} found.`;
+  }
+  for(const [id,kind] of [["passesTab","passes"],["badgesTab","badges"]]){
+    $(id).addEventListener("click",()=>{collectiblesTab=kind;renderCollectibles();});
+    $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const other=kind==="passes"?"badgesTab":"passesTab";$(other).click();$(other).focus();}});
+  }
+  $("showOffsale").addEventListener("change",renderCollectibles);
+  async function loadExtras(){
+    try{
+      const response=await fetch(`${ROOT}data/extras.json`,{cache:"no-store"});
+      if(!response.ok)throw new Error(`HTTP ${response.status}`);
+      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],badges:[]};
+    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],badges:[]};}
+    renderCollectibles();
+  }
+  loadExtras();
   document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.addEventListener("click",()=>loadRange(b.dataset.range)));
   Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
 })();
