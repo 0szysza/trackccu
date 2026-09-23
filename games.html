@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Games · ROBLOX CCU Tracker</title>
-<meta name="description" content="Live concurrent player counts for every tracked Roblox game, with stored history.">
-<meta name="theme-color" content="#0b0d17">
+<title>CCU Tracker | Games</title>
+<meta name="description" content="Track any Roblox Game CCU and Stats!">
+<meta name="theme-color" content="#34BFE5">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CCU Tracker - Games">
+<meta property="og:description" content="Track any Roblox Game CCU and Stats!">
+<meta property="og:image" content="favicon.png">
+<meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -49,13 +54,13 @@
 
   <!-- Search + sort -->
   <section class="flex flex-wrap items-center gap-3">
-    <div class="flex-1 min-w-[220px] flex items-center gap-2 bg-slate-900 border border-roblox-bgs/30 rounded-xl px-3 py-2.5 focus-within:border-roblox-bgs/70 transition">
-      <i class="fi fi-rs-search text-roblox-bgs text-sm"></i>
+    <div class="flex-1 min-w-[220px] flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 focus-within:border-slate-500 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true" ><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
       <input type="text" id="search" class="bg-transparent outline-none text-sm text-slate-200 placeholder-slate-500 w-full"
              placeholder="Search by name or abbreviation…" autocomplete="off" aria-label="Search games">
     </div>
     <button type="button" id="sortToggle" aria-pressed="false"
-            class="shrink-0 flex items-center gap-2 bg-slate-900 border border-roblox-cardBorder hover:border-roblox-bgs/50 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white transition"
+            class="shrink-0 flex items-center gap-2 bg-slate-900 border border-roblox-cardBorder hover:border-slate-500 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white transition"
             title="Reverse sort order">
       <svg id="sortIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="transition-transform">
         <path d="M7 4v16m0 0-3.5-3.5M7 20l3.5-3.5M17 20V4m0 0 3.5 3.5M17 4l-3.5 3.5"/>
@@ -109,16 +114,16 @@
                data-fallback="0"
                class="tile-icon w-16 h-16 rounded-xl object-cover shadow-md bg-slate-900 shrink-0">
           <div class="min-w-0">
-            <span class="tile-tag text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full">${game.short}</span>
+            <span class="tile-tag game-short-tag text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full">${game.short}</span>
             <h2 id="name-${s}" class="text-lg sm:text-xl font-bold mt-1 text-white drop-shadow leading-snug break-words" title="${game.label}">${game.label}</h2>
             <a href="${game.url}" target="_blank" rel="noopener" data-stop="1"
                class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-0.5 transition-colors">
-              Open on Roblox <i class="fi fi-rr-arrow-up-right-from-square text-[10px]"></i>
+              Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
             </a>
           </div>
         </div>
         <span id="rating-${s}" class="hidden shrink-0 items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-200" title="Roblox like ratio">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-accent" aria-hidden="true"><path d="M7 10v11H3V10h4zm0 0 4-8a2.5 2.5 0 0 1 2.5 2.5V8H19a2 2 0 0 1 2 2.3l-1.3 8A2 2 0 0 1 17.7 20H7"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon tile-accent" aria-hidden="true" ><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/></svg>
           <span id="ratingValue-${s}">—</span>
         </span>
       </div>
@@ -138,10 +143,10 @@
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
-        ${statCell("peak24-" + s, "24h peak", '<i class="fi fi-rr-chat-arrow-grow tile-accent mr-1"></i>')}
-        ${statCell("peak7-" + s, "7d peak", '<i class="fi fi-rr-chat-arrow-grow text-amber-400 mr-1"></i>')}
-        ${statCell("visits-" + s, "Visits", '<i class="fi fi-rs-eye tile-accent mr-1"></i>')}
-        ${statCell("favs-" + s, "Favourites", '<i class="fi fi-rr-star text-amber-400 mr-1"></i>')}
+        ${statCell("peak24-" + s, "24h peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon tile-accent mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
+        ${statCell("peak7-" + s, "7d peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
+        ${statCell("visits-" + s, "Visits", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon tile-accent mr-1" aria-hidden="true" ><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`)}
+        ${statCell("favs-" + s, "Favourites", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm mr-1" aria-hidden="true" ><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>`)}
       </div>
     </article>`;
   }

@@ -117,39 +117,32 @@ export async function recordSnapshots(
 
 export interface GamePeaks {
   peak24h: number | null;
-  peak24hAt: string | null;
   peak7d: number | null;
-  peak7dAt: string | null;
-  peak30d: number | null;
-  peak30dAt: string | null;
   peakAllTime: number | null;
-  peakAllTimeAt: string | null;
   average24h: number | null;
   low24h: number | null;
   samples: number;
   trackingSince: string | null;
 }
 
-/**
- * Peaks and averages computed over the stored history, per game — plus,
- * for each peak window, *when* that peak was actually reached. `array_agg`
- * ordered by playing desc (ties broken by the earliest time) and filtered
- * to the window gives the recordedAt of the top row in one pass.
- */
+/** Peaks and averages computed over the stored history, per game. */
 export async function getPeaks(): Promise<Record<string, GamePeaks>> {
   const rows = await db
     .select({
       universeId: ccuSnapshots.universeId,
-      peak24h: sql<number | null>`max(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')`,
-      peak24hAt: sql<string | null>`(array_agg(${ccuSnapshots.recordedAt} order by ${ccuSnapshots.playing} desc, ${ccuSnapshots.recordedAt} asc) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours'))[1]`,
-      peak7d: sql<number | null>`max(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '7 days')`,
-      peak7dAt: sql<string | null>`(array_agg(${ccuSnapshots.recordedAt} order by ${ccuSnapshots.playing} desc, ${ccuSnapshots.recordedAt} asc) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '7 days'))[1]`,
-      peak30d: sql<number | null>`max(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '30 days')`,
-      peak30dAt: sql<string | null>`(array_agg(${ccuSnapshots.recordedAt} order by ${ccuSnapshots.playing} desc, ${ccuSnapshots.recordedAt} asc) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '30 days'))[1]`,
-      low24h: sql<number | null>`min(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')`,
-      average24h: sql<number | null>`cast(round(avg(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')) as int)`,
+      peak24h: sql<
+        number | null
+      >`max(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')`,
+      peak7d: sql<
+        number | null
+      >`max(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '7 days')`,
+      low24h: sql<
+        number | null
+      >`min(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')`,
+      average24h: sql<
+        number | null
+      >`cast(round(avg(${ccuSnapshots.playing}) filter (where ${ccuSnapshots.recordedAt} >= now() - interval '24 hours')) as int)`,
       peakAllTime: sql<number | null>`max(${ccuSnapshots.playing})`,
-      peakAllTimeAt: sql<string | null>`(array_agg(${ccuSnapshots.recordedAt} order by ${ccuSnapshots.playing} desc, ${ccuSnapshots.recordedAt} asc))[1]`,
       samples: sql<number>`count(*)`,
       trackingSince: sql<string | null>`min(${ccuSnapshots.recordedAt})`,
     })
@@ -158,22 +151,17 @@ export async function getPeaks(): Promise<Record<string, GamePeaks>> {
 
   const result: Record<string, GamePeaks> = {};
 
-  const iso = (value: string | null) => (value ? new Date(value).toISOString() : null);
-
   for (const row of rows) {
     result[row.universeId] = {
       peak24h: numberOrNull(row.peak24h),
-      peak24hAt: iso(row.peak24hAt),
       peak7d: numberOrNull(row.peak7d),
-      peak7dAt: iso(row.peak7dAt),
-      peak30d: numberOrNull(row.peak30d),
-      peak30dAt: iso(row.peak30dAt),
       low24h: numberOrNull(row.low24h),
       average24h: numberOrNull(row.average24h),
       peakAllTime: numberOrNull(row.peakAllTime),
-      peakAllTimeAt: iso(row.peakAllTimeAt),
       samples: Number(row.samples ?? 0),
-      trackingSince: row.trackingSince ? new Date(row.trackingSince).toISOString() : null,
+      trackingSince: row.trackingSince
+        ? new Date(row.trackingSince).toISOString()
+        : null,
     };
   }
 
@@ -207,6 +195,7 @@ export async function getHistory(
     since = new Date(Date.now() - range.seconds * 1000);
     bucketSeconds = range.bucketSeconds ?? 300;
   } else {
+    // All-time: pick a bucket that keeps the series around TARGET_POINTS long.
     const [oldest] = await db
       .select({ first: sql<string | null>`min(${ccuSnapshots.recordedAt})` })
       .from(ccuSnapshots);
@@ -252,6 +241,7 @@ export async function getHistory(
   };
 }
 
+/** Last stored reading per game, used when Roblox is unreachable. */
 export async function getLatestSnapshots(): Promise<
   Record<string, { playing: number; recordedAt: string }>
 > {
@@ -274,6 +264,11 @@ export async function getLatestSnapshots(): Promise<
   return result;
 }
 
+/**
+ * The stored reading closest to `secondsAgo` seconds back, per game (looked up
+ * within ±10 minutes). Used for "vs 1h ago" trends. Games with no reading in
+ * that window are simply left out.
+ */
 export async function getReadingsNear(
   secondsAgo: number,
 ): Promise<Record<string, number>> {
@@ -312,6 +307,7 @@ export async function getCachedGames() {
   return db.select().from(trackedGames);
 }
 
+/** Drop history beyond the retention window. */
 export async function pruneOldSnapshots(): Promise<void> {
   await db
     .delete(ccuSnapshots)

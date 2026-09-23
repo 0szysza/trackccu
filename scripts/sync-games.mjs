@@ -72,7 +72,8 @@ async function writeGamePages() {
   for (const game of games) {
     const dir = path.join(gamesDir, String(game.placeId));
     await mkdir(dir, { recursive: true });
-    await writeFile(path.join(dir, "index.html"), template);
+    const page = template.replaceAll("__GAME_NAME__", game.name);
+    await writeFile(path.join(dir, "index.html"), page);
   }
   return gamesDir;
 }

@@ -47,15 +47,17 @@ async function resolveUniverse(placeId) {
 
 async function fetchLive(games) {
   const ids = games.map((g) => g.universeId).join(",");
-  const [details, votes, icons] = await Promise.all([
+  const [details, votes, icons, thumbs] = await Promise.all([
     getJson(`https://games.roblox.com/v1/games?universeIds=${ids}`),
     tryJson(`https://games.roblox.com/v1/games/votes?universeIds=${ids}`),
     tryJson(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${ids}&size=256x256&format=Png&isCircular=false&returnPolicy=PlaceHolder`),
+    tryJson(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${ids}&countPerUniverse=1&defaults=true&size=768x432&format=Png&isCircular=false`),
   ]);
 
   const detailsById = new Map((details.data || []).map((d) => [String(d.id), d]));
   const votesById = new Map(((votes && votes.data) || []).map((v) => [String(v.id), v]));
   const iconsById = new Map(((icons && icons.data) || []).filter((i) => i.imageUrl).map((i) => [String(i.targetId), i.imageUrl]));
+  const thumbsById = new Map(((thumbs && thumbs.data) || []).map((i) => [String(i.universeId || i.targetId), (i.thumbnails || []).find((t) => t.imageUrl)?.imageUrl || i.imageUrl]).filter(([, url]) => url));
 
   const out = [];
   for (const game of games) {
@@ -68,6 +70,7 @@ async function fetchLive(games) {
       creator: detail.creator?.name ?? null,
       creatorId: detail.creator?.id ?? null,
       creatorType: detail.creator?.type ?? null,
+      description: detail.description ?? null,
       createdAt: detail.created ?? null,
       updatedAt: detail.updated ?? null,
       playing: detail.playing,
@@ -76,6 +79,7 @@ async function fetchLive(games) {
       upVotes: vote?.upVotes ?? null,
       downVotes: vote?.downVotes ?? null,
       iconUrl: iconsById.get(game.universeId) ?? null,
+      thumbnailUrl: thumbsById.get(game.universeId) ?? null,
     });
   }
   if (out.length === 0) throw new Error("Roblox returned no data for the tracked games");
@@ -199,7 +203,7 @@ const payloadGames = live.map((game) => {
     liveName: game.liveName, creator: game.creator, creatorId: game.creatorId, creatorType: game.creatorType,
     createdAt: game.createdAt, updatedAt: game.updatedAt, playing: game.playing,
     visits: game.visits, favorites: game.favorites, upVotes: game.upVotes, downVotes: game.downVotes,
-    iconUrl: game.iconUrl,
+    iconUrl: game.iconUrl, thumbnailUrl: game.thumbnailUrl, description: game.description,
     ratingPercent: votes > 0 ? Math.round(((game.upVotes ?? 0) / votes) * 100) : null,
     sharePercent: total > 0 ? Math.round((game.playing / total) * 1000) / 10 : 0,
     ...peaksFor(raw.games[game.slug] || [], nowSec),

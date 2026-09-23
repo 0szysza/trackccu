@@ -4,191 +4,108 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CCU Tracker</title>
-<meta name="description" content="Live concurrent player counts for every tracked Roblox game, with stored history and head-to-head comparisons.">
+<meta name="description" content="Track any Roblox Game CCU and Stats!">
 <meta name="theme-color" content="#34BFE5">
-
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="CCU Tracker">
 <meta property="og:title" content="CCU Tracker">
 <meta property="og:description" content="Track any Roblox Game CCU and Stats!">
 <meta property="og:image" content="favicon.png">
-<meta name="twitter:card" content="summary">
-
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="tailwind-config.js"></script>
-
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="site.css">
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
-
 <div id="site-header"></div>
 
-<main class="flex-grow w-full">
-
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-10">
-    <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_auto] gap-8 items-center">
-      <div>
-        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-roblox-bgs bg-roblox-bgs/10 border border-roblox-bgs/20 rounded-full px-3 py-1">
-          <span class="live-dot"></span> Live from the official Roblox API
-        </span>
-        <h1 class="mt-4 text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.08]">
-          Every Roblox game's<br class="hidden sm:block"> player count, <span class="bg-clip-text text-transparent bg-gradient-to-tr from-roblox-bgs to-roblox-bgsi">live.</span>
-        </h1>
-        <p class="mt-4 text-sm sm:text-base text-slate-400 max-w-xl">
-          CCU Tracker watches concurrent players for every game we track, refreshed every 5 minutes,
-          with stored history so you can see where the numbers have actually been — not just where they are right now.
-        </p>
-        <div class="mt-6 flex flex-wrap items-center gap-3">
-          <a href="games" class="inline-flex items-center gap-2 bg-gradient-to-tr from-roblox-bgs to-roblox-bgsi text-slate-950 font-bold text-sm px-5 py-3 rounded-xl shadow-lg shadow-roblox-bgs/10 hover:brightness-110 active:brightness-95 transition">
-            Browse all games
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-          </a>
-          <a href="compare" class="inline-flex items-center gap-2 bg-slate-900 border border-roblox-cardBorder hover:border-slate-600 text-slate-200 font-semibold text-sm px-5 py-3 rounded-xl transition">
-            Compare two games
-          </a>
-        </div>
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+  <section class="home-hero">
+    <div class="home-hero-copy">
+      <div class="home-api-badge"><span class="live-dot !w-2 !h-2"></span> Live from the official Roblox API</div>
+      <h1>Roblox CCU, <span>live and over time.</span></h1>
+      <p>CCU Tracker keeps player counts for the Roblox games we track and refreshes them every 5 minutes. Check what is live now, look back at peaks, or compare two games side by side.</p>
+      <div class="home-hero-actions">
+        <a href="games" class="home-primary-btn">Browse all games <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></a>
+        <a href="compare" class="home-secondary-btn">Compare two games</a>
       </div>
-
-      <dl class="flex sm:flex-col gap-3 shrink-0 w-full sm:w-auto">
-        <div class="flex-1 sm:flex-none bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl px-5 py-4 min-w-[9rem]">
-          <dt class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Players right now</dt>
-          <dd class="text-2xl sm:text-3xl font-extrabold text-white tabular-nums mt-0.5" id="homeTotalPlayers">—</dd>
-        </div>
-        <div class="flex-1 sm:flex-none bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl px-5 py-4 min-w-[9rem]">
-          <dt class="text-[11px] uppercase tracking-wide text-slate-400 font-semibold">Games tracked</dt>
-          <dd class="text-2xl sm:text-3xl font-extrabold text-white tabular-nums mt-0.5" id="homeGameCount">—</dd>
-        </div>
-      </dl>
     </div>
+    <dl class="home-hero-stats" aria-label="Tracker totals">
+      <div><dt>Players right now</dt><dd id="homeTotalPlayers">—</dd></div>
+      <div><dt>Games tracked</dt><dd id="homeGameCount">—</dd></div>
+    </dl>
   </section>
 
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-    <div class="flex items-center justify-between gap-3 mb-3">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-400">Tracked games</h2>
-      <a href="games" class="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-white transition">
-        See all <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-      </a>
+  <section class="space-y-4">
+    <div class="flex items-end justify-between gap-4">
+      <div><p class="text-xs uppercase tracking-[.18em] text-slate-500 font-bold">Live now</p><h2 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Tracked games</h2></div>
+      <a href="games" class="text-sm font-semibold text-slate-400 hover:text-white transition inline-flex items-center gap-1">See more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></a>
     </div>
-    <div class="flex flex-wrap gap-3" id="miniTiles" aria-label="Tracked games, live player counts"></div>
+    <div id="homeGames" class="home-game-strip" aria-label="Tracked games"></div>
   </section>
 
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <a href="games" class="feature-panel group rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg p-6 sm:p-7 overflow-hidden relative">
+      <div class="feature-grid"></div>
+      <div class="relative z-10">
+        <span class="feature-icon feature-illustration" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span>
+        <h2 class="text-2xl font-extrabold text-white mt-5">Explore every tracked game</h2>
+        <p class="text-sm text-slate-400 mt-2 max-w-md leading-relaxed">Search the catalog, check current CCU and jump into a full history page for any tracked game.</p>
+        <span class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-roblox-bgs">Open Games <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></span>
+      </div>
+    </a>
 
-      <a href="games" class="promo-card promo-games group bg-roblox-cardBg rounded-2xl p-6 sm:p-8 flex flex-col gap-4">
-        <div class="promo-glow" style="background:#00f0ff;"></div>
-        <div class="w-11 h-11 rounded-xl bg-roblox-bgs/10 border border-roblox-bgs/25 flex items-center justify-center text-roblox-bgs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>
-        </div>
-        <div>
-          <h3 class="text-lg sm:text-xl font-bold text-white">Every tracked game, one board</h3>
-          <p class="text-sm text-slate-400 mt-1.5 leading-relaxed">
-            Live concurrent players, 24h trends and peaks for every game we track — sortable, searchable,
-            refreshed every 5 minutes so it's never stale for long.
-          </p>
-        </div>
-        <span class="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-roblox-bgs">
-          Open Games
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14m0 0-5 5"/></svg>
-        </span>
-      </a>
-
-      <a href="compare" class="promo-card promo-compare group bg-roblox-cardBg rounded-2xl p-6 sm:p-8 flex flex-col gap-4">
-        <div class="promo-glow" style="background:#ff007f;"></div>
-        <div class="w-11 h-11 rounded-xl bg-roblox-bgsi/10 border border-roblox-bgsi/25 flex items-center justify-center text-roblox-bgsi">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13m0 0-3-3m3 3-3 3M17 17H4m0 0 3-3m-3 3 3 3"/></svg>
-        </div>
-        <div>
-          <h3 class="text-lg sm:text-xl font-bold text-white">Who's actually winning?</h3>
-          <p class="text-sm text-slate-400 mt-1.5 leading-relaxed">
-            Put any two games head-to-head: live player gap, share of the crowd, and how the lead has swung
-            over time. Bring the receipts next time someone says their game is "way bigger."
-          </p>
-        </div>
-        <span class="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-roblox-bgsi">
-          Start a comparison
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </span>
-      </a>
-
-    </div>
+    <a href="compare" class="feature-panel group rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg p-6 sm:p-7 overflow-hidden relative">
+      <div class="compare-preview" aria-hidden="true"><span></span><span></span></div>
+      <div class="relative z-10">
+        <span class="feature-icon feature-illustration" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg></span>
+        <h2 class="text-2xl font-extrabold text-white mt-5">Put two games head-to-head</h2>
+        <p class="text-sm text-slate-400 mt-2 max-w-md leading-relaxed">Compare live players, player share and historical movement on one chart. Pick any two tracked games.</p>
+        <span class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-roblox-bgs">Open Compare <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></span>
+      </div>
+    </a>
   </section>
-
 </main>
-
 <div id="site-footer"></div>
-
 <script src="config.js"></script>
 <script src="site.js"></script>
 <script>
 (() => {
-  "use strict";
-
-  const { CATALOG, $, fmt, iconFor, iconFallback, ROOT } = Tracker;
-  Tracker.mountChrome(null);
-
-  function miniTileHtml(game) {
-    const s = game.slug;
-    const href = `${ROOT}games/${game.placeId}/`;
-    return `
-    <a href="${href}" id="mini-${s}" data-slug="${s}"
-       class="mini-tile flex items-center gap-3 rounded-xl px-4 py-3 min-w-[13rem] sm:min-w-[14rem] flex-1 basis-[13rem]">
-      <img id="mini-icon-${s}" src="${iconFor(s)}" alt="" data-fallback="0"
-           class="w-10 h-10 rounded-lg object-cover bg-slate-800 shrink-0 border border-roblox-cardBorder">
-      <div class="min-w-0 flex-1">
-        <div class="text-[10px] font-bold uppercase tracking-wider text-roblox-bgs">${game.short}</div>
-        <div class="text-sm font-bold text-white truncate leading-snug" title="${game.label}">${game.label}</div>
+  const { CATALOG, $, fmt, iconFor, iconFallback } = Tracker;
+  Tracker.mountChrome("home");
+  $("homeGames").innerHTML = CATALOG.map((game) => `
+    <a href="games/${game.placeId}/" class="home-game-chip" data-slug="${game.slug}">
+      <div class="home-game-art"><img src="${iconFor(game.slug)}" data-fallback="0" alt="${game.label} icon"></div>
+      <div class="home-game-meta">
+        <strong>${game.label}</strong>
+        <b id="home-ccu-${game.slug}">—</b>
       </div>
-      <div class="text-right shrink-0 pl-2">
-        <div class="text-base font-extrabold tabular-nums text-white" id="mini-ccu-${s}">—</div>
-        <div class="text-[10px] text-slate-500 -mt-0.5">playing</div>
-      </div>
-    </a>`;
-  }
-
-  const seeMoreTile = `
-    <a href="${ROOT}games" style="border-style:dashed" class="mini-tile flex items-center justify-center gap-1.5 rounded-xl px-5 py-3 min-w-[9rem] flex-1 basis-[9rem] text-sm font-semibold text-slate-300 hover:text-white">
-      See more
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-    </a>`;
-
-  $("miniTiles").innerHTML = CATALOG.map(miniTileHtml).join("") + seeMoreTile;
+    </a>`).join("");
   $("homeGameCount").textContent = String(CATALOG.length);
 
-  document.querySelectorAll("#miniTiles img[data-fallback]").forEach((img) => {
-    img.addEventListener("error", () => {
-      const step = Number(img.dataset.fallback || "0");
-      const slug = img.closest("[data-slug]").dataset.slug;
-      if (step === 0) { img.dataset.fallback = "1"; img.src = `${ROOT}assets/${slug}-icon.png`; }
-      else { img.src = iconFallback; }
-    });
-  });
+  document.querySelectorAll(".home-game-chip img").forEach((img) => img.addEventListener("error", () => {
+    const chip = img.closest("[data-slug]");
+    if (img.dataset.fallback === "0") { img.dataset.fallback = "1"; img.src = `assets/${chip.dataset.slug}-icon.png`; }
+    else img.src = iconFallback;
+  }));
 
-  function paintLive(payload) {
-    const latest = new Map((payload.games || []).map((game) => [game.slug, game]));
-    for (const game of CATALOG) {
-      const data = latest.get(game.slug);
-      if (!data) continue;
-      Tracker.setText($("mini-ccu-" + game.slug), fmt(data.playing));
-      if (data.iconUrl) $("mini-icon-" + game.slug).src = data.iconUrl;
+  Tracker.onLive((payload) => {
+    let total = 0;
+    for (const data of payload.games || []) {
+      const el = $("home-ccu-" + data.slug); if (el) el.textContent = fmt(data.playing);
+      if (typeof data.playing === "number" && Number.isFinite(data.playing)) total += data.playing;
+      const img = document.querySelector(`.home-game-chip[data-slug="${data.slug}"] img`); if (img && data.iconUrl) img.src = data.iconUrl;
     }
-    $("homeTotalPlayers").textContent = fmt(payload.totalPlaying);
-  }
-
-  Tracker.onLive(paintLive);
-  Tracker.every(() => Tracker.loadLive());
+    $("homeTotalPlayers").textContent = fmt(total);
+  });
+  Tracker.every(Tracker.loadLive);
 })();
 </script>
 </body>

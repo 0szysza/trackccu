@@ -13,13 +13,8 @@ interface GamePayload extends LiveGameStats {
   ratingPercent: number | null;
   sharePercent: number;
   peak24h: number | null;
-  peak24hAt: string | null;
   peak7d: number | null;
-  peak7dAt: string | null;
-  peak30d: number | null;
-  peak30dAt: string | null;
   peakAllTime: number | null;
-  peakAllTimeAt: string | null;
   average24h: number | null;
   low24h: number | null;
   samples: number;
@@ -37,6 +32,7 @@ export default async (_req: Request, context: Context) => {
 
   try {
     stats = await fetchLiveStats();
+    // Persist in the background so the response is not held up by writes.
     context.waitUntil(
       (async () => {
         try {
@@ -56,7 +52,9 @@ export default async (_req: Request, context: Context) => {
 
   const [peaks, latest] = await Promise.all([
     getPeaks().catch(() => ({})),
-    source === "database" ? getLatestSnapshots().catch(() => ({})) : Promise.resolve({}),
+    source === "database"
+      ? getLatestSnapshots().catch(() => ({}))
+      : Promise.resolve({}),
   ]);
 
   const totalPlaying = stats.reduce((sum, game) => sum + game.playing, 0);
@@ -68,16 +66,17 @@ export default async (_req: Request, context: Context) => {
 
     return {
       ...game,
-      ratingPercent: votesTotal > 0 ? Math.round(((game.upVotes ?? 0) / votesTotal) * 100) : null,
-      sharePercent: totalPlaying > 0 ? Math.round((game.playing / totalPlaying) * 1000) / 10 : 0,
+      ratingPercent:
+        votesTotal > 0
+          ? Math.round(((game.upVotes ?? 0) / votesTotal) * 100)
+          : null,
+      sharePercent:
+        totalPlaying > 0
+          ? Math.round((game.playing / totalPlaying) * 1000) / 10
+          : 0,
       peak24h: peak?.peak24h ?? null,
-      peak24hAt: peak?.peak24hAt ?? null,
       peak7d: peak?.peak7d ?? null,
-      peak7dAt: peak?.peak7dAt ?? null,
-      peak30d: peak?.peak30d ?? null,
-      peak30dAt: peak?.peak30dAt ?? null,
       peakAllTime: peak?.peakAllTime ?? null,
-      peakAllTimeAt: peak?.peakAllTimeAt ?? null,
       average24h: peak?.average24h ?? null,
       low24h: peak?.low24h ?? null,
       samples: peak?.samples ?? 0,
@@ -102,10 +101,15 @@ export default async (_req: Request, context: Context) => {
       leaderSlug: leader?.slug ?? null,
       delta: leader && runnerUp ? leader.playing - runnerUp.playing : 0,
     },
-    { headers: { "cache-control": "no-store" } },
+    {
+      headers: {
+        "cache-control": "no-store",
+      },
+    },
   );
 };
 
+/** Rebuild a stats payload from cached metadata plus the newest stored CCU. */
 async function buildFallbackStats(): Promise<LiveGameStats[]> {
   const [trackedGames, cached, latest] = await Promise.all([
     getTrackedGames(),
@@ -126,11 +130,8 @@ async function buildFallbackStats(): Promise<LiveGameStats[]> {
       placeId: game.placeId,
       name: game.name,
       liveName: row?.name ?? null,
-      description: null,
       creator: row?.creator ?? null,
-      creatorId: null,
-      creatorType: null,
-      createdAt: null,
+      description: null,
       playing: snapshot?.playing ?? 0,
       visits: row?.visits ?? null,
       favorites: row?.favorites ?? null,
