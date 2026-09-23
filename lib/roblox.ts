@@ -7,7 +7,11 @@ export interface LiveGameStats {
   name: string;
   /** Name currently shown on Roblox, including event prefixes. */
   liveName: string | null;
+  description: string | null;
   creator: string | null;
+  creatorId: number | null;
+  creatorType: string | null;
+  createdAt: string | null;
   playing: number;
   visits: number | null;
   favorites: number | null;
@@ -39,10 +43,12 @@ interface GamesResponse {
   data?: Array<{
     id: number;
     name?: string;
+    description?: string;
     playing?: number;
     visits?: number;
     favoritedCount?: number;
-    creator?: { name?: string };
+    created?: string;
+    creator?: { id?: number; name?: string; type?: string };
   }>;
 }
 
@@ -54,13 +60,6 @@ interface IconsResponse {
   data?: Array<{ targetId: number; state?: string; imageUrl?: string }>;
 }
 
-/**
- * Reads current stats straight from the public Roblox web APIs. This runs
- * server-side, which is what makes it work at all: games.roblox.com sends no
- * CORS headers, so the same requests from a browser are always blocked.
- *
- * The details call is required; votes and icons are best-effort extras.
- */
 export async function fetchLiveStats(
   games?: TrackedGame[],
 ): Promise<LiveGameStats[]> {
@@ -109,7 +108,11 @@ export async function fetchLiveStats(
       placeId: game.placeId,
       name: game.name,
       liveName: detail.name ?? null,
+      description: detail.description ?? null,
       creator: detail.creator?.name ?? null,
+      creatorId: detail.creator?.id ?? null,
+      creatorType: detail.creator?.type ?? null,
+      createdAt: detail.created ?? null,
       playing: detail.playing,
       visits: detail.visits ?? null,
       favorites: detail.favoritedCount ?? null,
