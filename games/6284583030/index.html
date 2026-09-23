@@ -25,9 +25,9 @@
   <div id="notFound" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-10 text-center"><h1 class="text-2xl font-bold">Game not found</h1><p class="text-slate-400 mt-2">This game isn't tracked anymore.</p></div>
 
   <div id="page" class="hidden space-y-6">
-    <section class="game-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg p-5 sm:p-7">
-      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6 items-center">
-        <div class="flex flex-col justify-between gap-7 min-w-0">
+    <section class="game-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
+      <div class="game-detail-hero-layout">
+        <div class="flex flex-col justify-between gap-7 min-w-0 p-5 sm:p-7">
           <div class="flex items-start gap-4 sm:gap-5 min-w-0">
             <img id="icon" src="" alt="" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow-xl">
             <div class="min-w-0 pt-1">
@@ -75,7 +75,7 @@
     </section>
 
     <section class="space-y-4">
-      <div class="game-meta-bar bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6 gap-4 sm:gap-6">
+      <div class="game-meta-bar bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6">
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Updated</span><strong id="updated" class="block text-xl text-white mt-1">—</strong><small id="updatedExact" class="block text-xs text-slate-500 mt-1">—</small></div>
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg> Created</span><strong id="created" class="block text-xl text-white mt-1">—</strong><small id="createdExact" class="block text-xs text-slate-500 mt-1">—</small></div>
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Tracked since</span><strong id="trackingSince" class="block text-xl text-white mt-1">—</strong><small id="trackingExact" class="block text-xs text-slate-500 mt-1">—</small></div>

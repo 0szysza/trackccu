@@ -76,11 +76,14 @@ body {
   .games-card-header { min-height: 7rem; }
 }
 .game-meta-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.game-meta-item { min-width: 0; }
-.game-meta-item + .game-meta-item { border-left: 1px solid #263148; padding-left: 1.5rem; }
+.game-meta-item { min-width: 0; padding-inline: 1rem; text-align: center; }
+.game-meta-item .meta-label { justify-content: center; }
+.game-meta-item + .game-meta-item { border-left: 1px solid #263148; }
 @media (max-width: 639px) {
   .game-meta-bar { grid-template-columns: 1fr; }
-  .game-meta-item + .game-meta-item { border-left: 0; border-top: 1px solid #263148; padding-left: 0; padding-top: 1rem; }
+  .game-meta-item { padding-inline: 0; text-align: left; }
+  .game-meta-item .meta-label { justify-content: flex-start; }
+  .game-meta-item + .game-meta-item { border-left: 0; border-top: 1px solid #263148; padding-top: 1rem; margin-top: 1rem; }
 }
 .tile-ccu {
   color: var(--accent);
@@ -206,8 +209,13 @@ body {
 /* ---------- Full game detail page ---------- */
 .game-detail-hero { position:relative;overflow:hidden; }
 .game-detail-hero::before { content:"";position:absolute;right:-10%;top:-80%;width:55%;height:180%;background:radial-gradient(circle,rgba(52,191,229,.10),transparent 66%);pointer-events:none; }
-.game-thumbnail-wrap { position:relative;width:100%;max-width:560px;aspect-ratio:16/9;margin-inline:auto;overflow:hidden;border:1px solid #283047;border-radius:12px;background:#0f172a; }
+.game-detail-hero-layout { display:grid;grid-template-columns:minmax(0,1fr); }
+.game-thumbnail-wrap { position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#0f172a; }
 .game-thumbnail-wrap img { display:block;width:100%;height:100%;object-fit:contain; }
+@media (min-width:1024px) {
+  .game-detail-hero-layout { grid-template-columns:minmax(0,1fr) minmax(0,46%);align-items:stretch; }
+  .game-thumbnail-wrap { border-left:1px solid #283047; }
+}
 .stat-panel,.metric-card { background:#111528;border:1px solid #262d4a;border-radius:14px;padding:16px; }
 .stat-panel strong { display:block;margin-top:5px;color:#f8fafc;font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums; }
 .stat-panel small { display:block;margin-top:3px;color:#64748b;font-size:.74rem; }
