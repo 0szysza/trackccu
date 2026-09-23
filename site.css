@@ -193,8 +193,12 @@ body {
 .home-game-meta { display:grid;flex:1;grid-template-rows:minmax(2.15rem,1fr) auto;gap:.45rem;width:100%;min-height:4.8rem;padding:.7rem .75rem .65rem; }
 .home-game-chip strong { display:block;min-width:0;color:#f8fafc;font-size:.78rem;line-height:1.25;font-weight:750;white-space:normal;overflow:visible;text-overflow:clip; }
 .home-game-chip b { color:#34bfe5;font-size:.9rem;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap; }
-.home-game-count { display:flex;align-items:center;justify-content:flex-end;gap:.4rem;width:100%;padding-top:.45rem;border-top:1px solid #293149;color:#34bfe5; }
-.home-game-count svg { width:16px;height:16px;flex:none; }
+.home-game-stats { display:flex;align-items:center;justify-content:space-between;gap:.3rem;width:100%;padding-top:.45rem;border-top:1px solid #293149; }
+.home-game-rating,.home-game-count { display:inline-flex;align-items:center;gap:.3rem;min-width:0;white-space:nowrap; }
+.home-game-rating { color:#34bfe5; }
+.home-game-rating b { color:#e2e8f0;font-size:.8rem; }
+.home-game-count { color:#34bfe5; }
+.home-game-stats svg { width:15px;height:15px;flex:none; }
 
 .feature-panel { min-height:260px;transition:border-color .15s ease,transform .15s ease; }
 .feature-panel:hover { border-color:#475569;transform:translateY(-2px); }
@@ -256,6 +260,12 @@ body {
 /* ---------- Game passes and badges ---------- */
 .collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
 .collectibles-header { margin-bottom:16px; }
+.collectibles-header-controls { display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
+.collectibles-sort-wrap { display:inline-flex;align-items:center;gap:8px;padding:7px 10px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#94a3b8;font-size:.75rem;font-weight:700; }
+.collectibles-sort-wrap:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
+.collectibles-sort-wrap select { min-width:125px;max-width:170px;appearance:none;border:0;outline:0;background:transparent;color:#f8fafc;font:inherit;cursor:pointer; }
+.collectibles-sort-wrap option { background:#111528;color:#f8fafc; }
+.collectibles-sort-wrap svg { width:14px;height:14px;flex:none;pointer-events:none; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }

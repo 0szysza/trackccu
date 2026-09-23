@@ -90,9 +90,10 @@
     strip.style.setProperty("--home-visible", String(Math.max(1, Math.min(ranked.length, 6))));
     strip.innerHTML = ranked.map((game) => {
       const data = live.get(game.slug);
+      const rating = Number.isFinite(data?.ratingPercent) ? `${data.ratingPercent}%` : "—";
       return `<a href="games/${game.placeId}/" class="home-game-chip" data-slug="${game.slug}">
         <div class="home-game-art"><img src="${data?.iconUrl || iconFor(game.slug)}" data-fallback="0" alt="${game.label} icon"></div>
-        <div class="home-game-meta"><strong>${game.label}</strong><span class="home-game-count"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>${fmt(data?.playing)}</b></span></div>
+        <div class="home-game-meta"><strong>${game.label}</strong><div class="home-game-stats"><span class="home-game-rating" aria-label="Rating ${rating}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/></svg><b>${rating}</b></span><span class="home-game-count" aria-label="${fmt(data?.playing)} players"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>${fmt(data?.playing)}</b></span></div></div>
       </a>`;
     }).join("");
   }
