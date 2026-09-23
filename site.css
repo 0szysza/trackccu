@@ -190,11 +190,11 @@ body {
 .home-game-chip:hover { border-color:#34bfe5;box-shadow:0 0 0 1px rgba(52,191,229,.12); }
 .home-game-art { width:100%;aspect-ratio:1/1;overflow:hidden;background:#0f172a;border-bottom:1px solid #273145; }
 .home-game-art img { width:100%;height:100%;object-fit:cover;display:block; }
-.home-game-meta { display:flex;flex:1;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:.55rem;min-height:4.2rem;padding:.65rem .7rem .75rem; }
+.home-game-meta { display:grid;flex:1;grid-template-rows:minmax(2.15rem,1fr) auto;gap:.45rem;width:100%;min-height:4.8rem;padding:.7rem .75rem .65rem; }
 .home-game-chip strong { display:block;min-width:0;color:#f8fafc;font-size:.78rem;line-height:1.25;font-weight:750;white-space:normal;overflow:visible;text-overflow:clip; }
 .home-game-chip b { color:#34bfe5;font-size:.9rem;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap; }
-.home-game-count { display:inline-flex;align-items:center;gap:.35rem;color:#34bfe5; }
-.home-game-count svg { width:14px;height:14px;flex:none; }
+.home-game-count { display:flex;align-items:center;justify-content:flex-end;gap:.4rem;width:100%;padding-top:.45rem;border-top:1px solid #293149;color:#34bfe5; }
+.home-game-count svg { width:16px;height:16px;flex:none; }
 
 .feature-panel { min-height:260px;transition:border-color .15s ease,transform .15s ease; }
 .feature-panel:hover { border-color:#475569;transform:translateY(-2px); }
@@ -262,6 +262,11 @@ body {
 .collectibles-tabs button[aria-selected="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#fff; }
 .collectibles-options { justify-content:flex-end;margin:0 0 16px;min-height:28px; }
 .collectibles-options[hidden] { display:none; }
+.collectibles-search-wrap { display:flex;align-items:center;gap:8px;min-width:220px;max-width:320px;flex:1;padding:8px 11px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#64748b; }
+.collectibles-search-wrap:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
+.collectibles-search-wrap svg { width:16px;height:16px;flex:none; }
+.collectibles-search-wrap input { width:100%;min-width:0;background:transparent;border:0;outline:0;color:#f8fafc;font:inherit;font-size:.78rem; }
+.collectibles-search-wrap input::placeholder { color:#64748b; }
 .offsale-toggle { display:inline-flex;align-items:center;gap:9px;color:#cbd5e1;font-size:.75rem;font-weight:650;cursor:pointer; }
 .offsale-toggle[hidden] { display:none; }
 .offsale-toggle input { position:absolute;opacity:0;width:1px;height:1px; }
@@ -275,13 +280,13 @@ body {
 .collectible-art { display:grid;place-items:center;width:100%;aspect-ratio:1/1;overflow:visible;background:transparent;border:0; }
 .collectible-art img { display:block;width:100%;height:100%;object-fit:contain; }
 .collectible-art-empty::after { content:"◇";color:#475569;font-size:3rem; }
-.collectible-name-line { display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin:10px 0 9px; }
+.collectible-name-line { display:flex;flex-grow:1;align-items:flex-start;justify-content:space-between;gap:8px;min-height:2.5rem;margin:10px 0 9px; }
 .collectible-name-line h3 { min-width:0;color:#f8fafc;font-size:.88rem;font-weight:750;line-height:1.35;overflow-wrap:anywhere; }
 .collectible-price,.collectible-offsale { display:inline-flex;align-items:center;gap:4px;flex-shrink:0;white-space:nowrap;font-size:.82rem;font-weight:800; }
 .collectible-price { color:#34bfe5; }
 .collectible-price svg { width:16px;height:16px; }
 .collectible-offsale { color:#64748b;font-size:.72rem; }
-.collectible-dates { display:grid;gap:7px;margin-top:auto;padding-top:11px;border-top:1px solid #293149; }
+.collectible-dates { display:grid;gap:7px;padding-top:11px;border-top:1px solid #293149; }
 .collectible-date-row { display:flex;align-items:center;justify-content:space-between;gap:8px;color:#94a3b8;font-size:.75rem; }
 .collectible-date-row strong { color:#e2e8f0;font-weight:650;font-variant-numeric:tabular-nums; }
 .collectible-date { position:relative;color:#e2e8f0;font-weight:650;white-space:nowrap;cursor:help; }
