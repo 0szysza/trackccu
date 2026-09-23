@@ -41,7 +41,7 @@
           </div>
           <div>
             <p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Players right now</p>
-            <div class="flex flex-wrap items-end gap-4 mt-1"><div id="ccu" class="text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs">—</div><div id="trend" class="text-sm font-semibold text-slate-400 pb-2"></div></div>
+            <div class="flex flex-wrap items-end gap-4 mt-1"><div id="ccu" class="text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs">—</div><div class="flex flex-col gap-1 text-sm font-semibold pb-2"><span id="trend1h"></span><span id="trend24h"></span></div></div>
           </div>
         </div>
         <div class="game-thumbnail-wrap"><img id="thumbnail" src="" alt="Game thumbnail"></div>
@@ -71,7 +71,6 @@
       </div>
       <div id="chartStats" class="flex flex-wrap gap-2 mt-4"></div>
       <div id="chartWrap" class="chart-wrap relative h-[330px] sm:h-[430px] mt-4"><div id="chartHost" class="absolute inset-0"></div><div id="chartTooltip" class="hidden absolute z-20 pointer-events-none bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs shadow-xl"></div><div id="chartNote" class="hidden absolute inset-0 items-center justify-center text-sm text-slate-500">Collecting history…</div></div>
-      <p class="text-[11px] text-slate-500 mt-3">Sampled every 5 minutes from the official Roblox API.</p>
     </section>
 
     <section class="space-y-4">
@@ -89,7 +88,7 @@
 <script>
 (() => {
   "use strict";
-  const { byPlaceId, $, fmt, compact, dayLabel, clockLabel, dateLabel, relativeTime, fullDateTime, setText, iconFor, iconFallback, ROOT } = Tracker;
+  const { byPlaceId, $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime, setText, iconFor, iconFallback, ROOT } = Tracker;
   Tracker.mountChrome("games");
   const HOUR=3600000, DAY=86400000;
   const gameId=location.pathname.replace(/\/+$/,"").split("/").pop();
@@ -101,7 +100,7 @@
   icon.addEventListener("error",()=>{ if(icon.dataset.fallback==="0"){icon.dataset.fallback="1";icon.src=`${ROOT}assets/${game.slug}-icon.png`;}else icon.src=iconFallback; });
   const thumb=$("thumbnail"); thumb.src=`${ROOT}assets/${game.slug}-thumbnail.png`; thumb.onerror=()=>{thumb.onerror=null;thumb.src=iconFallback;};
 
-  let latest=null, chartRange="1d", chartPoints=[], allPoints=[], chartRequest=0;
+  let latest=null, chartRange="1d", chartPoints=[], allPoints=[], trendPoints=[], chartRequest=0;
   function paintOwner(d){
     const owner=$("owner"), name=d.creator||game.ownerName||"—";
     const href=game.ownerUrl||(d.creatorId&&d.creatorType
@@ -133,7 +132,19 @@
   function pointsForWindow(ms){const cutoff=Date.now()-ms;return allPoints.filter(p=>p.x>=cutoff);}
   function peakInfo(ms){const pts=pointsForWindow(ms); if(!pts.length)return null; return pts.reduce((best,p)=>(p.peak??p.y)>(best.peak??best.y)?p:best,pts[0]);}
   function paintPeaks(){ for(const [id,ms] of [["24",DAY],["7",7*DAY],["30",30*DAY]]){const p=peakInfo(ms); $("peak"+id).textContent=p?fmt(p.peak??p.y):"—"; $("peak"+id+"when").textContent=p?relativeTime(p.x):"Not enough history yet"; if(p) $("peak"+id+"when").title=fullDateTime(p.x);} }
-  function paintTrend(){const el=$("trend"); if(!latest||!allPoints.length){el.textContent="";return;} const target=Date.now()-HOUR; let near=allPoints[0]; for(const p of allPoints)if(Math.abs(p.x-target)<Math.abs(near.x-target))near=p; if(Math.abs(near.x-target)>20*60000){el.textContent="";return;} const diff=latest.playing-near.y; el.textContent=diff===0?"No change in 1h":`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in 1h`; el.className="text-sm font-semibold pb-2 "+(diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400");}
+  function paintTrend(){
+    for(const [id,windowMs,label,toleranceMs] of [["trend1h",HOUR,"1h",20*60000],["trend24h",DAY,"24h",20*60000]]){
+      const el=$(id);
+      if(!latest||!Number.isFinite(latest.playing)||!trendPoints.length){el.textContent="";continue;}
+      const target=Date.now()-windowMs;
+      let near=trendPoints[0];
+      for(const p of trendPoints)if(Math.abs(p.x-target)<Math.abs(near.x-target))near=p;
+      if(Math.abs(near.x-target)>toleranceMs||!Number.isFinite(near.y)){el.textContent="";continue;}
+      const diff=latest.playing-near.y;
+      el.textContent=diff===0?`No change in ${label}`:`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in ${label}`;
+      el.className=diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400";
+    }
+  }
 
   function drawChart(){
     const host=$("chartHost"), note=$("chartNote"), tip=$("chartTooltip"); tip.classList.add("hidden"); if(chartPoints.length<2){host.innerHTML="";note.classList.remove("hidden");note.classList.add("flex");return;} note.classList.add("hidden");note.classList.remove("flex");
@@ -143,7 +154,7 @@
     const line=chartPoints.map((p,i)=>`${i?"L":"M"}${x(p.x).toFixed(1)} ${y(p.y).toFixed(1)}`).join(" "); const area=`${line} L${x(chartPoints.at(-1).x)} ${H-PB} L${x(chartPoints[0].x)} ${H-PB} Z`;
     host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" width="100%" height="100%" aria-label="CCU history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden" vector-effect="non-scaling-stroke"/></svg>`;
     $("chartStats").innerHTML=`<span class="chart-stat">High <b>${fmt(Math.max(...ys))}</b></span><span class="chart-stat">Low <b>${fmt(Math.min(...ys))}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(ys.reduce((a,b)=>a+b,0)/ys.length))}</b></span>`;
-    const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"); const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const xx=x(best.x);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");tip.innerHTML=`<b>${fmt(best.y)} players</b><br><span class="text-slate-400">${fullDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";}; svg.addEventListener("pointermove",move);svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");tip.classList.add("hidden");});
+    const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"); const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const xx=x(best.x);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");tip.innerHTML=`<b>${fmt(best.y)} players</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";}; svg.addEventListener("pointermove",move);svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");tip.classList.add("hidden");});
   }
 
   async function loadRange(range){
@@ -158,11 +169,12 @@
       const p=await r.json();
       if(request!==chartRequest) return;
       chartPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));
+      if(range==="1d"){trendPoints=chartPoints;paintTrend();}
     }catch(e){if(request!==chartRequest)return;console.error(e);chartPoints=[];}
     finally{if(request===chartRequest)controls.removeAttribute("aria-busy");}
     if(request===chartRequest)drawChart();
   }
-  async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();paintTrend();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}}catch(e){console.error(e);}}
+  async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
   document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.addEventListener("click",()=>loadRange(b.dataset.range)));
   Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
 })();

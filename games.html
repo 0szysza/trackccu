@@ -130,9 +130,12 @@
       </div>
 
       <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 backdrop-blur-sm">
-        <div class="flex justify-between items-center gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider">
+        <div class="flex justify-between items-start gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider">
           <span>Players in game</span>
-          <span id="trend-${s}" class="normal-case tracking-normal font-semibold"></span>
+          <span class="flex flex-col items-end gap-1">
+            <span id="trend1h-${s}" class="normal-case tracking-normal font-semibold text-right"></span>
+            <span id="trend24h-${s}" class="normal-case tracking-normal font-semibold text-right"></span>
+          </span>
         </div>
         <div class="tile-ccu text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums mt-1" id="ccu-${s}">—</div>
         <div class="mt-3">
@@ -271,7 +274,7 @@
     applyFilterSort();
   }
 
-  /* ---------- 24h sparklines + 1h trend ---------- */
+  /* ---------- 24h sparklines + trends ---------- */
 
   let history = new Map(); // slug -> [{ x, y }]
 
@@ -318,30 +321,37 @@
     paintTrends();
   }
 
-  // Change over the last hour: the live count against the stored reading
-  // closest to one hour ago (needs at least ~an hour of history).
+  // Compare the live count with readings near one and 24 hours ago.
+  function paintTrend(el, points, playing, windowMs, label, toleranceMs) {
+    const target = Date.now() - windowMs;
+    let nearest = points[0];
+    for (const p of points) {
+      if (Math.abs(p.x - target) < Math.abs(nearest.x - target)) nearest = p;
+    }
+    if (Math.abs(nearest.x - target) > toleranceMs || !Number.isFinite(nearest.y)) {
+      el.textContent = "";
+      return;
+    }
+    const diff = playing - nearest.y;
+    el.textContent = diff === 0 ? `no change in ${label}`
+      : `${diff > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(diff))} in ${label}`;
+    el.className = "normal-case tracking-normal font-semibold text-right "
+      + (diff > 0 ? "text-emerald-400" : diff < 0 ? "text-rose-400" : "text-slate-400");
+  }
+
   function paintTrends() {
     for (const game of CATALOG) {
-      const el = $("trend-" + game.slug);
+      const hourly = $("trend1h-" + game.slug);
+      const daily = $("trend24h-" + game.slug);
       const points = history.get(game.slug) || [];
       const data = latest.get(game.slug);
-      if (!points.length || !data) { el.textContent = ""; continue; }
-
-      const target = Date.now() - HOUR;
-      let nearest = points[0];
-      for (const p of points) {
-        if (Math.abs(p.x - target) < Math.abs(nearest.x - target)) nearest = p;
+      if (!points.length || !Number.isFinite(data?.playing)) {
+        hourly.textContent = "";
+        daily.textContent = "";
+        continue;
       }
-      if (Math.abs(nearest.x - target) > 15 * 60 * 1000) { el.textContent = ""; continue; }
-
-      const diff = data.playing - nearest.y;
-      if (diff === 0) {
-        el.textContent = "no change in 1h";
-        el.className = "normal-case tracking-normal font-semibold text-slate-400";
-      } else {
-        el.textContent = `${diff > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(diff))} in 1h`;
-        el.className = "normal-case tracking-normal font-semibold " + (diff > 0 ? "text-emerald-400" : "text-rose-400");
-      }
+      paintTrend(hourly, points, data.playing, HOUR, "1h", 15 * 60 * 1000);
+      paintTrend(daily, points, data.playing, DAY, "24h", 20 * 60 * 1000);
     }
   }
 

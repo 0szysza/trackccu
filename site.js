@@ -62,9 +62,17 @@
   }
 
   const dayFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
-  const clockFmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
+  const clockFmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  const chartDateTimeFmt = new Intl.DateTimeFormat("en-US", {
+    year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true
+  });
   const dayLabel = (ms) => dayFmt.format(new Date(ms)).toUpperCase();
   const clockLabel = (ms) => clockFmt.format(new Date(ms));
+  const chartDateTime = (isoOrMs) => {
+    if (!isoOrMs) return "—";
+    const d = new Date(isoOrMs);
+    return Number.isFinite(d.getTime()) ? chartDateTimeFmt.format(d) : "—";
+  };
   const relativeTime = (isoOrMs) => {
     if (!isoOrMs) return "—";
     const ms = typeof isoOrMs === "number" ? isoOrMs : Date.parse(isoOrMs);
@@ -271,7 +279,7 @@
 
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, bySlug, byPlaceId, ROOT, ACCENT, ACCENT_RGB,
-    $, fmt, compact, dayLabel, clockLabel, dateLabel, relativeTime, fullDateTime,
+    $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
     setText, iconFor, iconFallback, loadLive, onLive, every, mountChrome, live,
   };
 })();
