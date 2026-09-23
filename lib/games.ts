@@ -5,7 +5,7 @@ export interface TrackedGame {
   placeId: string;
   /** Stable display name (the live Roblox name carries event prefixes). */
   name: string;
-  /** Short label shown on the site and in Discord (BGS, BGSI, JB, PS99). */
+  /** Short label shown on the site and in Discord. */
   short: string;
   /** Accent colour used for this game's Discord embed. */
   color: number;
@@ -59,6 +59,27 @@ const SEEDS: GameSeed[] = [
     short: "PS99",
     color: 0xa78bfa,
   },
+  {
+    slug: "rcu",
+    placeId: "74260430392611",
+    name: "Rebirth Champions: Ultimate",
+    short: "RCU",
+    color: 0x00ffff,
+  },
+  {
+    slug: "psx",
+    placeId: "6284583030",
+    name: "Pet Simulator X",
+    short: "PSX",
+    color: 0xa78bfa,
+  },
+  {
+    slug: "us",
+    placeId: "3025990139",
+    name: "Unboxing Simulator",
+    short: "US",
+    color: 0x00ffff,
+  },
 ];
 
 async function resolveUniverseId(placeId: string): Promise<string | null> {
@@ -105,7 +126,7 @@ export async function getTrackedGames(): Promise<TrackedGame[]> {
     );
 
     const games = resolved.filter((game): game is TrackedGame => game !== null);
-    cached = games; // only cache a full, successful resolution
+    if (games.length === SEEDS.length) cached = games;
     inFlight = null;
     return games;
   })();

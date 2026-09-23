@@ -31,7 +31,7 @@
           <div class="flex items-start gap-4 sm:gap-5 min-w-0">
             <img id="icon" src="" alt="" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover bg-slate-900 border border-slate-700 shrink-0 shadow-xl">
             <div class="min-w-0 pt-1">
-              <div class="flex flex-wrap items-center gap-2"><span id="tag" class="tile-tag game-short-tag text-xs font-semibold uppercase tracking-wider">—</span><span class="text-xs text-slate-500">Tracked live</span></div>
+              <div class="flex flex-wrap items-center gap-2"><span id="tag" class="game-short-tag">—</span><span class="text-xs text-slate-500">Tracked live</span></div>
               <h1 id="name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-2 leading-tight break-words">—</h1>
               <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
                 <span class="owner-line"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>by <span id="owner">—</span></span></span><span class="hidden sm:inline text-slate-700">•</span>
@@ -101,12 +101,23 @@
   const thumb=$("thumbnail"); thumb.src=`${ROOT}assets/${game.slug}-thumbnail.png`; thumb.onerror=()=>{thumb.onerror=null;thumb.src=iconFallback;};
 
   let latest=null, chartRange="1d", chartPoints=[], allPoints=[], chartRequest=0;
-  const ownerHtml=(d)=>{ if(d.creatorId&&d.creatorType){const href=d.creatorType==="Group"?`https://www.roblox.com/groups/${d.creatorId}/`:`https://www.roblox.com/users/${d.creatorId}/profile`;return `<a href="${href}" target="_blank" rel="noopener" class="tile-link inline-flex items-center gap-1">${d.creator||"—"}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>`;} return d.creator||"—"; };
+  function paintOwner(d){
+    const owner=$("owner"), name=d.creator||game.ownerName||"—";
+    const href=game.ownerUrl||(d.creatorId&&d.creatorType
+      ? d.creatorType==="Group"?`https://www.roblox.com/communities/${d.creatorId}/`:`https://www.roblox.com/users/${d.creatorId}/profile`
+      : null);
+    if(!href){owner.textContent=name;return;}
+    const link=document.createElement("a");
+    link.href=href;link.target="_blank";link.rel="noopener";link.className="tile-link inline-flex items-center gap-1";
+    link.append(document.createTextNode(name));
+    link.insertAdjacentHTML("beforeend",'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+    owner.replaceChildren(link);
+  }
 
   function paintLive(payload){
     const d=(payload.games||[]).find(x=>x.slug===game.slug); if(!d)return; latest=d;
     setText($("ccu"),fmt(d.playing)); $("visits").textContent=fmt(d.visits); $("favs").textContent=fmt(d.favorites); $("rating").textContent=typeof d.ratingPercent==="number"?d.ratingPercent+"%":"—"; $("upvotes").textContent=fmt(d.upVotes); $("downvotes").textContent=fmt(d.downVotes);
-    $("created").textContent=dateLabel(d.createdAt); $("updated").textContent=dateLabel(d.updatedAt); $("owner").innerHTML=ownerHtml(d); $("description").textContent=d.description||"No description available.";
+    $("created").textContent=dateLabel(d.createdAt); $("updated").textContent=dateLabel(d.updatedAt); paintOwner(d); $("description").textContent=d.description||"No description available.";
     if(d.iconUrl) icon.src=d.iconUrl; if(d.thumbnailUrl) thumb.src=d.thumbnailUrl; if(d.liveName) $("name").textContent=d.liveName;
     if(d.trackingSince){ $("trackingSince").textContent=relativeTime(d.trackingSince); $("trackingExact").textContent=fullDateTime(d.trackingSince); $("trackingSince").title=fullDateTime(d.trackingSince); }
     $("notice").classList.toggle("hidden",payload.source!=="database"); if(payload.source==="database") $("notice").textContent=payload.warning||"Showing the last stored reading.";

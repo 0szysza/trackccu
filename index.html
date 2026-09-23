@@ -80,30 +80,41 @@
 (() => {
   const { CATALOG, $, fmt, iconFor, iconFallback } = Tracker;
   Tracker.mountChrome("home");
-  $("homeGames").innerHTML = CATALOG.map((game) => `
-    <a href="games/${game.placeId}/" class="home-game-chip" data-slug="${game.slug}">
-      <div class="home-game-art"><img src="${iconFor(game.slug)}" data-fallback="0" alt="${game.label} icon"></div>
-      <div class="home-game-meta">
-        <strong>${game.label}</strong>
-        <b id="home-ccu-${game.slug}">—</b>
-      </div>
-    </a>`).join("");
+  const strip = $("homeGames");
+  function renderHomeGames(payload) {
+    const live = new Map((payload?.games || []).map((data) => [data.slug, data]));
+    const ranked = [...CATALOG].sort((a, b) => {
+      const aPlaying = Number.isFinite(live.get(a.slug)?.playing) ? live.get(a.slug).playing : -1;
+      const bPlaying = Number.isFinite(live.get(b.slug)?.playing) ? live.get(b.slug).playing : -1;
+      return bPlaying - aPlaying;
+    }).slice(0, 12);
+    strip.style.setProperty("--home-visible", String(Math.max(1, Math.min(ranked.length, 6))));
+    strip.innerHTML = ranked.map((game) => {
+      const data = live.get(game.slug);
+      return `<a href="games/${game.placeId}/" class="home-game-chip" data-slug="${game.slug}">
+        <div class="home-game-art"><img src="${data?.iconUrl || iconFor(game.slug)}" data-fallback="0" alt="${game.label} icon"></div>
+        <div class="home-game-meta"><strong>${game.label}</strong><b>${fmt(data?.playing)}</b></div>
+      </a>`;
+    }).join("");
+  }
+  renderHomeGames(null);
   $("homeGameCount").textContent = String(CATALOG.length);
 
-  document.querySelectorAll(".home-game-chip img").forEach((img) => img.addEventListener("error", () => {
+  strip.addEventListener("error", (event) => {
+    const img = event.target;
+    if (img.tagName !== "IMG") return;
     const chip = img.closest("[data-slug]");
     if (img.dataset.fallback === "0") { img.dataset.fallback = "1"; img.src = `assets/${chip.dataset.slug}-icon.png`; }
-    else img.src = iconFallback;
-  }));
+    else if (img.dataset.fallback === "1") { img.dataset.fallback = "2"; img.src = iconFallback; }
+  }, true);
 
   Tracker.onLive((payload) => {
     let total = 0;
     for (const data of payload.games || []) {
-      const el = $("home-ccu-" + data.slug); if (el) el.textContent = fmt(data.playing);
       if (typeof data.playing === "number" && Number.isFinite(data.playing)) total += data.playing;
-      const img = document.querySelector(`.home-game-chip[data-slug="${data.slug}"] img`); if (img && data.iconUrl) img.src = data.iconUrl;
     }
     $("homeTotalPlayers").textContent = fmt(total);
+    renderHomeGames(payload);
   });
   Tracker.every(Tracker.loadLive);
 })();

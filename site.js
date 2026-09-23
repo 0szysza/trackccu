@@ -31,10 +31,13 @@
   // Do not hand-edit between the markers — it gets overwritten.
   /* GENERATED:CATALOG:START */
   const CATALOG = [
-    { slug: "bgs", placeId: "2512643572", label: "Bubble Gum Simulator", short: "BGS" },
-    { slug: "bgsi", placeId: "85896571713843", label: "Bubble Gum Simulator INFINITY", short: "BGSI" },
-    { slug: "jailbreak", placeId: "606849621", label: "Jailbreak", short: "JB" },
-    { slug: "petsim99", placeId: "8737899170", label: "Pet Simulator 99", short: "PS99" },
+    { slug: "bgs", placeId: "2512643572", label: "Bubble Gum Simulator", short: "BGS", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+    { slug: "bgsi", placeId: "85896571713843", label: "Bubble Gum Simulator INFINITY", short: "BGSI", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+    { slug: "jailbreak", placeId: "606849621", label: "Jailbreak", short: "JB", ownerName: "Badimo", ownerUrl: "https://www.roblox.com/communities/3059674/Badimo" },
+    { slug: "petsim99", placeId: "8737899170", label: "Pet Simulator 99", short: "PS99", ownerName: "BIG Games Pets", ownerUrl: "https://www.roblox.com/communities/3959677/BIG-Games-Pets" },
+    { slug: "rcu", placeId: "74260430392611", label: "Rebirth Champions: Ultimate", short: "RCU", ownerName: "Powerful Studio", ownerUrl: "https://www.roblox.com/communities/5522949/Powerful-Studio" },
+    { slug: "psx", placeId: "6284583030", label: "Pet Simulator X", short: "PSX", ownerName: "BIG Games Pets", ownerUrl: "https://www.roblox.com/communities/3959677/BIG-Games-Pets" },
+    { slug: "us", placeId: "3025990139", label: "Unboxing Simulator", short: "US", ownerName: "Unsquared", ownerUrl: "https://www.roblox.com/communities/2722126/Unsquared" },
   ];
 /* GENERATED:CATALOG:END */
   for (const game of CATALOG) {

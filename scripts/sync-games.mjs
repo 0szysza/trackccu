@@ -39,7 +39,7 @@ const END = "/* GENERATED:CATALOG:END */";
 
 function buildCatalogBlock() {
   const lines = games.map((g) =>
-    `    { slug: ${JSON.stringify(g.slug)}, placeId: ${JSON.stringify(String(g.placeId))}, label: ${JSON.stringify(g.name)}, short: ${JSON.stringify(g.short)} },`);
+    `    { slug: ${JSON.stringify(g.slug)}, placeId: ${JSON.stringify(String(g.placeId))}, label: ${JSON.stringify(g.name)}, short: ${JSON.stringify(g.short)}, ownerName: ${JSON.stringify(g.ownerName || null)}, ownerUrl: ${JSON.stringify(g.ownerUrl || null)} },`);
   return [START, "  const CATALOG = [", ...lines, "  ];", END].join("\n");
 }
 
