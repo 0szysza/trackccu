@@ -261,11 +261,11 @@ body {
 .collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
 .collectibles-header { margin-bottom:16px; }
 .collectibles-header-controls { display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
-.collectibles-sort-wrap { display:inline-flex;align-items:center;gap:8px;padding:7px 10px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#94a3b8;font-size:.75rem;font-weight:700; }
-.collectibles-sort-wrap:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
-.collectibles-sort-wrap select { min-width:125px;max-width:170px;appearance:none;border:0;outline:0;background:transparent;color:#f8fafc;font:inherit;cursor:pointer; }
-.collectibles-sort-wrap option { background:#111528;color:#f8fafc; }
-.collectibles-sort-wrap svg { width:14px;height:14px;flex:none;pointer-events:none; }
+.collectibles-sort-toggle { display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:#0f172a;border:1px solid #293149;border-radius:10px;color:#cbd5e1;font-size:.75rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:border-color .15s,color .15s; }
+.collectibles-sort-toggle:hover { border-color:#64748b;color:#fff; }
+.collectibles-sort-toggle:focus-visible { outline:2px solid #34bfe5;outline-offset:2px; }
+.collectibles-sort-toggle[hidden] { display:none; }
+.collectibles-sort-toggle svg { width:15px;height:15px;flex:none;transition:transform .15s; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
