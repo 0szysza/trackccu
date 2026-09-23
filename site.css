@@ -69,7 +69,7 @@ body {
 }
 .tile-icon { border: 1px solid #334155; }
 .games-card-header { gap:0; }
-.games-card-icon { width:104px;height:104px;border:0;border-right:1px solid #334155;border-bottom:1px solid #334155;border-radius:0 0 16px 0; }
+.games-card-icon { width:114px;height:114px;min-width:114px;min-height:114px;aspect-ratio:1/1;flex:0 0 114px;border:0;border-right:1px solid #334155;border-bottom:1px solid #334155;border-radius:0 0 16px 0;object-fit:cover; }
 .games-card-title { padding:18px 12px 0 18px; }
 .games-card-badges { padding:18px 18px 0 0; }
 .games-card-stats { margin:16px 18px 0; }
@@ -77,12 +77,12 @@ body {
 .game-short-tag { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; gap:.375rem; padding:.25rem .625rem; border-radius:.5rem; background:rgba(15,23,42,.8); border:1px solid #1e293b; color:#e2e8f0; font-size:.75rem; line-height:1.25; font-weight:600; }
 .games-card-badges { width: 5.5rem; }
 .games-card-tag { width: 100%; height: 1.75rem; }
-.games-card-header { min-height: 7rem; }
+.games-card-header { min-height: 7.125rem; }
 @media (min-width: 1024px) and (max-width: 1199px) {
-  .games-card-header { min-height: 8rem; }
+  .games-card-header { min-height: 8.25rem; }
 }
 @media (max-width: 639px) {
-  .games-card-icon { width:88px;height:88px; }
+  .games-card-icon { width:97px;height:97px;min-width:97px;min-height:97px;flex-basis:97px; }
   .games-card-title { padding:15px 10px 0 14px; }
   .games-card-badges { padding:15px 14px 0 0; }
 }
@@ -221,20 +221,23 @@ body {
 .game-detail-hero { position:relative;overflow:hidden; }
 .game-detail-hero::before { content:"";position:absolute;right:-10%;top:-80%;width:55%;height:180%;background:radial-gradient(circle,rgba(52,191,229,.10),transparent 66%);pointer-events:none; }
 .game-detail-hero-layout { display:grid;grid-template-columns:minmax(0,1fr); }
-.game-detail-info { position:relative; }
-.game-detail-heading { min-height:116px; }
-.game-detail-icon { display:block;width:116px;height:116px;border-right:1px solid #334155;border-bottom:1px solid #334155;border-radius:0 0 18px 0; }
-.game-detail-title { padding:18px 78px 0 18px; }
+.game-detail-info { position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:30px; }
+.game-detail-heading { min-height:128px; }
+.game-detail-icon { display:block;width:128px;height:128px;aspect-ratio:1/1;flex:0 0 128px;border-right:1px solid #334155;border-bottom:1px solid #334155;border-radius:0 0 18px 0; }
+.game-detail-title { padding:18px 78px 0 20px; }
 .game-detail-tag { position:absolute;top:18px;right:20px;z-index:1;min-width:3.9rem;min-height:1.75rem; }
-.game-detail-players { padding:0 24px 24px; }
+.game-detail-bottom { display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:0 24px 24px; }
+.game-detail-players { min-width:0; }
+.game-detail-links { display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;text-align:right; }
+.game-detail-links .owner-line { justify-content:flex-end; }
 .game-thumbnail-wrap { position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#0f172a; }
 .game-thumbnail-wrap img { display:block;width:100%;height:100%;object-fit:contain; }
 @media (max-width:639px) {
-  .game-detail-heading { min-height:96px; }
-  .game-detail-icon { width:96px;height:96px; }
+  .game-detail-heading { min-height:108px; }
+  .game-detail-icon { width:108px;height:108px;flex-basis:108px; }
   .game-detail-title { padding:16px 70px 0 14px; }
   .game-detail-tag { top:16px;right:16px; }
-  .game-detail-players { padding:0 18px 20px; }
+  .game-detail-bottom { flex-direction:column;align-items:stretch;gap:16px;padding:0 18px 20px; }
 }
 @media (min-width:1024px) {
   .game-detail-hero-layout { grid-template-columns:minmax(0,1fr) minmax(0,46%);align-items:stretch; }
@@ -250,11 +253,13 @@ body {
 
 /* ---------- Game passes and badges ---------- */
 .collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
+.collectibles-header { margin-bottom:16px; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
 .collectibles-tabs button[aria-selected="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#fff; }
-.collectibles-options { margin:18px 0 14px;min-height:28px; }
+.collectibles-options { justify-content:flex-end;margin:0 0 16px;min-height:28px; }
+.collectibles-options[hidden] { display:none; }
 .offsale-toggle { display:inline-flex;align-items:center;gap:9px;color:#cbd5e1;font-size:.75rem;font-weight:650;cursor:pointer; }
 .offsale-toggle[hidden] { display:none; }
 .offsale-toggle input { position:absolute;opacity:0;width:1px;height:1px; }
@@ -264,17 +269,17 @@ body {
 .offsale-toggle input:checked + .offsale-switch::after { transform:translateX(13px); }
 .offsale-toggle input:focus-visible + .offsale-switch { outline:2px solid #00f0ff;outline-offset:3px; }
 .collectibles-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px; }
-.collectible-card { min-width:0;padding:14px;background:#111528;border:1px solid #293149;border-radius:16px; }
-.collectible-art { display:grid;place-items:center;width:100%;aspect-ratio:1/1;overflow:hidden;background:#0b0f1c;border:1px solid #293149;border-radius:12px; }
+.collectible-card { min-width:0;padding:10px 10px 14px;background:#111528;border:1px solid #293149;border-radius:16px; }
+.collectible-art { display:grid;place-items:center;width:100%;aspect-ratio:1/1;overflow:visible;background:transparent;border:0; }
 .collectible-art img { display:block;width:100%;height:100%;object-fit:contain; }
 .collectible-art-empty::after { content:"◇";color:#475569;font-size:3rem; }
-.collectible-name-line { display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:3.2rem;margin-top:14px; }
+.collectible-name-line { display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-top:10px; }
 .collectible-name-line h3 { min-width:0;color:#f8fafc;font-size:.88rem;font-weight:750;line-height:1.35;overflow-wrap:anywhere; }
 .collectible-price,.collectible-offsale { display:inline-flex;align-items:center;gap:4px;flex-shrink:0;white-space:nowrap;font-size:.82rem;font-weight:800; }
 .collectible-price { color:#34bfe5; }
 .collectible-price svg { width:16px;height:16px; }
 .collectible-offsale { color:#64748b;font-size:.72rem; }
-.collectible-dates { display:grid;gap:7px;margin-top:10px;padding-top:13px;border-top:1px solid #293149; }
+.collectible-dates { display:grid;gap:7px;margin-top:9px;padding-top:11px;border-top:1px solid #293149; }
 .collectible-date-row { display:flex;align-items:center;justify-content:space-between;gap:8px;color:#94a3b8;font-size:.75rem; }
 .collectible-date { position:relative;color:#e2e8f0;font-weight:650;white-space:nowrap;cursor:help; }
 .collectible-date[data-exact]:hover::after,.collectible-date[data-exact]:focus-visible::after { content:attr(data-exact);position:absolute;z-index:10;right:0;bottom:calc(100% + 8px);min-width:max-content;padding:7px 10px;border:1px solid #475569;border-radius:8px;background:#080d19;color:#f8fafc;box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:.72rem;font-weight:500;pointer-events:none; }

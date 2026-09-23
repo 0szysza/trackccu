@@ -27,22 +27,23 @@
   <div id="page" class="hidden space-y-6">
     <section class="game-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
       <div class="game-detail-hero-layout">
-        <div class="game-detail-info flex flex-col justify-between gap-7 min-w-0">
+        <div class="game-detail-info min-w-0">
           <span id="tag" class="game-short-tag game-detail-tag">—</span>
           <div class="game-detail-heading flex items-start min-w-0">
             <img id="icon" src="" alt="" class="game-detail-icon object-cover bg-slate-900 shrink-0">
             <div class="game-detail-title min-w-0">
-              <span class="text-xs text-slate-500">Tracked live</span>
-              <h1 id="name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-1 leading-tight break-words">—</h1>
-              <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
-                <span class="owner-line"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>by <span id="owner">—</span></span></span><span class="hidden sm:inline text-slate-700">•</span>
-                <a id="link" href="#" target="_blank" rel="noopener" class="tile-link inline-flex items-center gap-1">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
-              </div>
+              <h1 id="name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight break-words">—</h1>
             </div>
           </div>
-          <div class="game-detail-players">
-            <p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Players right now</p>
-            <div class="flex flex-wrap items-end gap-4 mt-1"><div id="ccu" class="text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs">—</div><div class="flex flex-col gap-1 text-sm font-semibold pb-2"><span id="trend1h"></span><span id="trend24h"></span></div></div>
+          <div class="game-detail-bottom">
+            <div class="game-detail-players">
+              <p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Players right now</p>
+              <div class="flex flex-wrap items-end gap-4 mt-1"><div id="ccu" class="text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs">—</div><div class="flex flex-col gap-1 text-sm font-semibold pb-2"><span id="trend1h"></span><span id="trend24h"></span></div></div>
+            </div>
+            <div class="game-detail-links text-sm text-slate-400">
+              <span class="owner-line"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>by <span id="owner">—</span></span></span>
+              <a id="link" href="#" target="_blank" rel="noopener" class="tile-link inline-flex items-center gap-1">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+            </div>
           </div>
         </div>
         <div class="game-thumbnail-wrap"><img id="thumbnail" src="" alt="Game thumbnail"></div>
@@ -85,19 +86,18 @@
 
     <section class="collectibles-section bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6" aria-labelledby="collectiblesTitle">
       <div class="collectibles-header">
-        <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold">Extras</p><h2 id="collectiblesTitle" class="text-lg font-bold text-white mt-1">Game passes &amp; badges</h2></div>
+        <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>Extras</p><h2 id="collectiblesTitle" class="text-lg font-bold text-white mt-1" aria-live="polite">Passes</h2></div>
         <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
-          <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Game passes</button>
+          <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Passes</button>
           <button id="badgesTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Badges</button>
         </div>
       </div>
-      <div class="collectibles-options">
-        <p id="collectiblesCount" class="text-xs text-slate-500" aria-live="polite">Loading…</p>
+      <div id="collectiblesOptions" class="collectibles-options">
         <label id="offsaleControl" class="offsale-toggle"><input id="showOffsale" type="checkbox"><span class="offsale-switch" aria-hidden="true"></span>Show offsale</label>
       </div>
       <div id="collectiblesPanel" role="tabpanel" aria-labelledby="passesTab">
         <div id="collectiblesGrid" class="collectibles-grid"></div>
-        <p id="collectiblesMessage" class="collectibles-message" role="status">Loading game passes…</p>
+        <p id="collectiblesMessage" class="collectibles-message" role="status">Loading passes…</p>
       </div>
     </section>
   </div>
@@ -226,18 +226,19 @@
   }
   function renderCollectibles(){
     const passes=collectiblesTab==="passes";
+    $("collectiblesTitle").textContent=passes?"Passes":"Badges";
     $("passesTab").setAttribute("aria-selected",String(passes));
     $("badgesTab").setAttribute("aria-selected",String(!passes));
     $("passesTab").tabIndex=passes?0:-1;$("badgesTab").tabIndex=passes?-1:0;
     $("collectiblesPanel").setAttribute("aria-labelledby",passes?"passesTab":"badgesTab");
+    $("collectiblesOptions").hidden=!passes;
     $("offsaleControl").hidden=!passes;
     const list=extras?(passes?extras.passes||[]:extras.badges||[]):[];
     const visible=passes&&!$("showOffsale").checked?list.filter(item=>item.isForSale):list;
     $("collectiblesGrid").replaceChildren(...visible.map(item=>collectibleCard(item,collectiblesTab)));
-    $("collectiblesCount").textContent=extras?`${fmt(visible.length)} ${passes?"game passes":"badges"}`:"Loading…";
     const message=$("collectiblesMessage");
     message.hidden=Boolean(visible.length);
-    if(!visible.length)message.textContent=!extras?"Loading…":extras.error?"Couldn't load this collection right now.":passes&&!$("showOffsale").checked&&list.length?"No game passes are on sale. Turn on Show offsale to see the rest.":`No ${passes?"game passes":"badges"} found.`;
+    if(!visible.length)message.textContent=!extras?"Loading…":extras.error?"Couldn't load this collection right now.":passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${passes?"passes":"badges"} found.`;
   }
   for(const [id,kind] of [["passesTab","passes"],["badgesTab","badges"]]){
     $(id).addEventListener("click",()=>{collectiblesTab=kind;renderCollectibles();});
