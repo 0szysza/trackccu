@@ -209,10 +209,11 @@
     const footer = $("site-footer");
     if (footer) {
       footer.innerHTML = `
-<footer class="border-t border-roblox-cardBorder bg-roblox-cardBg/40 py-8 mt-12 text-xs text-slate-500 text-center">
-  <div class="max-w-7xl mx-auto px-4 space-y-4">
-    <p class="text-sm text-slate-300 font-medium">Want a new game added here? Let me know!</p>
-    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+<footer class="border-t border-roblox-cardBorder bg-roblox-cardBg/40 py-4 mt-10 text-xs text-slate-500">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="flex flex-col gap-2">
+      <p class="text-xs text-slate-300 font-medium">Want a new game added here? Let me know!</p>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
       <a href="https://discord.com/users/0szysza" target="_blank" rel="noopener"
          class="inline-flex items-center gap-1.5 hover:text-slate-300 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#5865F2" class="shrink-0"><path fill="#5865F2" d="M19.888 7.335a5.134 5.134 0 0 0-2.893-2.418a9.144 9.144 0 0 0-2.275-.508a9.963 9.963 0 0 0-.508 1.038a15.039 15.039 0 0 0-4.56 0a11.372 11.372 0 0 0-.519-1.038c-.752.082-1.493.249-2.208.497a5.123 5.123 0 0 0-2.904 2.44a16.176 16.176 0 0 0-1.91 9.717a16.562 16.562 0 0 0 4.98 2.528a4.339 4.339 0 0 0 1.104-1.777c-.54-.202-1.06-.45-1.557-.74c-.089-.122.254-.32.364-.354a11.826 11.826 0 0 0 10.037 0c.1 0 .453.232.364.354c-.441.342-1.424.585-1.59.828a7.4 7.4 0 0 0 1.105 1.69a16.628 16.628 0 0 0 4.99-2.53a16.232 16.232 0 0 0-2.02-9.727M8.669 14.7a1.943 1.943 0 0 1-1.92-1.955a1.943 1.943 0 0 1 1.92-1.91a1.942 1.942 0 0 1 1.933 1.965a1.943 1.943 0 0 1-1.933 1.9m6.625 0a1.943 1.943 0 0 1-1.932-1.944a1.932 1.932 0 1 1 3.865.034a1.932 1.932 0 0 1-1.933 1.899z"/></svg>
@@ -223,9 +224,12 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 432 384" class="shrink-0" style="color:#1DA1F2"><path fill="currentColor" d="M383 105v11q0 45-16.5 88.5t-47 79.5t-79 58.5T134 365q-73 0-134-39q10 1 21 1q61 0 109-37q-29-1-51.5-18T48 229q8 2 16 2q12 0 23-4q-30-6-50-30t-20-55v-1q19 10 40 11q-39-27-39-73q0-24 12-44q33 40 79.5 64T210 126q-2-10-2-20q0-36 25.5-61.5T295 19q38 0 64 27q30-6 56-21q-10 31-39 48q27-3 51-13q-18 26-44 45z"/></svg>
         <span>@0szysza</span>
       </a>
+      </div>
     </div>
-    <p>Player counts come from the official Roblox API (<code class="text-slate-400">games.roblox.com</code>).</p>
-    <p>Not affiliated with Roblox Corporation or with the developers of any tracked game.</p>
+    <div class="space-y-1 text-[11px] leading-5 md:text-right">
+      <p>Player counts come from the official Roblox API (<code class="text-slate-400">games.roblox.com</code>).</p>
+      <p>Not affiliated with Roblox Corporation nor with the developers of any tracked game.</p>
+    </div>
   </div>
 </footer>`;
     }

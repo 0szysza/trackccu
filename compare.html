@@ -169,9 +169,8 @@
   function cardHtml(slot) {
     const c = SLOT[slot];
     return `
-    <div class="game-card tile tile-empty bg-roblox-cardBg rounded-2xl p-5 sm:p-6 overflow-hidden min-h-[19rem] flex flex-col"
+    <div class="game-card compare-card tile tile-empty bg-roblox-cardBg rounded-2xl p-5 sm:p-6 overflow-hidden min-h-[19rem] flex flex-col"
          id="card-${slot}" style="--accent:${c.color};--rgb:${c.rgb}">
-      <div class="art"></div>
 
       <div id="empty-${slot}" class="flex-1 flex flex-col items-center justify-center text-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
@@ -233,7 +232,6 @@
     show($("empty-" + slot), !filled);
     show($("body-" + slot), filled);
     $("card-" + slot).classList.toggle("tile-empty", !filled);
-    $("card-" + slot).style.setProperty("--thumb", filled ? `url('assets/${slug}-thumbnail.png')` : "none");
     if (!filled) return;
 
     $("name-" + slot).textContent = game.label;

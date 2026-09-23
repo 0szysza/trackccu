@@ -19,25 +19,8 @@ body {
 .text-glow-bgs { text-shadow: 0 0 12px rgba(0, 240, 255, 0.6); }
 .text-glow-bgsi { text-shadow: 0 0 12px rgba(255, 0, 127, 0.6); }
 
-/* ---------- Game artwork (compare cards + All Games tiles) ----------
-   The thumbnail file sits behind the content, dimmed and faded to the left
-   so the numbers stay readable over any image. */
+/* ---------- Game cards ---------- */
 .game-card { position: relative; isolation: isolate; }
-.game-card .art {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background-image: var(--thumb);
-  background-size: cover;
-  background-position: center;
-  opacity: 0.32;
-}
-.game-card .art::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, #15192d 30%, rgba(21, 25, 45, 0.55) 100%);
-}
 
 /* ---------- Live status dot (header) ---------- */
 .live-dot {
@@ -73,6 +56,7 @@ body {
   box-shadow: 0 12px 30px rgba(2, 6, 23, 0.16);
 }
 .games-card { box-shadow: none; }
+.compare-card { box-shadow: none; }
 
 /* Clickable tiles (Games page) grow very slightly on hover/focus. */
 .tile-clickable { cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
@@ -158,13 +142,7 @@ body {
   border-bottom:1px solid #1f2937;
 }
 .home-hero-copy { max-width:720px; }
-.home-api-badge {
-  display:inline-flex;align-items:center;gap:.5rem;
-  border:1px solid rgba(52,191,229,.28);background:rgba(52,191,229,.08);
-  color:#67e8f9;border-radius:999px;padding:.34rem .65rem;
-  font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-}
-.home-hero h1 { margin-top:1rem;font-size:clamp(2.35rem,5.1vw,4.35rem);line-height:.98;letter-spacing:-.045em;font-weight:800;color:#fff;max-width:760px; }
+.home-hero h1 { font-size:clamp(2.35rem,5.1vw,4.35rem);line-height:.98;letter-spacing:-.045em;font-weight:800;color:#fff;max-width:760px; }
 .home-hero h1 span { color:#34bfe5; }
 .home-hero p { margin-top:1rem;max-width:650px;color:#94a3b8;font-size:1rem;line-height:1.65; }
 .home-hero-actions { display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.35rem; }
