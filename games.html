@@ -71,7 +71,7 @@
 
   <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
 
-  <section id="tiles" class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-label="Tracked games"></section>
+  <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-label="Tracked games"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No games match your search.</p>
 
 </main>
@@ -108,17 +108,19 @@
              style="--accent:${game.accent};--rgb:${game.rgb}">
 
       <div class="flex items-start justify-between gap-3">
-        <div class="flex items-center gap-4 min-w-0">
+        <div class="flex items-start gap-4 min-w-0 flex-1">
           <img id="icon-${s}" src="${iconFor(s)}" alt="${game.label} icon"
                data-fallback="0"
                class="tile-icon w-16 h-16 rounded-xl object-cover shadow-md bg-slate-900 shrink-0">
-          <div class="min-w-0">
-            <span class="game-short-tag">${game.short}</span>
-            <h2 id="name-${s}" class="text-lg sm:text-xl font-bold mt-1 text-white drop-shadow leading-snug break-words" title="${game.label}">${game.label}</h2>
-            <a href="${game.url}" target="_blank" rel="noopener" data-stop="1"
-               class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-0.5 transition-colors">
-              Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-            </a>
+          <div class="min-w-0 flex-1">
+            <h2 id="name-${s}" class="games-card-title text-lg sm:text-xl font-bold text-white drop-shadow leading-snug break-words" title="${game.label}">${game.label}</h2>
+            <div class="games-card-actions flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
+              <span class="game-short-tag">${game.short}</span>
+              <a href="${game.url}" target="_blank" rel="noopener" data-stop="1"
+                 class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 transition-colors">
+                Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+              </a>
+            </div>
           </div>
         </div>
         <span id="rating-${s}" class="hidden shrink-0 items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-200" title="Roblox like ratio">
