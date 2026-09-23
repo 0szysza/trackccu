@@ -206,8 +206,8 @@ body {
 /* ---------- Full game detail page ---------- */
 .game-detail-hero { position:relative;overflow:hidden; }
 .game-detail-hero::before { content:"";position:absolute;right:-10%;top:-80%;width:55%;height:180%;background:radial-gradient(circle,rgba(52,191,229,.10),transparent 66%);pointer-events:none; }
-.game-thumbnail-wrap { position:relative;min-height:210px; }
-.game-thumbnail-wrap img { border:1px solid #283047; }
+.game-thumbnail-wrap { position:relative;width:100%;max-width:560px;aspect-ratio:16/9;margin-inline:auto;overflow:hidden;border:1px solid #283047;border-radius:12px;background:#0f172a; }
+.game-thumbnail-wrap img { display:block;width:100%;height:100%;object-fit:contain; }
 .stat-panel,.metric-card { background:#111528;border:1px solid #262d4a;border-radius:14px;padding:16px; }
 .stat-panel strong { display:block;margin-top:5px;color:#f8fafc;font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums; }
 .stat-panel small { display:block;margin-top:3px;color:#64748b;font-size:.74rem; }
