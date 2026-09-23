@@ -1,11 +1,9 @@
 # CCU Tracker
 
-[Otwórz stronę](https://0szysza.github.io/trackccu/)
+[Visit](https://0szysza.github.io/trackccu/)
 
-CCU Tracker zbiera w jednym miejscu statystyki wybranych gier na Robloxie. Można szybko sprawdzić, ile osób gra teraz, ale też zobaczyć, czy liczba graczy utrzymuje się przez cały dzień, czy był to tylko chwilowy skok.
+CCU Tracker brings statistics for selected Roblox games together in one place. Check how many people are playing right now and see whether player counts remain steady throughout the day or reflect a brief spike.
 
-Na **Games** są wszystkie śledzone gry, ich aktualne CCU i najważniejsze liczby. Każda gra ma też własną stronę z historią graczy, rekordami, oceną, wizytami i podstawowymi informacjami z Robloxa. W **Compare** można zestawić dwie gry obok siebie i zobaczyć, jak wypadają względem siebie teraz oraz na wykresie.
+The Games page lists every tracked game, its current concurrent player count (CCU), and key statistics. Each game also has a dedicated page with player history, records, ratings, visits, and basic information from Roblox. In Compare, you can view two games side by side and compare their current performance and historical trends on a chart.
 
-Dane pochodzą z API Robloxa i są zbierane mniej więcej co 5 minut. W nagłówku strony widać czas ostatniego odczytu. Historia gry zaczyna się dopiero od momentu dodania jej do trackera, więc przy nowych grach wykres na początku będzie krótki.
-
-To niezależny projekt, niezwiązany z Robloxem ani twórcami śledzonych gier.
+Data comes from the Roblox API and is collected approximately every five minutes. The time of the most recent update appears in the site header. A game’s history begins when it is added to the tracker, so charts for newly added games may initially show only a short period.
