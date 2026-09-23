@@ -81,6 +81,7 @@ async function collectGame(universeId) {
     badges: badges.map(item => ({
       id: item.id,
       name: item.displayName || item.name || "Untitled badge",
+      awardedCount: Number.isFinite(item.statistics?.awardedCount) ? item.statistics.awardedCount : null,
       created: item.created || null,
       updated: item.updated || null,
       iconUrl: badgeIcons.get(String(item.id)) || null,
@@ -94,7 +95,8 @@ const ids = new Map((live.games || []).map(game => [game.slug, game.universeId])
 const result = { ok: true, generatedAt: new Date().toISOString(), games: {} };
 for (const game of games) {
   const cached = previous.games?.[game.slug];
-  if (cached && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
+  const hasAwardedCounts = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount"));
+  if (cached && hasAwardedCounts && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
     result.games[game.slug] = cached;
     continue;
   }

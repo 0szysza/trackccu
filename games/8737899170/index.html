@@ -129,7 +129,7 @@
     const link=document.createElement("a");
     link.href=href;link.target="_blank";link.rel="noopener";link.className="tile-link inline-flex items-center gap-1";
     link.append(document.createTextNode(name));
-    link.insertAdjacentHTML("beforeend",'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+    link.append($("link").querySelector("svg").cloneNode(true));
     owner.replaceChildren(link);
   }
 
@@ -196,7 +196,8 @@
   async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
 
   let extras=null, collectiblesTab="passes";
-  const robuxIcon='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="m7 2 15 5-5 15L2 17 7 2Zm3.5 8.5-1 3 3 1 1-3-3-1Z"/></svg>';
+  // Robux 2019 logo: https://commons.wikimedia.org/wiki/File:Robux_2019_Logo_white.svg
+  const robuxIcon='<svg viewBox="0 0 91.99 100.06" fill="currentColor" aria-hidden="true"><path d="M82,17.72A19.94,19.94,0,0,1,92,35V65.08A19.92,19.92,0,0,1,82,82.33L56,97.39a19.94,19.94,0,0,1-19.91,0L10,82.33A19.91,19.91,0,0,1,0,65.08V35A19.93,19.93,0,0,1,10,17.72L36,2.67A19.89,19.89,0,0,1,56,2.67ZM39.53,9.5,14.13,24.17a12.92,12.92,0,0,0-6.46,11.2V64.69a12.93,12.93,0,0,0,6.46,11.2l25.4,14.66a12.93,12.93,0,0,0,12.93,0l25.4-14.66a12.93,12.93,0,0,0,6.46-11.2V35.37a12.92,12.92,0,0,0-6.46-11.2L52.46,9.5a12.93,12.93,0,0,0-12.93,0ZM51.3,17.7l20,11.56a10.64,10.64,0,0,1,5.32,9.21V61.6a10.61,10.61,0,0,1-5.32,9.2l-20,11.57a10.61,10.61,0,0,1-10.62,0l-20-11.57a10.6,10.6,0,0,1-5.31-9.2V38.47a10.63,10.63,0,0,1,5.31-9.21l20-11.56a10.61,10.61,0,0,1,10.62,0ZM34.5,61.53h23v-23h-23Z"/></svg>';
   function dateRow(label, stamp){
     const row=document.createElement("div");row.className="collectible-date-row";
     const heading=document.createElement("span");heading.textContent=label;
@@ -222,6 +223,12 @@
     }
     const dates=document.createElement("div");dates.className="collectible-dates";
     dates.append(dateRow("Created",item.created),dateRow("Updated",item.updated));
+    if(kind==="badges"){
+      const won=document.createElement("div");won.className="collectible-date-row";
+      const label=document.createElement("span");label.textContent="Won Ever";
+      const count=document.createElement("strong");count.textContent=fmt(item.awardedCount);
+      won.append(label,count);dates.append(won);
+    }
     card.append(art,nameLine,dates);return card;
   }
   function renderCollectibles(){
