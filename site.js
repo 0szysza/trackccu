@@ -72,6 +72,11 @@
     const delta = Date.now() - ms;
     const future = delta < 0;
     const value = Math.abs(delta);
+    const years = value / 31557600000;
+    if (years >= 1) {
+      const amount = Math.round(years);
+      return future ? `in ${amount} year${amount === 1 ? "" : "s"}` : `${amount} year${amount === 1 ? "" : "s"} ago`;
+    }
     const units = [
       [86400000, "day"], [3600000, "hour"], [60000, "minute"], [1000, "second"],
     ];
