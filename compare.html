@@ -50,7 +50,7 @@
       </div>
       <div class="picker-dropdown hidden absolute z-30 mt-1.5 w-full bg-slate-900 border border-roblox-cardBorder rounded-xl overflow-hidden shadow-2xl" data-slot="a"></div>
     </div>
-    <div class="compare-picker-slot relative">
+    <div class="compare-picker-slot compare-picker-slot-b relative">
       <label class="compare-picker-label" for="comparePickB"><span class="compare-slot-dot compare-slot-b"></span> Second game</label>
       <div class="compare-picker-field flex items-center gap-2 rounded-xl px-3 py-2.5 transition">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true" ><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
@@ -104,18 +104,16 @@
     <div class="chart-heading">
       <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M13 17V9"/><path d="M18 17V5"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-3"/></svg>History</p><h3 class="text-lg font-bold text-white mt-1" id="chartTitle">Concurrent players</h3></div>
       <div class="chart-controls compare-chart-controls">
+        <div class="compare-ranges" id="ranges" role="group" aria-label="Time range">
+          <button type="button" data-range="1d" aria-pressed="true" class="range-btn">1D</button>
+          <button type="button" data-range="7d" aria-pressed="false" class="range-btn">7D</button>
+          <button type="button" data-range="all" aria-pressed="false" class="range-btn">All</button>
+        </div>
         <div class="collectibles-tabs compare-modes" id="modes" role="group" aria-label="Chart type">
           <button type="button" data-mode="players" aria-pressed="true" class="mode-btn">Players</button>
           <button type="button" data-mode="share" aria-pressed="false" class="mode-btn">Share</button>
         </div>
-        <div class="compare-chart-secondary">
-          <div class="compare-ranges" id="ranges" role="group" aria-label="Time range">
-            <button type="button" data-range="1d" aria-pressed="true" class="range-btn">1D</button>
-            <button type="button" data-range="7d" aria-pressed="false" class="range-btn">7D</button>
-            <button type="button" data-range="all" aria-pressed="false" class="range-btn">All</button>
-          </div>
           <button id="compareFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-label="Show fullscreen" title="Show fullscreen" aria-pressed="false"><svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16v5h-5"/><path d="M21 8V3h-5"/><path d="M3 16v5h5"/><path d="m3 21 6-6"/><path d="M3 8V3h5"/><path d="M9 9 3 3"/></svg><svg class="shrink-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg></button>
-        </div>
       </div>
     </div>
     <div class="chart-stat-row flex flex-wrap gap-2" id="chartStats"></div>

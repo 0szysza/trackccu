@@ -72,7 +72,7 @@ body {
 .games-card-icon { width:114px;height:114px;min-width:114px;min-height:114px;aspect-ratio:1/1;flex:0 0 114px;border:0;border-right:1px solid #334155;border-bottom:1px solid #334155;border-radius:0 0 16px 0;object-fit:cover; }
 .games-card-title { padding:18px 12px 0 18px; }
 .games-card-badges { padding:18px 18px 0 0; }
-.games-card-stats { margin:8px 18px 0; }
+.games-card-stats { margin:14px 18px 0; }
 .games-card-metrics { margin:14px 18px 18px; }
 .games-card-metrics .ui-icon,.games-card-badges .ui-icon { width:14px;height:14px; }
 .game-short-tag { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; gap:.375rem; padding:.25rem .625rem; border-radius:.5rem; background:rgba(15,23,42,.8); border:1px solid #1e293b; color:#e2e8f0; font-size:.75rem; line-height:1.25; font-weight:600; }
@@ -88,7 +88,7 @@ body {
   .games-card-title { padding:15px 10px 0 14px; }
   .games-card-badges { padding:15px 14px 0 0; }
   .games-card-header { min-height:97px; }
-  .games-card-stats { margin-top:8px; }
+  .games-card-stats { margin-top:14px; }
 }
 .game-meta-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .game-meta-item { min-width: 0; padding-inline: 1rem; text-align: center; }
@@ -172,6 +172,8 @@ body.chart-fullscreen-open { overflow:hidden; }
 .compare-slot-b { background:#ff007f; }
 .compare-picker-field { background:#15192d;border:1px solid #262d4a;color:#94a3b8; }
 .compare-picker-field:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
+.compare-picker-slot-b .icon-accent { color:#ff007f; }
+.compare-picker-slot-b .compare-picker-field:focus-within { border-color:#ff007f;box-shadow:0 0 0 2px rgba(255,0,127,.12); }
 .compare-card { min-height:318px; }
 .compare-card-empty { padding:28px 20px; }
 .compare-empty-icon { display:grid;place-items:center;width:48px;height:48px;margin-bottom:6px;border:1px solid #293149;border-radius:14px;background:#111528;font-size:23px; }
@@ -184,18 +186,18 @@ body.chart-fullscreen-open { overflow:hidden; }
 .compare-card-tag { min-width:100%;height:28px; }
 .compare-card-stats { margin:auto 18px 0;padding:15px;background:#111528;border:1px solid #293149;border-radius:12px; }
 .compare-live-label { color:#34bfe5;font-size:10px;font-weight:800; }
+#card-b .icon-accent,#card-b .compare-live-label { color:var(--accent); }
 .compare-share-pill { display:inline-flex;align-items:center;min-height:26px;padding:4px 8px;border:1px solid #334155;border-radius:8px;background:#0f172a;color:#e2e8f0;font-size:11px;font-weight:800;white-space:nowrap; }
 .compare-card-metrics { margin:14px 18px 18px; }
 .compare-card-metrics .ui-icon { width:14px;height:14px; }
 .compare-summary-panel { box-shadow:none; }
 .compare-lead-count { background:#111528;border-color:#293149; }
-.compare-chart-secondary { display:flex;align-items:center;gap:8px; }
 .compare-ranges { display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid #283047;border-radius:10px;background:#0b0f1c; }
 .compare-ranges .range-btn { appearance:none;min-width:40px;padding:6px 10px;border:0;border-radius:7px;background:transparent;color:#64748b;font-size:11px;line-height:1;font-weight:800;cursor:pointer; }
 .compare-ranges .range-btn:hover { color:#cbd5e1; }
 .compare-ranges .range-btn[aria-pressed="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#f8fafc; }
 .compare-modes .mode-btn[aria-pressed="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#fff; }
-@media (max-width:639px) { .compare-card-icon { width:97px;height:97px;flex-basis:97px; } .compare-card-title { padding:15px 8px 0 13px; } .compare-card-actions { flex-basis:70px;padding:12px 12px 0 0; } .compare-card-header { min-height:108px; } .compare-card-stats { margin-left:12px;margin-right:12px; } .compare-card-metrics { margin-left:12px;margin-right:12px; } .compare-chart-secondary { flex-wrap:wrap;justify-content:flex-end; } }
+@media (max-width:639px) { .compare-card-icon { width:97px;height:97px;flex-basis:97px; } .compare-card-title { padding:15px 8px 0 13px; } .compare-card-actions { flex-basis:70px;padding:12px 12px 0 0; } .compare-card-header { min-height:108px; } .compare-card-stats { margin-left:12px;margin-right:12px; } .compare-card-metrics { margin-left:12px;margin-right:12px; } }
 
 /* ---------- Shared vector icons ---------- */
 .ui-icon { width: 1em; height: 1em; display: inline-block; flex: 0 0 auto; vertical-align: -0.12em; }
