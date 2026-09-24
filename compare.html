@@ -114,16 +114,28 @@
             <button type="button" data-range="7d" aria-pressed="false" class="range-btn">7D</button>
             <button type="button" data-range="all" aria-pressed="false" class="range-btn">All</button>
           </div>
-          <button id="compareFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-pressed="false">Show Fullscreen</button>
+          <button id="compareFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-label="Show fullscreen" title="Show fullscreen" aria-pressed="false"><svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16v5h-5"/><path d="M21 8V3h-5"/><path d="M3 16v5h5"/><path d="m3 21 6-6"/><path d="M3 8V3h5"/><path d="M9 9 3 3"/></svg><svg class="shrink-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg></button>
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap gap-2 mt-4" id="chartStats"></div>
+    <div class="chart-stat-row flex flex-wrap gap-2" id="chartStats"></div>
 
     <div class="chart-wrap w-full relative h-[320px] sm:h-[380px] mt-4" id="chartWrap">
       <div id="chartHost" class="absolute inset-0"></div>
       <div id="chartTooltip" class="hidden absolute z-10 pointer-events-none bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs shadow-xl whitespace-nowrap"></div>
       <div id="chartNote" class="absolute inset-0 hidden items-center justify-center text-sm text-slate-500 text-center px-6"></div>
+    </div>
+
+    <div id="compareNavigatorPanel" class="chart-navigator-panel" hidden>
+      <div id="compareNavigator" class="chart-navigator" aria-label="Choose visible comparison period">
+        <svg id="compareNavigatorPlot" viewBox="0 0 1000 72" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div id="compareNavigatorShadeLeft" class="chart-navigator-shade chart-navigator-shade-left"></div>
+        <div id="compareNavigatorShadeRight" class="chart-navigator-shade chart-navigator-shade-right"></div>
+        <div id="compareNavigatorSelection" class="chart-navigator-selection" data-nav-part="move">
+          <span id="compareNavStart" class="chart-navigator-handle chart-navigator-handle-start" data-nav-part="start" role="slider" tabindex="0" aria-label="Start of visible comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></span>
+          <span id="compareNavEnd" class="chart-navigator-handle chart-navigator-handle-end" data-nav-part="end" role="slider" tabindex="0" aria-label="End of visible comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></span>
+        </div>
+      </div>
     </div>
 
   </section>
@@ -288,6 +300,7 @@
     if (selection[slot] === slug) return;
 
     selection[slot] = slug;
+    navStart = 0; navEnd = 1;
     paintCard(slot);
     applyLive();
     drawChart();
@@ -426,6 +439,7 @@
   let mode = "players";
   const cache = {}; // range -> payload
   let chart = null; // geometry + data of what is currently drawn
+  let navStart = 0, navEnd = 1, navDrag = null, navBounds = null;
 
   function paintToggles() {
     for (const button of $("ranges").querySelectorAll(".range-btn")) {
@@ -473,7 +487,7 @@
 
   const seriesFor = (payload) => picked().map((p) => ({
     ...p,
-    points: ((payload.series && payload.series[p.slug]) || []).map((row) => ({ x: Date.parse(row.t), y: row.playing, peak: row.peak })),
+    points: ((payload.series && payload.series[p.slug]) || []).map((row) => ({ x: Date.parse(row.t), y: row.playing, peak: row.peak })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y)).sort((a, b) => a.x - b.x),
   }));
 
   // For the share view: pair each point of A with B's point in the same time slot.
@@ -488,6 +502,57 @@
       pairs.push({ x: pa.x, a: pa.y, b: pb.y, share: (pa.y / total) * 100 });
     }
     return pairs;
+  }
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  function visiblePoints(points, from, to) {
+    if (navStart === 0 && navEnd === 1) return points;
+    const visible = points.filter((point) => point.x >= from && point.x <= to);
+    if (visible.length >= 2 || points.length < 2) return visible;
+    const middle = (from + to) / 2;
+    const nearestIndex = points.reduce((best, point, index) => Math.abs(point.x - middle) < Math.abs(points[best].x - middle) ? index : best, 0);
+    return points.slice(clamp(nearestIndex, 0, points.length - 2), clamp(nearestIndex, 0, points.length - 2) + 2);
+  }
+  function paintNavigatorSelection() {
+    if (!navBounds) return;
+    $("compareNavigatorSelection").style.left = `${navStart * 100}%`;
+    $("compareNavigatorSelection").style.width = `${(navEnd - navStart) * 100}%`;
+    $("compareNavigatorShadeLeft").style.width = `${navStart * 100}%`;
+    $("compareNavigatorShadeRight").style.width = `${(1 - navEnd) * 100}%`;
+    for (const [id, value] of [["compareNavStart", navStart], ["compareNavEnd", navEnd]]) {
+      const handle = $(id);
+      handle.setAttribute("aria-valuenow", String(Math.round(value * 100)));
+      handle.setAttribute("aria-valuetext", `${dayLabel(navBounds.minX + value * (navBounds.maxX - navBounds.minX))} · ${clockLabel(navBounds.minX + value * (navBounds.maxX - navBounds.minX))}`);
+    }
+  }
+  function renderNavigator(series, pairs, w, pad) {
+    const panel = $("compareNavigatorPanel");
+    const points = mode === "share" ? pairs || [] : series.flatMap((item) => item.points);
+    if (points.length < 2) { panel.hidden = true; navBounds = null; return; }
+    let minX = Infinity, maxX = -Infinity, low = Infinity, high = -Infinity;
+    for (const point of points) {
+      minX = Math.min(minX, point.x);
+      maxX = Math.max(maxX, point.x);
+      const value = mode === "share" ? point.share : point.y;
+      low = Math.min(low, value);
+      high = Math.max(high, value);
+    }
+    if (minX === maxX) { panel.hidden = true; navBounds = null; return; }
+    navBounds = { minX, maxX };
+    panel.hidden = false;
+    panel.style.width = `${w - pad.left - pad.right}px`;
+    panel.style.marginLeft = `${pad.left}px`;
+    panel.style.marginRight = "0";
+    const span = high - low || 1;
+    const x = (stamp) => (stamp - minX) / (maxX - minX) * 1000;
+    const y = (value) => 62 - (value - low) / span * 50;
+    const previewSeries = mode === "share" ? [{ color: "#e2e8f0", points: pairs, key: "share" }] : series.map((item) => ({ color: item.color, points: item.points, key: "y" }));
+    $("compareNavigatorPlot").innerHTML = previewSeries.map((item) => {
+      if (!item.points.length) return "";
+      const line = item.points.map((point, index) => `${index ? "L" : "M"}${x(point.x).toFixed(1)} ${y(point[item.key]).toFixed(1)}`).join(" ");
+      return `<path d="${line}" fill="none" stroke="${item.color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`;
+    }).join("");
+    paintNavigatorSelection();
   }
 
   function paintStats(series) {
@@ -523,25 +588,29 @@
 
     const games = picked();
     const payload = cache[range];
-    const series = payload ? seriesFor(payload) : games.map((g) => ({ ...g, points: [] }));
-    paintStats(series);
-
-    if (games.length === 0) return setNote("Pick two games above to compare them here.");
-    if (mode === "share" && games.length < 2) return setNote("Pick a second game to see how the players split between the two.");
-    if (!payload) return setNote("Loading history…");
-
-    const bucketMs = (payload.bucketSeconds || 300) * 1000;
-    const pairs = mode === "share" ? sharePairs(series[0], series[1], bucketMs) : null;
-    const hasData = mode === "share" ? pairs.length > 0 : series.some((s) => s.points.length > 0);
-    if (!hasData) return setNote("No history stored for this range yet.");
-    setNote(null);
-
+    const fullSeries = payload ? seriesFor(payload) : games.map((g) => ({ ...g, points: [] }));
     const w = Math.max(host.clientWidth, 260);
     const h = Math.max(host.clientHeight, 200);
     const narrow = w < 560;
     const pad = { top: 14, right: narrow ? 14 : 72, bottom: 26, left: narrow ? 40 : 48 };
     const plotW = w - pad.left - pad.right;
     const plotH = h - pad.top - pad.bottom;
+    const bucketMs = (payload?.bucketSeconds || 300) * 1000;
+    const fullPairs = mode === "share" && fullSeries.length === 2 ? sharePairs(fullSeries[0], fullSeries[1], bucketMs) : null;
+    renderNavigator(fullSeries, fullPairs, w, pad);
+    const from = navBounds ? navBounds.minX + navStart * (navBounds.maxX - navBounds.minX) : -Infinity;
+    const to = navBounds ? navBounds.minX + navEnd * (navBounds.maxX - navBounds.minX) : Infinity;
+    const series = fullSeries.map((item) => ({ ...item, points: visiblePoints(item.points, from, to) }));
+    paintStats(series);
+
+    if (games.length === 0) return setNote("Pick two games above to compare them here.");
+    if (mode === "share" && games.length < 2) return setNote("Pick a second game to see how the players split between the two.");
+    if (!payload) return setNote("Loading history…");
+
+    const pairs = mode === "share" ? sharePairs(series[0], series[1], bucketMs) : null;
+    const hasData = mode === "share" ? pairs.length > 0 : series.some((s) => s.points.length > 0);
+    if (!hasData) return setNote("No history stored for this range yet.");
+    setNote(null);
 
     const xs = mode === "share" ? pairs.map((p) => p.x) : series.flatMap((s) => s.points.map((p) => p.x));
     let minX = Math.min(...xs), maxX = Math.max(...xs);
@@ -653,11 +722,13 @@
 
     // hover crosshair
     const cross = svgEl("line", { y1: pad.top, y2: pad.top + plotH, stroke: "rgba(226,232,240,0.4)", "stroke-width": 1, visibility: "hidden" }, svg);
+    const halos = (mode === "share" ? [0] : series.map((_, i) => i)).map((i) =>
+      svgEl("circle", { r: 9, fill: mode === "share" ? "#f1f5f9" : series[i].color, opacity: 0.24, visibility: "hidden" }, svg));
     const dots = (mode === "share" ? [0] : series.map((_, i) => i)).map((i) =>
-      svgEl("circle", { r: 4.5, fill: mode === "share" ? "#f1f5f9" : series[i].color, stroke: "#15192d", "stroke-width": 2, visibility: "hidden" }, svg));
+      svgEl("circle", { r: 5, fill: mode === "share" ? "#f1f5f9" : series[i].color, stroke: "#15192d", "stroke-width": 2, visibility: "hidden" }, svg));
 
     host.appendChild(svg);
-    chart = { mode, series, pairs, bucketMs, pad, plotW, w, minX, maxX, xOf, yOf, cross, dots, span };
+    chart = { mode, series, pairs, bucketMs, pad, plotW, w, minX, maxX, xOf, yOf, cross, halos, dots, span };
   }
 
   /* ---------- hover ---------- */
@@ -669,6 +740,7 @@
     tooltip.classList.add("hidden");
     if (!chart) return;
     chart.cross.setAttribute("visibility", "hidden");
+    chart.halos.forEach((halo) => halo.setAttribute("visibility", "hidden"));
     chart.dots.forEach((dot) => dot.setAttribute("visibility", "hidden"));
   }
 
@@ -689,6 +761,9 @@
       chart.series.forEach((s, i) => {
         if (!s.points.length) return;
         const p = nearest(s.points, anchorX);
+        chart.halos[i].setAttribute("cx", chart.xOf(p.x).toFixed(1));
+        chart.halos[i].setAttribute("cy", chart.yOf(p.y).toFixed(1));
+        chart.halos[i].setAttribute("visibility", "visible");
         chart.dots[i].setAttribute("cx", chart.xOf(p.x).toFixed(1));
         chart.dots[i].setAttribute("cy", chart.yOf(p.y).toFixed(1));
         chart.dots[i].setAttribute("visibility", "visible");
@@ -703,6 +778,9 @@
     } else {
       const p = nearest(chart.pairs, t);
       anchorX = p.x;
+      chart.halos[0].setAttribute("cx", chart.xOf(p.x).toFixed(1));
+      chart.halos[0].setAttribute("cy", chart.yOf(p.share).toFixed(1));
+      chart.halos[0].setAttribute("visibility", "visible");
       chart.dots[0].setAttribute("cx", chart.xOf(p.x).toFixed(1));
       chart.dots[0].setAttribute("cy", chart.yOf(p.share).toFixed(1));
       chart.dots[0].setAttribute("visibility", "visible");
@@ -732,6 +810,46 @@
   wrap.addEventListener("pointerdown", onMove);
   wrap.addEventListener("pointerleave", hideHover);
   wrap.addEventListener("pointercancel", hideHover);
+
+  const navigator = $("compareNavigator");
+  const navMinSpan = () => Math.max(0.03, 40 / Math.max(1, navigator.clientWidth));
+  let navFrame = null;
+  function changeNavSelection() {
+    paintNavigatorSelection();
+    if (navFrame !== null) return;
+    navFrame = requestAnimationFrame(() => { navFrame = null; drawChart(); });
+  }
+  navigator.addEventListener("pointerdown", (event) => {
+    if (!navBounds || event.button !== 0) return;
+    let part = event.target.closest("[data-nav-part]")?.dataset.navPart;
+    if (!part) {
+      const rect = navigator.getBoundingClientRect(), width = navEnd - navStart;
+      navStart = clamp((event.clientX - rect.left) / rect.width - width / 2, 0, 1 - width);
+      navEnd = navStart + width;
+      changeNavSelection();
+      part = "move";
+    }
+    navDrag = { part, pointerId: event.pointerId, x: event.clientX, start: navStart, end: navEnd };
+    navigator.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+  navigator.addEventListener("pointermove", (event) => {
+    if (!navDrag || navDrag.pointerId !== event.pointerId) return;
+    const delta = (event.clientX - navDrag.x) / navigator.getBoundingClientRect().width, min = navMinSpan();
+    if (navDrag.part === "start") navStart = clamp(navDrag.start + delta, 0, navDrag.end - min);
+    else if (navDrag.part === "end") navEnd = clamp(navDrag.end + delta, navDrag.start + min, 1);
+    else { const width = navDrag.end - navDrag.start; navStart = clamp(navDrag.start + delta, 0, 1 - width); navEnd = navStart + width; }
+    changeNavSelection();
+  });
+  for (const type of ["pointerup", "pointercancel"]) navigator.addEventListener(type, (event) => { if (navDrag?.pointerId === event.pointerId) navDrag = null; });
+  for (const [id, edge] of [["compareNavStart", "start"], ["compareNavEnd", "end"]]) $(id).addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const step = (event.shiftKey ? 0.05 : 0.01) * (event.key === "ArrowLeft" ? -1 : 1), min = navMinSpan();
+    if (edge === "start") navStart = clamp(navStart + step, 0, navEnd - min);
+    else navEnd = clamp(navEnd + step, navStart + min, 1);
+    changeNavSelection();
+  });
 
   // Keep text crisp when the window (or phone orientation) changes.
   if (typeof ResizeObserver === "function") {
@@ -772,6 +890,7 @@
       const button = event.target.closest(".range-btn");
       if (!button || button.dataset.range === range) return;
       range = button.dataset.range;
+      navStart = 0; navEnd = 1;
       drawChart();     // instant if this range is already cached
       loadHistory();
     });
@@ -780,6 +899,7 @@
       const button = event.target.closest(".mode-btn");
       if (!button || button.dataset.mode === mode) return;
       mode = button.dataset.mode;
+      navStart = 0; navEnd = 1;
       drawChart();
     });
   });

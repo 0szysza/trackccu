@@ -285,7 +285,8 @@
     const isOpen = () => document.fullscreenElement === panel || panel.classList.contains("chart-fullscreen-fallback");
     const update = () => {
       const open = isOpen();
-      button.textContent = open ? "Exit Fullscreen" : "Show Fullscreen";
+      button.setAttribute("aria-label", open ? "Exit fullscreen" : "Show fullscreen");
+      button.title = open ? "Exit fullscreen" : "Show fullscreen";
       button.setAttribute("aria-pressed", String(open));
     };
     button.addEventListener("click", async () => {
