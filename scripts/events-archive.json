@@ -1,0 +1,395 @@
+{
+  "petsim99": [
+    {
+      "id": "7334718006379675844",
+      "name": "Saturday Update! 🔥",
+      "description": "Join on Saturday for FREE Hype Eggs! 🥚✨",
+      "subtitle": "",
+      "category": "contentUpdate",
+      "start": "2024-09-07T16:00:00+00:00",
+      "end": "2024-09-08T17:00:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ebb2f8eb2e40d7a0759b461f2d753ca9/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "695446719904350355",
+      "name": "Halloween Event! 🎃",
+      "description": "Things are getting spooky! 👻",
+      "subtitle": "",
+      "category": "contentUpdate",
+      "start": "2024-10-19T16:00:35+00:00",
+      "end": "2024-10-20T16:00:35+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-4037a1b0d9b1b97b6e3933d5da1306a1/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "1360375013896356051",
+      "name": "Mega Present Event!",
+      "description": "🚂 Huge train delivers gifts every few seconds!\n🎁 Grow your Mega Present and open at any time!\n✨ Chance for HUGE pets and even a TITANIC!",
+      "subtitle": "Hop on the HUGE train!",
+      "category": "newContent",
+      "start": "2024-12-14T17:00:04+00:00",
+      "end": "2024-12-21T16:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-97c2c90bb8f4d006526637245ba6856b/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7172160915571998973",
+      "name": "GARGANTUAN PETS",
+      "description": "🎁 Combine presents into a GARGANTUAN!\n🎅 Santa is dropping over 1.2 MILLION HUGE PETS!\n✨ Find Santa's secret key for his secret room!",
+      "subtitle": "It's time... join us!",
+      "category": "newFeature",
+      "start": "2024-12-21T17:00:00+00:00",
+      "end": "2024-12-28T16:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-87249609dae614261c1058785f217b72/768/432/UnapprovedImage/Png/noFilter"
+    },
+    {
+      "id": "6240385851862024475",
+      "name": "⭐ PET GAMES! ⭐",
+      "description": "",
+      "subtitle": "Compete for the TITANIC!",
+      "category": "challenge",
+      "start": "2025-01-11T17:00:00+00:00",
+      "end": "2025-01-18T16:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-76c47310d7755020da5980318527fa8d/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4340371264127107317",
+      "name": "💖 Valentine’s Tower! 💖",
+      "description": "✨ Limited-time event for Valentine's! ✨\n\n💗 Stack your tower tall!\n🍀 The higher, the luckier!\n🪽 Fly with your Cupid Wings!\n☁️ Reach islands in the sky!",
+      "subtitle": "Stack your tower high!",
+      "category": "newContent",
+      "start": "2025-02-08T17:00:28+00:00",
+      "end": "2025-02-15T16:59:28+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ea80fa4eb9a29265f46eaec1020c7ef4/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "3562111341061472512",
+      "name": "🍀 Lucky Raid Event! 🍀",
+      "description": "🔥 Limited-time Saint Patrick's Day event! 🔥\n\n⚔️ Max out your raid level!\n💪 Strength is everything!\n🍀 Will you reach the TITANIC pet?",
+      "subtitle": "Race to the Titanic!",
+      "category": "newContent",
+      "start": "2025-03-08T17:00:21+00:00",
+      "end": "2025-03-15T16:00:21+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-310e27a88aabfb150870c7133294f4c3/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "5070697498890993941",
+      "name": "⚠️ Login for FREE HUGE!",
+      "description": "🚨 Login to get a FREE HUGE Easter Lamb!\nLiterally as simple as that - no catch!\n\n🔔 Don’t miss it! The countdown is in-game!\n⏰ Make sure to press \"Join Event\" for alerts!",
+      "subtitle": "Literally! No catch!",
+      "category": "itemDrop",
+      "start": "2025-04-19T16:00:00+00:00",
+      "end": "2025-04-19T17:00:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0ef2e4509f0c43f6f5745debc1f5f92f/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "9040176148207370513",
+      "name": "🐰 EGG HUNT! 🐣",
+      "description": "The Easter event isn't over yet! 🐰\n\nNew Egg Hunt and something to grind... 🤔\n\nSee you Saturday!",
+      "subtitle": "🔍🔍🔍🔍",
+      "category": "newContent",
+      "start": "2025-04-26T16:00:00+00:00",
+      "end": "2025-05-03T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-878eb1a86524bde79867c252b8ddb176/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "5130978927553806591",
+      "name": "🌟 WORLD 4 IS HERE! 🌟",
+      "description": "🌟 WORLD 4 IS OUT! 🌟\n\n🌍 Travel to the new Fantasy World!\n💫 Unlock & explore enchanted zones!\n⏳ TIME TRIALS await – master the art of SPEED!\n\n🔥 Get ready to run!",
+      "subtitle": "🌍 New world is OUT!",
+      "category": "newMap",
+      "start": "2025-05-10T16:00:26+00:00",
+      "end": "2025-05-17T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9ca43c073019efb3c4e9b5ede64effa4/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2353331675533672813",
+      "name": "⭐ Grow an Egg! 🥚",
+      "description": "🥚 GROW an egg!\n💥 Let it HATCH!\n💰 Sell for STACKS!\n👑 Flex to the MAX!",
+      "subtitle": "🔔 Event is LIVE!",
+      "category": "newContent",
+      "start": "2025-05-17T16:00:00+00:00",
+      "end": "2025-05-24T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-26454dae81fdf02a18b2502bf2b70307/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "1018332218883047678",
+      "name": "🌈 Grow RAINBOW Pets! 🌱",
+      "description": "🌈 Grow RAINBOW and GOLD pets!\n🏰 Fantasy World expansion!\n⚔️ Time Trials refreshed!\n✨ And more!",
+      "subtitle": "⏰ New update is out!",
+      "category": "newContent",
+      "start": "2025-05-24T16:00:00+00:00",
+      "end": "2025-05-31T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6519ba0990f19e750e787741323c000c/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "8673905703189741946",
+      "name": "🏀 SLAM DUNK your PET! 🏀",
+      "description": "🏀 Dunk your pets into the hoop!\n💨 See how far away you can score!\n🌈 YEET them as far as you can!",
+      "subtitle": "💪 Score the TITANIC!",
+      "category": "newContent",
+      "start": "2025-05-31T16:00:00+00:00",
+      "end": "2025-06-14T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aae5a61d14dee8a98c118b22c09d5238/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2886513860525424899",
+      "name": "⚔️ Tower Defense! 🏹",
+      "description": "💥 Prepare your pets!\n\n⚠️ The countdown starts now!\n\n😥 Are you ready?",
+      "subtitle": "📢 This Saturday!",
+      "category": "newContent",
+      "start": "2025-06-14T16:00:00+00:00",
+      "end": "2025-06-28T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-70accf0aed939f9107aa6cb18e6fa777/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4042975338454319347",
+      "name": "💪 Hit the GYM! 😎",
+      "description": "💪 Get BUFF this Saturday!\nLift pets, grow bigger, and dominate! 💥\n🤫 And a little secret surprise!\nDon't skip it... nerd! 🤓",
+      "subtitle": "🚨 Only for giga chads ⚠️",
+      "category": "newContent",
+      "start": "2025-06-28T16:00:00+00:00",
+      "end": "2025-07-12T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-920272959e391fb755592d780715f4af/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7600653748536082797",
+      "name": "😎 LIVE EVENT! ☀️",
+      "description": "🎉 Join for an HOUR of BOOSTS! 💎\n\nThe party starts when the event goes live!\n\nBoosts go from 2x -> 10x (MAXED OUT)!\n🍀 10x Server Luck\n💰 10x Coins\n💎 10x Diamonds\n\n🚨 Only lasts one hour! Don't miss it! 🚨",
+      "subtitle": "🍀 Join for BIG BOOSTS!",
+      "category": "festival",
+      "start": "2025-07-12T16:15:00+00:00",
+      "end": "2025-07-12T17:15:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-99c7e280376ae830b9b961dcd8e5175e/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "5184609333764948276",
+      "name": "🌞 BLOCK PARTY! 🌴",
+      "description": "🌞 The SUMMER BLOCK PARTY 🌴\n\n🌍 Start on one block...\nThe rest? LOCKED! 🔒\n\n💎 It's one BIG mystery! 😎\n🎉 You ready for the BLOCK PARTY?",
+      "subtitle": "2025 SUMMER Event! 🎉",
+      "category": "newContent",
+      "start": "2025-07-12T16:00:00+00:00",
+      "end": "2025-07-19T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a0e8c78a188dd35a6d59434ba516b4be/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2417386193688461919",
+      "name": "🎁 ADMIN ABUSE! 💎",
+      "description": "🎃 Join us for an hour of ADMIN ABUSE! 🎁\nWe'll be giving out lots of treats... and tricks 😈\nGargantuans, Titanics, Huges, Exclusive Eggs, Diamonds.. 😱\nAnd even some admin commands ⚔️👻💀",
+      "subtitle": "🚨 Join us for free pets!",
+      "category": "itemDrop",
+      "start": "2025-10-18T17:00:51+00:00",
+      "end": "2025-10-18T18:00:51+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-946cd55c9b7c7fd9911906cb65f43175/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7502944801449050668",
+      "name": "🎃 SpoOky EVENT! 👻",
+      "description": "FOLLOW FOR THE EVENT!",
+      "subtitle": "😱 Trick.. or treat??? 🍬",
+      "category": "newContent",
+      "start": "2025-10-18T16:00:00+00:00",
+      "end": "2025-11-01T15:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ca244e8aaf1ff8c9bba175f3d0123c19/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7494646678037463600",
+      "name": "🍂 Autumn Event! 🌽",
+      "description": "🍂 lil autumn update! 🌽\n\n💎 bring your diamonds! 💎\n\n⚠️ admin abuse after the update! ⚠️",
+      "subtitle": "💎💎💎",
+      "category": "newContent",
+      "start": "2025-11-22T17:00:00+00:00",
+      "end": "2025-12-06T16:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0642ab6b7eb0544ea133cbb66b0f3be5/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "5517358385948525196",
+      "name": "🎉 NEW YEARS EVENT! 🎉",
+      "description": "🎉 The New Year's egg is dropping!\n🎁 FREE TITANIC GIFTS are given out each drop!\n⭐ Check the countdown in the TRADING PLAZA for the next drop!",
+      "subtitle": "🎁 FREE TITANIC GIFT!",
+      "category": "itemDrop",
+      "start": "2026-01-01T00:00:00+00:00",
+      "end": "2026-01-01T05:00:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-661c853b0485e9dd3ec80421b534680e/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2105558207022498452",
+      "name": "🎅 CHRISTMAS UPDATE! 🎄",
+      "description": "☃️ Christmas update drops December 20th! ❄️",
+      "subtitle": "🎁 Santa has FREE gifts!",
+      "category": "newContent",
+      "start": "2025-12-20T17:00:00+00:00",
+      "end": "2026-01-17T16:59:00+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-3802e081efbe0508f2a2575a574143e0/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2331548215708615423",
+      "name": "🏆 RACE UPDATE! 🏆",
+      "description": "🏆 New Lucky Race Prizes! 🍀\n\n🎉 NEW GARGANTUAN!\n👑 NEW TITANICS!\n💎 NEW HUGES!",
+      "subtitle": "🎉 Lucky Race Prizes! 💎",
+      "category": "newContent",
+      "start": "2026-03-21T16:00:59.337+00:00",
+      "end": "2026-03-29T04:00:59.338+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-739bcda87ef9406de765575405d2f2a5/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "3810035543098655389",
+      "name": "🍀 GARGANTUAN RAID! 🍀",
+      "description": "🍀 CHEST RAID!\n⚔️ CLAN BATTLE!\n🥚 2x LUCK EVENT!\n💎 ADMIN ABUSE!\n\n🍀 St. Patrick's UPDATE! 🍀",
+      "subtitle": "🏆 Race to the end! 🌈",
+      "category": "newContent",
+      "start": "2026-03-14T16:00:10.752+00:00",
+      "end": "2026-04-04T15:00:10.752+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b5f65d759cb30da2546479870c347418/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "8309116792714953322",
+      "name": "🎉 Free HUGE Pet! 🐶",
+      "description": "🎉 Log in to claim your FREE Bandana Shiba! 🐶\n\n🌷 It’s that simple - just login when the event is LIVE! 🌻\n\nThe countdown will also be live in-game! Don’t miss it! 🚨\n\n🪻 HAPPY SPRING 2026! 🌸",
+      "subtitle": "Literally just login! 🚨",
+      "category": "itemDrop",
+      "start": "2026-04-22T16:00:11.157+00:00",
+      "end": "2026-04-22T17:00:11.157+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-708a45248d40aa49ea5528f7d15099e2/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4177808829184082545",
+      "name": "🐣 SPRING Event! 🌸",
+      "description": "🌷 You ARE the EGG machine! 🐣\nStart with one egg.. end as a MINIGUN!💥\n\n🌍 4 Zones.. Pick ONE!\nThe rest? LOCKED! 🔒\n\n🌈 Your eggs HATCH FASTER as you upgrade...\nReach max upgrade to SPRAY eggs! ✨\n\n🏆 1 Gargantuan. 3 Titanics. 12+ Huges.\nSpring 2026 is STACKED! 🤯\n\n🤝 Trade to make progress WAY faster! 👀\n\n🐣 You ready to SPRING into the event?\n💎 ADMIN ABUSE when update is LIVE! 🎉\n\n🚨 FOLLOW THE EVENT FOR ALERTS! ⚠️",
+      "subtitle": "🌹 New DAWN PHOENIX! 🌼",
+      "category": "newContent",
+      "start": "2026-04-18T16:00:00.962+00:00",
+      "end": "2026-05-02T16:00:00.962+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-603350ca55b04781cab302a19f6894f5/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4526501243136377485",
+      "name": "⚔️ Time Trials League",
+      "description": "⏰ Race the clock in the TIME TRIALS!\n\n⚔️ The fastest team of 4 players wins!\n💎 Battle for the Rainbow Shiny GARGANTUAN Wicked Kirin.\n🏆 Given to the #1 player on the #1 league!\n\n#15 teams earn the Gargantuan Wicked Kirin.\n#765 earn the Titanic Veil Horse.\n#10,765 earn the Huge Knight Golem.\n#25,765 earn a 50× Time Trial Gift bundle.\n\n✨ Every team member gets a prize!",
+      "subtitle": "Team up for 48 HOURS! 🏆",
+      "category": "challenge",
+      "start": "2026-05-02T18:55:03.503+00:00",
+      "end": "2026-05-04T16:00:03.503+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0aa0625de18b940d31c01451f4e171db/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4948776723962528306",
+      "name": "⚙️ Combine-o-Matic!",
+      "description": "🛠️ Craft Fantasy Presents into something TITANIC!\n\n✨ Upgrade through 5 tiers: Small → Titanic\n\n🔓 Each tier unlocks rarer Huges, ending with Titanic Ruinous Angelus\n\n💎 Earn presents from Zone 279 & Time Trials\n\n⏰ Only available for 2 weeks!",
+      "subtitle": "🎁 Craft TITANIC Presents",
+      "category": "itemDrop",
+      "start": "2026-05-02T19:00:28.566+00:00",
+      "end": "2026-05-16T16:00:28.566+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2b853f6d3ca681d92acfe6fff55278ab/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4701405673810952866",
+      "name": "🎲 RNG PART 2! ✨",
+      "description": "🌀 The RNG EVENT continues with MORE!\n\n🎲 Roll for NEW pets, auras, and titles!\n🎁 New rarest roll - TITANIC Arcane Halo Cat!\n✨ +4 HUGES with NEW auras!\n🔥 More dice, upgrades, and more!\n\n💰 Stack up Void Coins before the update!\n\n💎 ADMIN ABUSE when update is LIVE! 🎉\n🚨 FOLLOW THE EVENT FOR ALERTS! ⚠️",
+      "subtitle": "🔥 NEW Titanic & Huges!",
+      "category": "newContent",
+      "start": "2026-05-16T16:00:29.407+00:00",
+      "end": "2026-05-23T16:00:29.407+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-7d65e3981ae235c8cc84b0b06da077b4/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7672642938278642317",
+      "name": "🐱 RNG EVENT! 🎲",
+      "description": "🌌 The RNG EVENT is BACK!\n\n🎲 Roll for new PETS and PLAYER AURAS!\n🎁 Feeling lucky? New TITANIC Arcane Void Cat!\n🏆 New clan battle - see if you can rank!\n🔥 Stack COMBO STREAKS for crazy luck!\n❄️ WEATHER adds a whole new element!\n\n🎲 Get ready to ROLL the dice!\n\n💎 ADMIN ABUSE when update is LIVE! 🎉\n🚨 FOLLOW THE EVENT FOR ALERTS! ⚠️",
+      "subtitle": "⚡ Combos & WEATHER!",
+      "category": "newContent",
+      "start": "2026-05-09T16:00:49.696+00:00",
+      "end": "2026-05-23T16:00:49.696+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-1e8996cd6bb70f3b5be9ca98d6d571c5/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "8015915926484550226",
+      "name": "👁️ BACKROOMS League! 👁️",
+      "description": "🎭 Beat the GAME MASTER before it's GAME OVER! 👾\n\n🏆 Climb the LEAGUE for rewards!\n🧩 More PUZZLE rooms!\n🥚 NEW pets & NEW eggs!\n🗺️ Explore with MINI-MAP!\n🕹️ Room TELEPORT!\n\nAnd much more! 👻\n\nSee you there!... I hope 💀",
+      "subtitle": "🎭 GAME OVER! 👾",
+      "category": "newContent",
+      "start": "2026-06-20T16:00:33.578+00:00",
+      "end": "2026-06-27T16:00:33.578+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ce3e3592a250ec1fea6f661b1ca55d6e/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "7254638943105319506",
+      "name": "🎈 The BACKROOMS 🖍️",
+      "description": "🫠 welcome back... \n\n👻 Party-warped Backrooms: Level Fun!\n🎈 Hatch new pets + chase the Partygoer Cat!\n😈 Team up versus the Toy Chest Mimic!\n🖍️ Way more new surprises! 🎉",
+      "subtitle": "hi 🙃",
+      "category": "newContent",
+      "start": "2026-06-13T16:00:38.279+00:00",
+      "end": "2026-06-27T16:39:38.279+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c296c343cf0955fa0ef67f8b921f659c/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4220205133063127671",
+      "name": "⚽ WORLD CUP! 🥅",
+      "description": "⚽ SOCCER WORLD & SOCCER PETS! 🥅\n\n➡️ Stand in line to meet MESSI! (jk)\n\n👟 Charge your kick!\n🌍 Tour World Cup stadiums!\n🔥 Kick pets into the Hall of Champs!\n🥇 Win the GARGANTUAN!\n\n✅ CLAN BATTLE ✅ LEADERBOARD CONTEST ✅\n\n💎 NO ADMIN ABUSE! We're mailing out 5x GARGS! 📩\n🔔 Follow event and visit our socials to enter! 🔔",
+      "subtitle": "💥 KICK the PET! 😱",
+      "category": "newContent",
+      "start": "2026-06-27T16:00:05.716+00:00",
+      "end": "2026-07-11T16:00:05.716+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-5049e6a819d97baf96b4eb1337d5ffa3/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2479585863504364185",
+      "name": "👆 TAP HEROES! ⚔️",
+      "description": "Journey through 6 AGES of history!\n\n👆 TAP to defeat enemies.. 120 LEVELS!\n📦 CHEST BOSSES every 5 levels!\n♻️ REBIRTH for permanent LUCK!\n🐾 Unlock 12 EVENT PETS as you climb!\n🏆 The GARGANTUAN goes to the top tapper!\n\n⚔️ Rally your clan NOW! ⚔️",
+      "subtitle": "TAP through HISTORY! ✨",
+      "category": "newContent",
+      "start": "2026-07-11T16:00:39.629+00:00",
+      "end": "2026-07-25T16:00:39.629+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-69539186dd9342b70afad9647ccdb39a/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2171964801369113199",
+      "name": "🌻 PETS vs COINS! 🪙",
+      "description": "🪙 ANGRY COINS!\n🌻 DEFENSIVE PETS!\n🌱 HARVEST CROPS!\n🧪 GARDEN POTIONS!\n\n...and that's all we're saying. 🤫",
+      "subtitle": "🌱 Protect your GARDEN 👀",
+      "category": "newContent",
+      "start": "2026-08-01T16:00:56.734+00:00",
+      "end": "2026-08-08T16:00:56.734+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a833e5f787e6ef2c2e1b49a59c1bce4e/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "821314553483756151",
+      "name": "🎉 ??? 🎉",
+      "description": "FIESTA!! 😸",
+      "subtitle": "READY TO PARTY???",
+      "category": "newContent",
+      "start": "2026-08-15T16:00:49.575+00:00",
+      "end": "2026-08-22T16:00:49.575+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-221c04bbe721c5b8927780dfa66d859b/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "9054565659421311625",
+      "name": "🍀 LUCKY BLOCK BREAKOUT!",
+      "description": "[Featuring]\n🧱 Breakout Board\n🎱 Bouncing Pets\n👑 Boss Lucky Blocks\n♻️ Rebirth\n\n[Limited Pets]\n💪 Limited Gargantuan Pet\n🔥 Limited Titanic Pets\n⭐ Limited Huge Pets\n🐾 New Pets\n🐣 Lucky Eggs\n\n[Event]\n❔ Lucky Blocks\n🧰 Lucky Chests\n🎁 Lucky Bag\n⚡ Lucky Boosts\n⬆️ Breakout Upgrades\n👥 Visit Islands\n🤖 Free Autos\n\n[Contests]\n🏆 Breakout Leaderboard\n⚔️ Royal Clan Battle\n\n[Exclusive]\n🔮 Mega Lucky Gamepass\n💥 Lucky Block Breaker\n🙂 Lucky Noob Egg\n❓ Mystery Pack\n🌈 The Forever Pack\n📦 Exclusive Cardboard Egg",
+      "subtitle": "🧱 Send pets bouncing! ⚡",
+      "category": "newContent",
+      "start": "2026-08-22T16:00:29.148+00:00",
+      "end": "2026-09-05T16:00:29.148+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2c08405c09811888c466c65fedcd191e/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "2122267173371118226",
+      "name": "⚡ LUCKY BLOCK BLITZ!",
+      "description": "🎯 Point and BLAST your pets now!\n✨ Every pet gains a SPECIAL ABILITY!\n🛡️ Place BUMPERS to ricochet pets!\n⏰ Race the LUCKY TIME TRIAL!\n💪 The GARGANTUAN is BACK!",
+      "subtitle": "🎯 Launch your pets!",
+      "category": "newContent",
+      "start": "2026-08-29T16:00:53.393+00:00",
+      "end": "2026-09-05T16:00:53.393+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-8a190f0068c17db5da28be827d6acc7c/768/432/Image/Png/noFilter"
+    },
+    {
+      "id": "4704032603630600811",
+      "name": "🕹️ COIN ARCADE! 👾",
+      "description": "🎉 Step inside the COIN ARCADE! 🏆\n\n🐾 Your pets WORK the arcade for you!\n💰 They earn Arcade Coins.. even OFFLINE!\n🎰 Eggs AUTO-HATCH right at your feet!\n📈 Level pets to 50 for DOUBLE earnings!\n🎁 Crack your own PRIVATE boss chest!\n\n🔔 Follow event for more news! 📰",
+      "subtitle": "💰 Grind coins & XP! ✨",
+      "category": "newContent",
+      "start": "2026-09-12T16:00:36.909+00:00",
+      "end": "2026-09-19T16:00:36.909+00:00",
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-d391f644e68f726a3f5eb6782a9e867c/768/432/Image/Png/noFilter"
+    }
+  ]
+}
+
