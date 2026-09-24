@@ -280,9 +280,45 @@
   }
   setInterval(paintStatus, 1000);
 
+  function setupChartFullscreen(panel, button) {
+    if (!panel || !button) return;
+    const isOpen = () => document.fullscreenElement === panel || panel.classList.contains("chart-fullscreen-fallback");
+    const update = () => {
+      const open = isOpen();
+      button.textContent = open ? "Exit Fullscreen" : "Show Fullscreen";
+      button.setAttribute("aria-pressed", String(open));
+    };
+    button.addEventListener("click", async () => {
+      if (document.fullscreenElement === panel) {
+        await document.exitFullscreen();
+      } else if (panel.classList.contains("chart-fullscreen-fallback")) {
+        panel.classList.remove("chart-fullscreen-fallback");
+        document.body.classList.remove("chart-fullscreen-open");
+      } else {
+        try {
+          if (!panel.requestFullscreen) throw new Error("Fullscreen unavailable");
+          await panel.requestFullscreen();
+        } catch {
+          panel.classList.add("chart-fullscreen-fallback");
+          document.body.classList.add("chart-fullscreen-open");
+        }
+      }
+      update();
+    });
+    document.addEventListener("fullscreenchange", update);
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && panel.classList.contains("chart-fullscreen-fallback")) {
+        panel.classList.remove("chart-fullscreen-fallback");
+        document.body.classList.remove("chart-fullscreen-open");
+        update();
+      }
+    });
+    update();
+  }
+
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, bySlug, byPlaceId, ROOT, ACCENT, ACCENT_RGB,
     $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
-    setText, iconFor, iconFallback, loadLive, onLive, every, mountChrome, live,
+    setText, iconFor, iconFallback, loadLive, onLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();

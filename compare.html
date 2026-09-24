@@ -98,7 +98,7 @@
   </div>
 
   <!-- Chart -->
-  <div class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-4 sm:p-6 shadow-2xl">
+  <div id="compareChartPanel" class="fullscreen-chart-panel bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-4 sm:p-6 shadow-2xl">
 
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800" id="ranges" role="group" aria-label="Time range">
@@ -106,9 +106,12 @@
         <button type="button" data-range="7d" aria-pressed="false" class="range-btn">7D</button>
         <button type="button" data-range="all" aria-pressed="false" class="range-btn">All</button>
       </div>
+      <div class="flex items-center gap-2 flex-wrap">
       <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800" id="modes" role="group" aria-label="Chart type">
         <button type="button" data-mode="players" aria-pressed="true" class="mode-btn">Players</button>
         <button type="button" data-mode="share" aria-pressed="false" class="mode-btn">Share</button>
+      </div>
+      <button id="compareFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-pressed="false">Show Fullscreen</button>
       </div>
     </div>
 
@@ -770,6 +773,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    Tracker.setupChartFullscreen($("compareChartPanel"),$("compareFullscreenToggle"));
     SLOTS.forEach(paintCard);
     setupPickers();
     paintToggles();

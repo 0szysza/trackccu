@@ -130,7 +130,7 @@ body {
 .game-stat-stack { display:grid;gap:12px; }
 .chart-heading { display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap; }
 .chart-controls { display:flex;flex-direction:column;align-items:flex-end;gap:9px; }
-.chart-navigator-panel { width:90.4%;margin:8px auto 0; }
+.chart-navigator-panel { width:91.2%;margin:8px auto 0; }
 .chart-navigator-panel[hidden] { display:none; }
 .chart-navigator { position:relative;height:56px;overflow:hidden;border:1px solid #293149;border-radius:9px;background:#0c1424;touch-action:none;user-select:none; }
 .chart-navigator svg { position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none; }
@@ -146,6 +146,15 @@ body {
 .chart-navigator-handle:focus-visible { outline:2px solid #fff;outline-offset:-2px; }
 @media (max-width:639px) { .chart-controls { width:100%; } }
 .chart-line { filter: drop-shadow(0 0 3px var(--c)); }
+.chart-fullscreen-toggle { appearance:none;align-self:flex-end;padding:7px 11px;border:1px solid #334155;border-radius:9px;background:#0f172a;color:#cbd5e1;font-size:11px;font-weight:750;white-space:nowrap;cursor:pointer; }
+.chart-fullscreen-toggle:hover { border-color:#34bfe5;color:#fff; }
+.chart-fullscreen-toggle:focus-visible { outline:2px solid #34bfe5;outline-offset:2px; }
+.fullscreen-chart-panel:fullscreen,.fullscreen-chart-panel.chart-fullscreen-fallback { display:flex;flex-direction:column;box-sizing:border-box;width:100vw;height:100vh;max-width:none;margin:0;padding:16px 22px;border:0;border-radius:0;background:#15192d;overflow:hidden; }
+.fullscreen-chart-panel.chart-fullscreen-fallback { position:fixed;inset:0;z-index:100; }
+body.chart-fullscreen-open { overflow:hidden; }
+.fullscreen-chart-panel:fullscreen .chart-wrap,.fullscreen-chart-panel.chart-fullscreen-fallback .chart-wrap { flex:1 1 auto;height:auto!important;min-height:0; }
+.fullscreen-chart-panel:fullscreen .chart-navigator-panel,.fullscreen-chart-panel.chart-fullscreen-fallback .chart-navigator-panel { flex:0 0 auto;margin-top:10px; }
+@media (max-width:639px) { .fullscreen-chart-panel:fullscreen,.fullscreen-chart-panel.chart-fullscreen-fallback { padding:12px; } }
 
 /* ---------- Shared vector icons ---------- */
 .ui-icon { width: 1em; height: 1em; display: inline-block; flex: 0 0 auto; vertical-align: -0.12em; }
@@ -269,7 +278,7 @@ body {
   .game-detail-hero-layout { grid-template-columns:minmax(0,1fr) minmax(0,46%);align-items:stretch; }
   .game-thumbnail-wrap { border-left:1px solid #283047; }
 }
-.stat-panel,.metric-card { background:#111528;border:1px solid #262d4a;border-radius:14px;padding:16px; }
+.stat-panel,.metric-card { background:#15192d;border:1px solid #262d4a;border-radius:14px;padding:16px; }
 .stat-panel strong { display:block;margin-top:5px;color:#f8fafc;font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums; }
 .stat-panel small { display:block;margin-top:3px;color:#64748b;font-size:.74rem; }
 .stat-kicker,.metric-card span { color:#64748b;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em; }
@@ -278,9 +287,8 @@ body {
 .chart-stat b { color:#cbd5e1;margin-left:3px; }
 
 /* ---------- Game passes and badges ---------- */
-.collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
-.collectibles-header { margin-bottom:16px; }
-.collectibles-header-controls { display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap; }
+.collectibles-header { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px; }
+.collectibles-header-controls { display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-left:auto; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
@@ -291,21 +299,21 @@ body {
 .collectibles-sort-toggle[aria-pressed="true"] svg { transform:scaleY(-1); }
 .collectibles-sort-toggle[hidden] { display:none; }
 .collectibles-sort-toggle svg { width:15px;height:15px;flex:none;transition:transform .15s; }
-.collectibles-options { justify-content:flex-end;margin:0 0 16px;min-height:28px; }
-.collectibles-options[hidden] { display:none; }
-.collectibles-search-wrap { display:flex;align-items:center;gap:8px;min-width:220px;max-width:320px;flex:1;padding:8px 11px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#64748b; }
+.collectibles-search-wrap { display:flex;align-items:center;gap:8px;width:230px;min-width:180px;max-width:320px;flex:0 1 230px;padding:8px 11px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#64748b; }
 .collectibles-search-wrap:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
 .collectibles-search-wrap svg { width:16px;height:16px;flex:none; }
 .collectibles-search-wrap input { width:100%;min-width:0;background:transparent;border:0;outline:0;color:#f8fafc;font:inherit;font-size:.78rem; }
 .collectibles-search-wrap input::placeholder { color:#64748b; }
-.offsale-toggle { display:inline-flex;align-items:center;gap:9px;color:#cbd5e1;font-size:.75rem;font-weight:650;cursor:pointer; }
+.offsale-toggle { display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:7px 10px;border:1px solid #293149;border-radius:10px;background:#0f172a;color:#cbd5e1;font-size:.75rem;font-weight:700;white-space:nowrap;cursor:pointer; }
+.offsale-toggle:hover { border-color:#64748b;color:#fff; }
 .offsale-toggle[hidden] { display:none; }
 .offsale-toggle input { position:absolute;opacity:0;width:1px;height:1px; }
-.offsale-switch { position:relative;display:inline-block;width:32px;height:19px;border-radius:999px;background:#334155;transition:background .15s; }
-.offsale-switch::after { content:"";position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:#fff;transition:transform .15s; }
-.offsale-toggle input:checked + .offsale-switch { background:#34bfe5; }
-.offsale-toggle input:checked + .offsale-switch::after { transform:translateX(13px); }
-.offsale-toggle input:focus-visible + .offsale-switch { outline:2px solid #00f0ff;outline-offset:3px; }
+.offsale-check { display:inline-grid;place-items:center;width:16px;height:16px;border:1px solid #64748b;border-radius:4px;background:#0b0f1c; }
+.offsale-check::after { content:"";width:7px;height:4px;border-left:2px solid #071321;border-bottom:2px solid #071321;transform:rotate(-45deg) translateY(-1px);opacity:0; }
+.offsale-toggle input:checked + .offsale-check { border-color:#34bfe5;background:#34bfe5; }
+.offsale-toggle input:checked + .offsale-check::after { opacity:1; }
+.offsale-toggle input:focus-visible + .offsale-check { outline:2px solid #00f0ff;outline-offset:3px; }
+@media (max-width:639px) { .collectibles-header-controls { width:100%;justify-content:flex-start;margin-left:0; } .collectibles-search-wrap { flex:1 1 100%;max-width:none; } }
 .collectibles-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px; }
 @media (min-width:1180px) { .collectibles-grid { grid-template-columns:repeat(6,minmax(0,1fr)); } }
 .collectible-card { display:flex;flex-direction:column;min-width:0;padding:10px 10px 14px;background:#111528;border:1px solid #293149;border-radius:16px; }
