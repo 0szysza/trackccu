@@ -38,6 +38,9 @@
     { slug: "rcu", placeId: "74260430392611", label: "Rebirth Champions: Ultimate", short: "RCU", ownerName: "Powerful Studio", ownerUrl: "https://www.roblox.com/communities/5522949/Powerful-Studio" },
     { slug: "psx", placeId: "6284583030", label: "Pet Simulator X", short: "PSX", ownerName: "BIG Games Pets", ownerUrl: "https://www.roblox.com/communities/3959677/BIG-Games-Pets" },
     { slug: "us", placeId: "3025990139", label: "Unboxing Simulator", short: "US", ownerName: "Unsquared", ownerUrl: "https://www.roblox.com/communities/2722126/Unsquared" },
+    { slug: "ms", placeId: "1417427737", label: "Mining Simulator", short: "MS", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+    { slug: "ms2", placeId: "9551640993", label: "Mining Simulator 2", short: "MS2", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+    { slug: "pc", placeId: "16510724413", label: "Pet Catchers", short: "PC", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
   ];
 /* GENERATED:CATALOG:END */
   for (const game of CATALOG) {

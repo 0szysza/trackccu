@@ -74,6 +74,7 @@ body {
 .games-card-badges { padding:18px 18px 0 0; }
 .games-card-stats { margin:16px 18px 0; }
 .games-card-metrics { margin:14px 18px 18px; }
+.games-card-metrics .ui-icon,.games-card-badges .ui-icon { width:14px;height:14px; }
 .game-short-tag { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; gap:.375rem; padding:.25rem .625rem; border-radius:.5rem; background:rgba(15,23,42,.8); border:1px solid #1e293b; color:#e2e8f0; font-size:.75rem; line-height:1.25; font-weight:600; }
 .games-card-badges { width: 5.5rem; }
 .games-card-tag { width: 100%; height: 1.75rem; }
@@ -127,9 +128,9 @@ body {
 .chart-wrap { touch-action: pan-y; }
 .chart-wrap svg text { user-select: none; }
 .game-stat-stack { display:grid;gap:12px; }
-.chart-heading,.chart-controls { display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap; }
-.chart-controls { justify-content:flex-end; }
-.chart-navigator-panel { width:87.2%;margin:8px auto 0; }
+.chart-heading { display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap; }
+.chart-controls { display:flex;flex-direction:column;align-items:flex-end;gap:9px; }
+.chart-navigator-panel { width:90.4%;margin:8px auto 0; }
 .chart-navigator-panel[hidden] { display:none; }
 .chart-navigator { position:relative;height:56px;overflow:hidden;border:1px solid #293149;border-radius:9px;background:#0c1424;touch-action:none;user-select:none; }
 .chart-navigator svg { position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none; }
@@ -143,7 +144,7 @@ body {
 .chart-navigator-handle-start { left:0; }
 .chart-navigator-handle-end { right:0; }
 .chart-navigator-handle:focus-visible { outline:2px solid #fff;outline-offset:-2px; }
-@media (max-width:639px) { .chart-controls { width:100%;justify-content:space-between; } .chart-navigator-panel { width:85%; } }
+@media (max-width:639px) { .chart-controls { width:100%; } }
 .chart-line { filter: drop-shadow(0 0 3px var(--c)); }
 
 /* ---------- Shared vector icons ---------- */
@@ -284,10 +285,12 @@ body {
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
 .collectibles-tabs button[aria-selected="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#fff; }
-.collectibles-sort-toggle { display:inline-flex;align-items:center;gap:7px;padding:9px 11px;border:1px solid #283047;border-radius:10px;background:#0b0f1c;color:#cbd5e1;font-size:.75rem;font-weight:700;cursor:pointer; }
-.collectibles-sort-toggle:hover { border-color:#475569;color:#fff; }
+.collectibles-sort-toggle { display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:#0f172a;border:1px solid #293149;border-radius:10px;color:#cbd5e1;font-size:.75rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:border-color .15s,color .15s; }
+.collectibles-sort-toggle:hover { border-color:#64748b;color:#fff; }
+.collectibles-sort-toggle:focus-visible { outline:2px solid #34bfe5;outline-offset:2px; }
 .collectibles-sort-toggle[aria-pressed="true"] svg { transform:scaleY(-1); }
 .collectibles-sort-toggle[hidden] { display:none; }
+.collectibles-sort-toggle svg { width:15px;height:15px;flex:none;transition:transform .15s; }
 .collectibles-options { justify-content:flex-end;margin:0 0 16px;min-height:28px; }
 .collectibles-options[hidden] { display:none; }
 .collectibles-search-wrap { display:flex;align-items:center;gap:8px;min-width:220px;max-width:320px;flex:1;padding:8px 11px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#64748b; }

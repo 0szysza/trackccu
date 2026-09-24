@@ -24,7 +24,7 @@
   <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
   <div id="notFound" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-10 text-center"><h1 class="text-2xl font-bold">Game not found</h1><p class="text-slate-400 mt-2">This game isn't tracked anymore.</p></div>
 
-  <div id="page" class="hidden space-y-6">
+  <div id="page" class="hidden space-y-3">
     <section class="game-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
       <div class="game-detail-hero-layout">
         <div class="game-detail-info min-w-0">
@@ -95,7 +95,7 @@
       </div>
     </section>
 
-    <section class="space-y-4">
+    <section class="space-y-3">
       <div class="game-meta-bar bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6">
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Updated</span><strong id="updated" class="block text-xl text-white mt-1">—</strong><small id="updatedExact" class="block text-xs text-slate-500 mt-1">—</small></div>
         <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg> Created</span><strong id="created" class="block text-xl text-white mt-1">—</strong><small id="createdExact" class="block text-xs text-slate-500 mt-1">—</small></div>
@@ -108,9 +108,9 @@
       <div class="collectibles-header">
         <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>Extras</p><h2 id="collectiblesTitle" class="text-lg font-bold text-white mt-1" aria-live="polite">Passes</h2></div>
         <div class="collectibles-header-controls">
-        <button type="button" id="priceSortToggle" class="collectibles-sort-toggle" aria-pressed="false" aria-label="Sort passes by price: low to high" title="Sort passes by price">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16m0 0-3.5-3.5M7 20l3.5-3.5M17 20V4m0 0 3.5 3.5M17 4l-3.5 3.5"/></svg>
-          <span id="priceSortLabel">Price: low to high</span>
+        <button type="button" id="priceSortToggle" class="collectibles-sort-toggle" aria-pressed="false" title="Reverse price order">
+          <svg id="priceSortIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16m0 0-3.5-3.5M7 20l3.5-3.5M17 20V4m0 0 3.5 3.5M17 4l-3.5 3.5"/></svg>
+          <span id="priceSortLabel">Highest price</span>
         </button>
         <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
           <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Passes</button>
@@ -196,12 +196,12 @@
 
   function drawChart(){
     const host=$("chartHost"), note=$("chartNote"), tip=$("chartTooltip"); tip.classList.add("hidden"); if(chartPoints.length<2){host.innerHTML="";$("chartStats").innerHTML="";note.textContent=`Collecting ${chartLabels[chartMetric].toLowerCase()} history…`;note.classList.remove("hidden");note.classList.add("flex");return;} note.classList.add("hidden");note.classList.remove("flex");
-    const W=1000,H=400,PL=64,PR=64,PT=18,PB=42; const xs=chartPoints.map(p=>p.x),ys=chartPoints.map(p=>p.y);const minX=Math.min(...xs),maxX=Math.max(...xs),lo=Math.min(...ys),hi=Math.max(...ys);const margin=(hi-lo)*.12||Math.max(1,hi*.08);const yMin=Math.max(0,lo-margin),yMax=hi+margin;
+    const W=1000,H=400,PL=48,PR=48,PT=18,PB=42; const xs=chartPoints.map(p=>p.x),ys=chartPoints.map(p=>p.y);const minX=Math.min(...xs),maxX=Math.max(...xs),lo=Math.min(...ys),hi=Math.max(...ys);const margin=(hi-lo)*.12||Math.max(1,hi*.08);const yMin=Math.max(0,lo-margin),yMax=hi+margin;
     const x=t=>PL+(t-minX)/(maxX-minX||1)*(W-PL-PR), y=v=>PT+(1-(v-yMin)/(yMax-yMin||1))*(H-PT-PB);
     const axisLabel=value=>chartMetric==="visits"&&value>=1000000
       ? `${(value/1000000).toFixed(Math.min(4,Math.max(1,Math.ceil(Math.log10(4000000/(yMax-yMin||1))))))}M`
       : compact(Math.round(value));
-    const ticks=4; let grid="";for(let i=0;i<=ticks;i++){const yy=PT+i*(H-PT-PB)/ticks,val=yMax-i*(yMax-yMin)/ticks;grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-10}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${axisLabel(val)}</text>`;}
+    const ticks=4; let grid="";for(let i=0;i<=ticks;i++){const yy=PT+i*(H-PT-PB)/ticks,val=yMax-i*(yMax-yMin)/ticks;grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-3}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="${chartMetric==="visits"?9:11}">${axisLabel(val)}</text>`;}
     let xt="";for(let i=0;i<5;i++){const t=minX+i*(maxX-minX)/4,xx=x(t);xt+=`<text x="${xx}" y="${H-12}" text-anchor="middle" fill="#64748b" font-size="11">${chartRange==="1d"?clockLabel(t):dayLabel(t)}</text>`;}
     const line=chartPoints.map((p,i)=>`${i?"L":"M"}${x(p.x).toFixed(1)} ${y(p.y).toFixed(1)}`).join(" "); const area=`${line} L${x(chartPoints.at(-1).x)} ${H-PB} L${x(chartPoints[0].x)} ${H-PB} Z`;
     host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" width="100%" height="100%" aria-label="${chartLabels[chartMetric]} history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden" vector-effect="non-scaling-stroke"/></svg>`;
@@ -318,7 +318,7 @@
   }
   async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
 
-  let extras=null, collectiblesTab="passes", priceDescending=false;
+  let extras=null, collectiblesTab="passes", priceSortAsc=false;
   const collectiblesQueries={passes:"",badges:""};
   // Robux 2019 logo: https://commons.wikimedia.org/wiki/File:Robux_2019_Logo_white.svg
   const robuxIcon='<svg viewBox="0 0 91.99 100.06" fill="currentColor" aria-hidden="true"><path d="M82,17.72A19.94,19.94,0,0,1,92,35V65.08A19.92,19.92,0,0,1,82,82.33L56,97.39a19.94,19.94,0,0,1-19.91,0L10,82.33A19.91,19.91,0,0,1,0,65.08V35A19.93,19.93,0,0,1,10,17.72L36,2.67A19.89,19.89,0,0,1,56,2.67ZM39.53,9.5,14.13,24.17a12.92,12.92,0,0,0-6.46,11.2V64.69a12.93,12.93,0,0,0,6.46,11.2l25.4,14.66a12.93,12.93,0,0,0,12.93,0l25.4-14.66a12.93,12.93,0,0,0,6.46-11.2V35.37a12.92,12.92,0,0,0-6.46-11.2L52.46,9.5a12.93,12.93,0,0,0-12.93,0ZM51.3,17.7l20,11.56a10.64,10.64,0,0,1,5.32,9.21V61.6a10.61,10.61,0,0,1-5.32,9.2l-20,11.57a10.61,10.61,0,0,1-10.62,0l-20-11.57a10.6,10.6,0,0,1-5.31-9.2V38.47a10.63,10.63,0,0,1,5.31-9.21l20-11.56a10.61,10.61,0,0,1,10.62,0ZM34.5,61.53h23v-23h-23Z"/></svg>';
@@ -364,9 +364,8 @@
     $("collectiblesPanel").setAttribute("aria-labelledby",passes?"passesTab":"badgesTab");
     $("offsaleControl").hidden=!passes;
     $("priceSortToggle").hidden=!passes;
-    $("priceSortToggle").setAttribute("aria-pressed",String(priceDescending));
-    $("priceSortToggle").setAttribute("aria-label",`Sort passes by price: ${priceDescending?"high to low":"low to high"}`);
-    $("priceSortLabel").textContent=`Price: ${priceDescending?"high to low":"low to high"}`;
+    $("priceSortToggle").setAttribute("aria-pressed",String(priceSortAsc));
+    $("priceSortLabel").textContent=priceSortAsc?"Lowest price":"Highest price";
     const search=$("collectiblesSearch");
     search.placeholder=passes?"Search passes...":"Search badges...";
     search.setAttribute("aria-label",passes?"Search passes":"Search badges");
@@ -379,7 +378,7 @@
       const bPrice=b.isForSale&&Number.isFinite(b.price)?b.price:null;
       if(aPrice===null)return bPrice===null?0:1;
       if(bPrice===null)return -1;
-      return priceDescending?bPrice-aPrice:aPrice-bPrice;
+      return priceSortAsc?aPrice-bPrice:bPrice-aPrice;
     });
     $("collectiblesGrid").replaceChildren(...visible.map(item=>collectibleCard(item,collectiblesTab)));
     const message=$("collectiblesMessage");
@@ -391,7 +390,7 @@
     $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const other=kind==="passes"?"badgesTab":"passesTab";$(other).click();$(other).focus();}});
   }
   $("showOffsale").addEventListener("change",renderCollectibles);
-  $("priceSortToggle").addEventListener("click",()=>{priceDescending=!priceDescending;renderCollectibles();});
+  $("priceSortToggle").addEventListener("click",()=>{priceSortAsc=!priceSortAsc;renderCollectibles();});
   $("collectiblesSearch").addEventListener("input",event=>{collectiblesQueries[collectiblesTab]=event.target.value;renderCollectibles();});
   async function loadExtras(){
     try{

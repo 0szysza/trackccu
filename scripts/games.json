@@ -5,5 +5,8 @@
   { "slug": "petsim99", "placeId": "8737899170", "name": "Pet Simulator 99", "short": "PS99", "color": 10979834, "ownerName": "BIG Games Pets", "ownerUrl": "https://www.roblox.com/communities/3959677/BIG-Games-Pets" },
   { "slug": "rcu", "placeId": "74260430392611", "name": "Rebirth Champions: Ultimate", "short": "RCU", "color": 65535, "ownerName": "Powerful Studio", "ownerUrl": "https://www.roblox.com/communities/5522949/Powerful-Studio" },
   { "slug": "psx", "placeId": "6284583030", "name": "Pet Simulator X", "short": "PSX", "color": 10979834, "ownerName": "BIG Games Pets", "ownerUrl": "https://www.roblox.com/communities/3959677/BIG-Games-Pets" },
-  { "slug": "us", "placeId": "3025990139", "name": "Unboxing Simulator", "short": "US", "color": 65535, "ownerName": "Unsquared", "ownerUrl": "https://www.roblox.com/communities/2722126/Unsquared" }
+  { "slug": "us", "placeId": "3025990139", "name": "Unboxing Simulator", "short": "US", "color": 65535, "ownerName": "Unsquared", "ownerUrl": "https://www.roblox.com/communities/2722126/Unsquared" },
+  { "slug": "ms", "placeId": "1417427737", "name": "Mining Simulator", "short": "MS", "color": 65535, "ownerName": "Rumble Studios", "ownerUrl": "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+  { "slug": "ms2", "placeId": "9551640993", "name": "Mining Simulator 2", "short": "MS2", "color": 65535, "ownerName": "Rumble Studios", "ownerUrl": "https://www.roblox.com/communities/3333298/Rumble-Studios" },
+  { "slug": "pc", "placeId": "16510724413", "name": "Pet Catchers", "short": "PC", "color": 65535, "ownerName": "Rumble Studios", "ownerUrl": "https://www.roblox.com/communities/3333298/Rumble-Studios" }
 ]
