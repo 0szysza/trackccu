@@ -78,8 +78,9 @@ body {
 .games-card-badges { width: 5.5rem; }
 .games-card-tag { width: 100%; height: 1.75rem; }
 .games-card-header { min-height: 7.125rem; }
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .games-card-header { min-height: 8.25rem; }
+.games-card-stats-head { min-height:2.25rem; }
+@media (min-width: 1024px) {
+  .games-card-header { height:8.5rem;min-height:8.5rem;flex:0 0 8.5rem; }
 }
 @media (max-width: 639px) {
   .games-card-icon { width:97px;height:97px;min-width:97px;min-height:97px;flex-basis:97px; }
@@ -125,6 +126,25 @@ body {
 /* Compare chart: horizontal drags scrub the chart, vertical drags still scroll the page. */
 .chart-wrap { touch-action: pan-y; }
 .chart-wrap svg text { user-select: none; }
+.chart-navigator-panel { margin-top:18px; }
+.chart-navigator-panel[hidden] { display:none; }
+.chart-navigator-heading,.chart-navigator-axis { display:flex;justify-content:space-between;gap:12px;color:#64748b;font-size:.68rem; }
+.chart-navigator-heading { margin-bottom:7px; }
+.chart-navigator-heading span:last-child { color:#94a3b8;white-space:nowrap; }
+.chart-navigator-axis { margin-top:6px; }
+.chart-navigator { position:relative;height:72px;overflow:hidden;border:1px solid #293149;border-radius:9px;background:#0c1424;touch-action:none;user-select:none; }
+.chart-navigator svg { position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none; }
+.chart-navigator-shade { position:absolute;top:0;bottom:0;background:rgba(5,9,18,.58);pointer-events:none; }
+.chart-navigator-shade-left { left:0; }
+.chart-navigator-shade-right { right:0; }
+.chart-navigator-selection { position:absolute;top:0;bottom:0;border:1px solid #63d6f0;background:rgba(52,191,229,.12);cursor:grab; }
+.chart-navigator-selection:active { cursor:grabbing; }
+.chart-navigator-handle { position:absolute;top:0;bottom:0;width:14px;background:rgba(148,163,184,.62);cursor:ew-resize; }
+.chart-navigator-handle::after { content:"";position:absolute;top:50%;left:5px;width:3px;height:18px;border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;transform:translateY(-50%); }
+.chart-navigator-handle-start { left:0; }
+.chart-navigator-handle-end { right:0; }
+.chart-navigator-handle:focus-visible { outline:2px solid #fff;outline-offset:-2px; }
+@media (max-width:639px) { .chart-navigator-heading span:first-child { display:none; } .chart-navigator-heading { justify-content:flex-end; } }
 .chart-line { filter: drop-shadow(0 0 3px var(--c)); }
 
 /* ---------- Shared vector icons ---------- */
@@ -260,12 +280,6 @@ body {
 /* ---------- Game passes and badges ---------- */
 .collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
 .collectibles-header { margin-bottom:16px; }
-.collectibles-header-controls { display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
-.collectibles-sort-toggle { display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:#0f172a;border:1px solid #293149;border-radius:10px;color:#cbd5e1;font-size:.75rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:border-color .15s,color .15s; }
-.collectibles-sort-toggle:hover { border-color:#64748b;color:#fff; }
-.collectibles-sort-toggle:focus-visible { outline:2px solid #34bfe5;outline-offset:2px; }
-.collectibles-sort-toggle[hidden] { display:none; }
-.collectibles-sort-toggle svg { width:15px;height:15px;flex:none;transition:transform .15s; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
