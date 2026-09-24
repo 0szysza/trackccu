@@ -30,12 +30,15 @@ const REPO_ROOT = path.join(here, "..");
 const OUT_DIR = process.env.OUT_DIR || REPO_ROOT;
 
 const games = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
+const groups = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8"));
 for (const game of games) game.color ??= 65535; // default Discord embed colour (BGS blue)
 
 /* ---------- 1. site.js CATALOG block ---------- */
 
 const START = "/* GENERATED:CATALOG:START */";
 const END = "/* GENERATED:CATALOG:END */";
+const GROUP_START = "/* GENERATED:GROUP_CATALOG:START */";
+const GROUP_END = "/* GENERATED:GROUP_CATALOG:END */";
 
 function buildCatalogBlock() {
   const lines = games.map((g) =>
@@ -43,15 +46,26 @@ function buildCatalogBlock() {
   return [START, "  const CATALOG = [", ...lines, "  ];", END].join("\n");
 }
 
+function buildGroupCatalogBlock() {
+  const lines = groups.map((g) =>
+    `    { id: ${JSON.stringify(String(g.id))}, label: ${JSON.stringify(g.name)} },`);
+  return [GROUP_START, "  const GROUP_CATALOG = [", ...lines, "  ];", GROUP_END].join("\n");
+}
+
+function replaceBlock(source, startMark, endMark, content) {
+  const start = source.indexOf(startMark);
+  const end = source.indexOf(endMark);
+  if (start === -1 || end === -1) throw new Error(`Could not find ${startMark} in site.js`);
+  return source.slice(0, start) + content + source.slice(end + endMark.length);
+}
+
 async function updateSiteJs() {
   const siteJsPath = path.join(REPO_ROOT, "site.js");
   const source = await readFile(siteJsPath, "utf8");
-  const start = source.indexOf(START);
-  const end = source.indexOf(END);
-  if (start === -1 || end === -1) {
-    throw new Error("Could not find GENERATED:CATALOG markers in site.js — has the file been restructured?");
-  }
-  const next = source.slice(0, start) + buildCatalogBlock() + source.slice(end + END.length);
+  const next = replaceBlock(
+    replaceBlock(source, START, END, buildCatalogBlock()),
+    GROUP_START, GROUP_END, buildGroupCatalogBlock()
+  );
 
   // Only site.js itself is source-controlled here; when OUT_DIR differs
   // (CI writing to _site) the block is applied to that copy instead, right
@@ -80,4 +94,10 @@ async function writeGamePages() {
 
 const siteJsTarget = await updateSiteJs();
 const gamesDir = await writeGamePages();
-console.log(`Synced ${games.length} game(s) -> ${siteJsTarget} and ${gamesDir}/<placeId>/index.html`);
+const groupTemplate = await readFile(path.join(here, "group-template.html"), "utf8");
+for (const group of groups) {
+  const dir = path.join(OUT_DIR, "groups", String(group.id));
+  await mkdir(dir, { recursive: true });
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name));
+}
+console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);

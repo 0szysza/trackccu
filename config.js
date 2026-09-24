@@ -6,4 +6,6 @@
 window.TRACKER_CONFIG = {
   live: () => "/api/live",
   history: (range) => "/api/history?range=" + range,
+  groupsLive: () => (window.SITE_ROOT || "") + "data/group-live.json?t=" + Date.now(),
+  groupsHistory: (range) => (window.SITE_ROOT || "") + "data/group-history-" + range + ".json?t=" + Date.now(),
 };

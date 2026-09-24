@@ -133,7 +133,7 @@
 <script>
 (() => {
   "use strict";
-  const { byPlaceId, $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime, setText, iconFor, iconFallback, ROOT } = Tracker;
+  const { byPlaceId, groupById, groupIdForGame, $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime, setText, iconFor, iconFallback, ROOT } = Tracker;
   Tracker.mountChrome("games");
   const HOUR=3600000, DAY=86400000;
   const gameId=location.pathname.replace(/\/+$/,"").split("/").pop();
@@ -150,14 +150,16 @@
   let navStart=0, navEnd=1, navDrag=null;
   function paintOwner(d){
     const owner=$("owner"), name=d.creator||game.ownerName||"—";
-    const href=game.ownerUrl||(d.creatorId&&d.creatorType
+    const groupId=d.creatorType==="Group"&&d.creatorId?String(d.creatorId):groupIdForGame(game);
+    const internal=groupId&&groupById.has(groupId);
+    const href=internal?`${ROOT}groups/${groupId}/`:game.ownerUrl||(d.creatorId&&d.creatorType
       ? d.creatorType==="Group"?`https://www.roblox.com/communities/${d.creatorId}/`:`https://www.roblox.com/users/${d.creatorId}/profile`
       : null);
     if(!href){owner.textContent=name;return;}
     const link=document.createElement("a");
-    link.href=href;link.target="_blank";link.rel="noopener";link.className="tile-link inline-flex items-center gap-1";
+    link.href=href;if(!internal){link.target="_blank";link.rel="noopener";}link.className="tile-link inline-flex items-center gap-1";
     link.append(document.createTextNode(name));
-    link.append($("link").querySelector("svg").cloneNode(true));
+    if(!internal)link.append($("link").querySelector("svg").cloneNode(true));
     owner.replaceChildren(link);
   }
 

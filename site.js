@@ -17,6 +17,8 @@
   const CONFIG = window.TRACKER_CONFIG || {
     live: () => "/api/live",
     history: (range) => "/api/history?range=" + range,
+    groupsLive: () => ROOT + "data/group-live.json?t=" + Date.now(),
+    groupsHistory: (range) => ROOT + "data/group-history-" + range + ".json?t=" + Date.now(),
   };
 
   // Every tracked game now shares one accent colour (BGS's light blue) —
@@ -43,6 +45,15 @@
     { slug: "pc", placeId: "16510724413", label: "Pet Catchers", short: "PC", ownerName: "Rumble Studios", ownerUrl: "https://www.roblox.com/communities/3333298/Rumble-Studios" },
   ];
 /* GENERATED:CATALOG:END */
+  /* GENERATED:GROUP_CATALOG:START */
+  const GROUP_CATALOG = [
+    { id: "3959677", label: "BIG Games Pets" },
+    { id: "3059674", label: "Badimo" },
+    { id: "5522949", label: "Powerful Studio" },
+    { id: "3333298", label: "Rumble Studios" },
+    { id: "2722126", label: "Unsquared" },
+  ];
+/* GENERATED:GROUP_CATALOG:END */
   for (const game of CATALOG) {
     game.url = `https://www.roblox.com/games/${game.placeId}/`;
     game.accent = ACCENT;
@@ -51,6 +62,9 @@
 
   const bySlug = new Map(CATALOG.map((game) => [game.slug, game]));
   const byPlaceId = new Map(CATALOG.map((game) => [String(game.placeId), game]));
+  const groupById = new Map(GROUP_CATALOG.map((group) => [group.id, group]));
+  const groupIdForGame = (game) => String(game?.ownerUrl || "").match(/\/communities\/(\d+)/)?.[1] || null;
+  for (const group of GROUP_CATALOG) group.url = `https://www.roblox.com/communities/${group.id}/`;
 
   const $ = (id) => document.getElementById(id);
   const nf = new Intl.NumberFormat("en-US");
@@ -139,6 +153,14 @@
   const iconFor = (slug) => liveIcons.get(slug) || `${ROOT}assets/${slug}-icon.png`;
   const iconFallback = `${ROOT}favicon.png`;
 
+  function gameChipHtml(game, data) {
+    const rating = Number.isFinite(data?.ratingPercent) ? `${data.ratingPercent}%` : "—";
+    return `<a href="${ROOT}games/${game.placeId}/" class="home-game-chip" data-slug="${game.slug}">
+      <div class="home-game-art"><img src="${data?.iconUrl || iconFor(game.slug)}" data-fallback="0" alt="${game.label} icon"></div>
+      <div class="home-game-meta"><strong>${game.label}</strong><div class="home-game-stats"><span class="home-game-rating" aria-label="Rating ${rating}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/></svg><b>${rating}</b></span><span class="home-game-count" aria-label="${fmt(data?.playing)} players"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>${fmt(data?.playing)}</b></span></div></div>
+    </a>`;
+  }
+
   async function loadLive() {
     try {
       const res = await fetch(CONFIG.live(), { cache: "no-store" });
@@ -159,6 +181,25 @@
       live.failed = true;
     }
     paintStatus();
+  }
+
+  const groupsLive = { payload: null, failed: false };
+  const groupListeners = new Set();
+  async function loadGroups() {
+    try {
+      const response = await fetch(CONFIG.groupsLive(), { cache: "no-store" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      groupsLive.payload = await response.json();
+      groupsLive.failed = false;
+      groupListeners.forEach((fn) => fn(groupsLive.payload));
+    } catch (error) {
+      groupsLive.failed = true;
+      console.error("Group data request failed:", error);
+    }
+  }
+  function onGroups(fn) {
+    groupListeners.add(fn);
+    if (groupsLive.payload) fn(groupsLive.payload);
   }
 
   function onLive(fn) {
@@ -189,6 +230,10 @@
       icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-sm" aria-hidden="true" ><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>',
     },
     {
+      key: "groups", href: ROOT + "groups", label: "Groups",
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-sm" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    },
+    {
       key: "compare", href: ROOT + "compare", label: "Compare",
       icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-sm" aria-hidden="true" ><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>',
     },
@@ -204,7 +249,7 @@
       <span class="site-logo" aria-hidden="true"><img src="${ROOT}favicon.png" alt=""></span>
       <div>
         <div class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">CCU Tracker</div>
-        <p class="text-[11px] text-slate-400">Track any Roblox Game CCU!</p>
+        <p class="text-[11px] text-slate-400">Track Roblox games and groups.</p>
       </div>
     </a>
     <nav class="order-3 w-full sm:order-2 sm:w-auto flex items-center gap-1" aria-label="Pages">
@@ -214,7 +259,7 @@
            item.key === active ? "top-nav-link-active text-white" : "text-slate-400"
          }">${item.icon}${item.label}</a>`).join("")}
     </nav>
-    <div id="liveStatus" class="hidden order-2 sm:order-3 ml-auto items-center gap-2 text-xs text-slate-400" title="Player counts refresh every 5 minutes">
+    <div id="liveStatus" class="hidden order-2 sm:order-3 ml-auto items-center gap-2 text-xs text-slate-400" title="Stats refresh every 5 minutes">
       <span class="live-dot" id="liveDot" data-state="ok"></span>
       <span id="liveText"></span>
     </div>
@@ -228,7 +273,7 @@
 <footer class="border-t border-roblox-cardBorder bg-roblox-cardBg/40 py-4 mt-10 text-xs text-slate-500">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex flex-col gap-2">
-      <p class="text-xs text-slate-300 font-medium">Want a new game added here? Let me know!</p>
+      <p class="text-xs text-slate-300 font-medium">Want a game or group added here? Let me know!</p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
       <a href="https://discord.com/users/0szysza" target="_blank" rel="noopener"
          class="inline-flex items-center gap-1.5 hover:text-slate-300 transition-colors">
@@ -243,7 +288,7 @@
       </div>
     </div>
     <div class="space-y-1 text-[11px] leading-5 md:text-right">
-      <p>Player counts come from the official Roblox API (<code class="text-slate-400">games.roblox.com</code>).</p>
+      <p>Game and group stats come from Roblox APIs.</p>
       <p>Not affiliated with Roblox Corporation nor with the developers of any tracked game.</p>
     </div>
   </div>
@@ -318,8 +363,8 @@
   }
 
   window.Tracker = {
-    REFRESH_MS, CONFIG, CATALOG, bySlug, byPlaceId, ROOT, ACCENT, ACCENT_RGB,
+    REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
     $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
-    setText, iconFor, iconFallback, loadLive, onLive, every, mountChrome, setupChartFullscreen, live,
+    setText, iconFor, iconFallback, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();

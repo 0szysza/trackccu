@@ -271,6 +271,31 @@ body.chart-fullscreen-open { overflow:hidden; }
 .home-game-rating b { color:#e2e8f0;font-size:.8rem; }
 .home-game-count { color:#34bfe5; }
 .home-game-stats svg { width:15px;height:15px;flex:none; }
+.home-group-chip .home-game-stats { color:#94a3b8;font-size:.75rem; }
+.home-group-chip .home-game-stats b { color:#e2e8f0;font-size:.8rem; }
+
+.group-card-header { min-height:114px; }
+.group-card-metrics .ui-icon { width:14px;height:14px; }
+.group-card-metrics > div { min-width:0; }
+.group-card-metrics > div span { overflow-wrap:anywhere; }
+.group-detail-hero { display:flex;min-height:220px;overflow:hidden; }
+.group-detail-icon { display:block;width:220px;height:220px;aspect-ratio:1/1;flex:0 0 220px;border-right:1px solid #334155; }
+.group-detail-content { display:flex;flex:1;flex-direction:column;justify-content:space-between;gap:20px;min-width:0;padding:22px 26px; }
+.group-owner-name { font-size:1.2rem!important;overflow-wrap:anywhere; }
+.group-owner-name a { color:#e2e8f0;text-decoration:none; }
+.group-owner-name a:hover { color:#34bfe5; }
+.group-meta-bar { display:grid;grid-template-columns:repeat(2,minmax(0,1fr)); }
+.group-meta-bar .game-meta-item:first-child { border-left:0; }
+@media (max-width:639px) {
+  .group-card-header { min-height:97px; }
+  .group-card-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .group-card-metrics > div:last-child { grid-column:1 / -1; }
+  .group-detail-hero { min-height:150px; }
+  .group-detail-icon { width:150px;height:150px;flex-basis:150px; }
+  .group-detail-content { padding:15px;gap:14px; }
+  .group-detail-content #membersNow { font-size:2.25rem; }
+  .group-meta-bar { grid-template-columns:1fr; }
+}
 
 .feature-panel { min-height:260px;transition:border-color .15s ease,transform .15s ease; }
 .feature-panel:hover { border-color:#475569;transform:translateY(-2px); }
