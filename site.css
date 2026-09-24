@@ -256,7 +256,7 @@ body.chart-fullscreen-open { overflow:hidden; }
 .home-hero-stats dt { color:#94a3b8;font-size:.64rem;line-height:1.2;font-weight:800;text-transform:uppercase;letter-spacing:.07em; }
 .home-hero-stats dd { margin-top:.35rem;color:#fff;font-size:1.7rem;line-height:1;font-weight:800;letter-spacing:-.025em;font-variant-numeric:tabular-nums; }
 
-.home-game-strip { display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--home-visible, 6) - 1) * .7rem)/var(--home-visible, 6));gap:.7rem;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding-bottom:.5rem;scrollbar-width:thin; }
+.home-game-strip { display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 5 * .7rem)/6);gap:.7rem;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding-bottom:.5rem;scrollbar-width:thin; }
 .home-game-chip { display:flex;flex-direction:column;gap:0;min-width:0;background:#111528;border:1px solid #262d4a;border-radius:15px;overflow:hidden;transition:border-color .15s ease,box-shadow .15s ease; }
 .home-game-chip { scroll-snap-align:start; }
 .home-game-chip:hover { border-color:#34bfe5;box-shadow:0 0 0 1px rgba(52,191,229,.12); }
@@ -273,6 +273,7 @@ body.chart-fullscreen-open { overflow:hidden; }
 .home-game-stats svg { width:15px;height:15px;flex:none; }
 .home-group-chip .home-game-stats { color:#94a3b8;font-size:.75rem; }
 .home-group-chip .home-game-stats b { color:#e2e8f0;font-size:.8rem; }
+.roblox-verified-badge { display:inline-block;width:.8em;height:.8em;min-width:14px;min-height:14px;margin-left:.18em;vertical-align:-.08em;object-fit:contain; }
 
 .group-card-header { min-height:114px; }
 .group-card-metrics .ui-icon { width:14px;height:14px; }
@@ -281,7 +282,7 @@ body.chart-fullscreen-open { overflow:hidden; }
 .group-detail-hero { display:flex;min-height:220px;overflow:hidden; }
 .group-detail-icon { display:block;width:220px;height:220px;aspect-ratio:1/1;flex:0 0 220px;border-right:1px solid #334155; }
 .group-detail-content { display:flex;flex:1;flex-direction:column;justify-content:space-between;gap:20px;min-width:0;padding:22px 26px; }
-.group-owner-name { font-size:1.2rem!important;overflow-wrap:anywhere; }
+.group-owner-name { overflow-wrap:anywhere; }
 .group-owner-name a { color:#e2e8f0;text-decoration:none; }
 .group-owner-name a:hover { color:#34bfe5; }
 .group-meta-bar { display:grid;grid-template-columns:repeat(2,minmax(0,1fr)); }

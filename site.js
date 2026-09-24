@@ -152,6 +152,7 @@
   // yet), the generic site icon so nothing shows a broken image.
   const iconFor = (slug) => liveIcons.get(slug) || `${ROOT}assets/${slug}-icon.png`;
   const iconFallback = `${ROOT}favicon.png`;
+  const verifiedBadgeHtml = (verified) => verified === true ? `<img src="${ROOT}assets/roblox-verified.svg" class="roblox-verified-badge" alt="Verified on Roblox" title="Verified on Roblox">` : "";
 
   function gameChipHtml(game, data) {
     const rating = Number.isFinite(data?.ratingPercent) ? `${data.ratingPercent}%` : "—";
@@ -249,7 +250,7 @@
       <span class="site-logo" aria-hidden="true"><img src="${ROOT}favicon.png" alt=""></span>
       <div>
         <div class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">CCU Tracker</div>
-        <p class="text-[11px] text-slate-400">Track Roblox games and groups.</p>
+        <p class="text-[11px] text-slate-400">Track any Roblox Game CCU!</p>
       </div>
     </a>
     <nav class="order-3 w-full sm:order-2 sm:w-auto flex items-center gap-1" aria-label="Pages">
@@ -273,7 +274,7 @@
 <footer class="border-t border-roblox-cardBorder bg-roblox-cardBg/40 py-4 mt-10 text-xs text-slate-500">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex flex-col gap-2">
-      <p class="text-xs text-slate-300 font-medium">Want a game or group added here? Let me know!</p>
+      <p class="text-xs text-slate-300 font-medium">Want a new game added here? Let me know!</p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
       <a href="https://discord.com/users/0szysza" target="_blank" rel="noopener"
          class="inline-flex items-center gap-1.5 hover:text-slate-300 transition-colors">
@@ -288,7 +289,7 @@
       </div>
     </div>
     <div class="space-y-1 text-[11px] leading-5 md:text-right">
-      <p>Game and group stats come from Roblox APIs.</p>
+      <p>Player counts come from the official Roblox API (<code class="text-slate-400">games.roblox.com</code>).</p>
       <p>Not affiliated with Roblox Corporation nor with the developers of any tracked game.</p>
     </div>
   </div>
@@ -365,6 +366,6 @@
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
     $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
-    setText, iconFor, iconFallback, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
+    setText, iconFor, iconFallback, verifiedBadgeHtml, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();

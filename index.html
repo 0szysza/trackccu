@@ -43,20 +43,23 @@
     </dl>
   </section>
 
-  <section class="space-y-4">
+  <section class="space-y-6">
+    <p class="text-xs uppercase tracking-[.18em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>Live now</p>
+    <div class="space-y-4">
     <div class="flex items-end justify-between gap-4">
-      <div><p class="text-xs uppercase tracking-[.18em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>Live now</p><h2 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Tracked games</h2></div>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tracked games</h2>
       <a href="games" class="text-sm font-semibold text-slate-400 hover:text-white transition inline-flex items-center gap-1">See more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></a>
     </div>
     <div id="homeGames" class="home-game-strip" aria-label="Tracked games"></div>
-  </section>
+    </div>
 
-  <section class="space-y-4">
+    <div class="space-y-4">
     <div class="flex items-end justify-between gap-4">
-      <div><p class="text-xs uppercase tracking-[.18em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Live now</p><h2 class="text-xl sm:text-2xl font-extrabold text-white mt-1">Tracked groups</h2></div>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tracked groups</h2>
       <a href="groups" class="text-sm font-semibold text-slate-400 hover:text-white transition inline-flex items-center gap-1">See more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></a>
     </div>
     <div id="homeGroups" class="home-game-strip" aria-label="Tracked groups"></div>
+    </div>
   </section>
 
   <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -86,7 +89,7 @@
 <script src="site.js"></script>
 <script>
 (() => {
-  const { CATALOG, GROUP_CATALOG, $, fmt, iconFallback, gameChipHtml } = Tracker;
+  const { CATALOG, GROUP_CATALOG, $, fmt, iconFallback, verifiedBadgeHtml, gameChipHtml } = Tracker;
   Tracker.mountChrome("home");
   const strip = $("homeGames");
   const groupStrip = $("homeGroups");
@@ -97,18 +100,16 @@
       const bPlaying = Number.isFinite(live.get(b.slug)?.playing) ? live.get(b.slug).playing : -1;
       return bPlaying - aPlaying;
     }).slice(0, 12);
-    strip.style.setProperty("--home-visible", String(Math.max(1, Math.min(ranked.length, 6))));
     strip.innerHTML = ranked.map((game) => gameChipHtml(game, live.get(game.slug))).join("");
   }
   function renderHomeGroups(payload) {
     const live = new Map((payload?.groups || []).map((group) => [String(group.id), group]));
     const ranked = [...GROUP_CATALOG].sort((a, b) => (live.get(b.id)?.members ?? -1) - (live.get(a.id)?.members ?? -1)).slice(0, 12);
-    groupStrip.style.setProperty("--home-visible", String(Math.max(1, Math.min(ranked.length, 6))));
     groupStrip.innerHTML = ranked.map((group) => {
       const data = live.get(group.id);
       return `<a href="groups/${group.id}/" class="home-game-chip home-group-chip" data-group-id="${group.id}">
         <div class="home-game-art"><img src="${data?.iconUrl || iconFallback}" alt="${group.label} icon"></div>
-        <div class="home-game-meta"><strong>${group.label}</strong><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div></div>
+        <div class="home-game-meta"><strong>${group.label}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</strong><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div></div>
       </a>`;
     }).join("");
   }

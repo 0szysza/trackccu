@@ -15,6 +15,16 @@
   const HOUR = 3600000, DAY = 86400000;
   let latest = null, range = "1d", rangePoints = [], visible = [], trendPoints = [], navStart = 0, navEnd = 1, navDrag = null, requestId = 0;
 
+  function appendVerified(element, verified) {
+    if (verified !== true) return;
+    const badge = document.createElement("img");
+    badge.src = `${Tracker.ROOT}assets/roblox-verified.svg`;
+    badge.alt = "Verified on Roblox";
+    badge.title = "Verified on Roblox";
+    badge.className = "roblox-verified-badge";
+    element.append(" ", badge);
+  }
+
   function showDate(label, exact, value) {
     $(label).textContent = relativeTime(value);
     $(exact).textContent = fullDateTime(value);
@@ -38,6 +48,7 @@
     if (!data) return;
     latest = data;
     $("groupName").textContent = data.name || group.label;
+    appendVerified($("groupName"), data.hasVerifiedBadge);
     document.title = `${data.name || group.label} | CCU Tracker`;
     if (data.iconUrl) icon.src = data.iconUrl;
     $("membersNow").textContent = fmt(data.members);
@@ -53,6 +64,7 @@
       link.target = "_blank";
       link.rel = "noopener";
       link.textContent = data.owner.name || data.owner.username || String(data.owner.id);
+      appendVerified(link, data.owner.hasVerifiedBadge);
       $("ownerName").replaceChildren(link);
     }
     renderGames();
@@ -64,7 +76,6 @@
     const games = CATALOG.filter((game) => allowed.has(game.slug));
     const live = new Map((Tracker.live.payload?.games || []).map((game) => [game.slug, game]));
     const strip = $("groupGames");
-    strip.style.setProperty("--home-visible", String(Math.max(1, Math.min(games.length, 6))));
     strip.innerHTML = games.map((game) => gameChipHtml(game, live.get(game.slug))).join("");
   }
   $("groupGames").addEventListener("error", (event) => {
