@@ -115,9 +115,11 @@
           <span id="priceSortLabel">Highest price</span>
         </button>
         <label class="collectibles-search-wrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="collectiblesSearch" type="search" placeholder="Search passes..." aria-label="Search passes" autocomplete="off"></label>
+        <div id="eventPeriod" class="collectibles-tabs event-period" role="group" aria-label="Event period" hidden><button id="currentEvents" type="button" aria-pressed="true">Current</button><button id="pastEvents" type="button" aria-pressed="false">Past</button></div>
         <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
           <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Passes</button>
           <button id="badgesTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Badges</button>
+          <button id="eventsTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Events</button>
         </div>
         </div>
       </div>
@@ -126,6 +128,11 @@
         <p id="collectiblesMessage" class="collectibles-message" role="status">Loading passes…</p>
       </div>
     </section>
+    <dialog id="eventDialog" class="event-dialog" aria-labelledby="eventModalTitle" aria-describedby="eventModalDescription">
+      <div class="event-dialog-top"><span id="eventModalCategory" class="event-category"></span><button id="eventDialogClose" type="button" class="event-dialog-close" aria-label="Close event details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <img id="eventModalImage" class="event-dialog-image" alt="" hidden>
+      <div class="event-dialog-body"><p id="eventModalStatus" class="event-dialog-status"></p><h2 id="eventModalTitle"></h2><p id="eventModalSubtitle" class="event-dialog-subtitle" hidden></p><div class="event-dialog-times"><div><span>Starts</span><time id="eventModalStart"></time></div><div><span>Ends</span><time id="eventModalEnd"></time></div></div><p id="eventModalDescription" class="event-dialog-description" hidden></p></div>
+    </dialog>
   </div>
 </main>
 <div id="site-footer"></div>
@@ -324,8 +331,8 @@
   }
   async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
 
-  let extras=null, collectiblesTab="passes", priceSortAsc=false;
-  const collectiblesQueries={passes:"",badges:""};
+  let extras=null, collectiblesTab="passes", priceSortAsc=false, eventPeriod="current";
+  const collectiblesQueries={passes:"",badges:"",events:""};
   // Robux 2019 logo: https://commons.wikimedia.org/wiki/File:Robux_2019_Logo_white.svg
   const robuxIcon='<svg viewBox="0 0 91.99 100.06" fill="currentColor" aria-hidden="true"><path d="M82,17.72A19.94,19.94,0,0,1,92,35V65.08A19.92,19.92,0,0,1,82,82.33L56,97.39a19.94,19.94,0,0,1-19.91,0L10,82.33A19.91,19.91,0,0,1,0,65.08V35A19.93,19.93,0,0,1,10,17.72L36,2.67A19.89,19.89,0,0,1,56,2.67ZM39.53,9.5,14.13,24.17a12.92,12.92,0,0,0-6.46,11.2V64.69a12.93,12.93,0,0,0,6.46,11.2l25.4,14.66a12.93,12.93,0,0,0,12.93,0l25.4-14.66a12.93,12.93,0,0,0,6.46-11.2V35.37a12.92,12.92,0,0,0-6.46-11.2L52.46,9.5a12.93,12.93,0,0,0-12.93,0ZM51.3,17.7l20,11.56a10.64,10.64,0,0,1,5.32,9.21V61.6a10.61,10.61,0,0,1-5.32,9.2l-20,11.57a10.61,10.61,0,0,1-10.62,0l-20-11.57a10.6,10.6,0,0,1-5.31-9.2V38.47a10.63,10.63,0,0,1,5.31-9.21l20-11.56a10.61,10.61,0,0,1,10.62,0ZM34.5,61.53h23v-23h-23Z"/></svg>';
   function dateRow(label, stamp){
@@ -361,24 +368,56 @@
     }
     card.append(art,nameLine,dates);return card;
   }
+  const eventCategories={newContent:"New Content",itemDrop:"Item Drop",newSeason:"New Season",contentUpdate:"Content Update",newFeature:"New Feature",quest:"Quest",systemUpdate:"System Update",locationUpdate:"Location Update",expansion:"Expansion",challenge:"Challenge"};
+  const eventCategory=category=>eventCategories[category]||((category||"Event").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/^./,letter=>letter.toUpperCase()));
+  const eventState=item=>Date.parse(item.end)<=Date.now()?"Ended":Date.parse(item.start)>Date.now()?"Upcoming":"Live now";
+  function openEvent(item){
+    const dialog=$("eventDialog"),image=$("eventModalImage"),description=$("eventModalDescription"),subtitle=$("eventModalSubtitle");
+    $("eventModalCategory").textContent=eventCategory(item.category);
+    $("eventModalStatus").textContent=eventState(item);
+    $("eventModalTitle").textContent=item.name;
+    subtitle.textContent=item.subtitle||"";subtitle.hidden=!item.subtitle;
+    image.hidden=!item.thumbnailUrl;if(item.thumbnailUrl)image.src=item.thumbnailUrl;else image.removeAttribute("src");
+    $("eventModalStart").dateTime=item.start;$("eventModalStart").textContent=fullDateTime(item.start);
+    $("eventModalEnd").dateTime=item.end;$("eventModalEnd").textContent=fullDateTime(item.end);
+    description.textContent=item.description||"";description.hidden=!item.description;
+    dialog.showModal();document.body.classList.add("event-modal-open");$("eventDialogClose").focus();
+  }
+  function eventCard(item){
+    const card=document.createElement("button");card.type="button";card.className="event-card";
+    const art=document.createElement("div");art.className="event-card-art";
+    if(item.thumbnailUrl){const image=document.createElement("img");image.src=item.thumbnailUrl;image.alt="";image.loading="lazy";image.onerror=()=>image.remove();art.append(image);}
+    const category=document.createElement("span");category.className="event-category";category.textContent=eventCategory(item.category);art.append(category);
+    const body=document.createElement("div");body.className="event-card-body";
+    const title=document.createElement("h3");title.textContent=item.name;body.append(title);
+    if(item.description){const more=document.createElement("span");more.className="event-card-more";more.textContent="Show description";body.append(more);}
+    card.append(art,body);card.addEventListener("click",()=>openEvent(item));return card;
+  }
+  $("eventDialogClose").addEventListener("click",()=>$("eventDialog").close());
+  $("eventDialog").addEventListener("click",event=>{if(event.target===$("eventDialog"))$("eventDialog").close();});
+  $("eventDialog").addEventListener("close",()=>document.body.classList.remove("event-modal-open"));
   function renderCollectibles(){
-    const passes=collectiblesTab==="passes";
-    $("collectiblesTitle").textContent=passes?"Passes":"Badges";
-    $("passesTab").setAttribute("aria-selected",String(passes));
-    $("badgesTab").setAttribute("aria-selected",String(!passes));
-    $("passesTab").tabIndex=passes?0:-1;$("badgesTab").tabIndex=passes?-1:0;
-    $("collectiblesPanel").setAttribute("aria-labelledby",passes?"passesTab":"badgesTab");
+    const passes=collectiblesTab==="passes",events=collectiblesTab==="events";
+    $("collectiblesTitle").textContent=passes?"Passes":events?"Events":"Badges";
+    for(const [tab,id] of [["passes","passesTab"],["badges","badgesTab"],["events","eventsTab"]]){
+      $(id).setAttribute("aria-selected",String(collectiblesTab===tab));$(id).tabIndex=collectiblesTab===tab?0:-1;
+    }
+    $("collectiblesPanel").setAttribute("aria-labelledby",`${collectiblesTab}Tab`);
     $("offsaleControl").hidden=!passes;
     $("priceSortToggle").hidden=!passes;
+    $("eventPeriod").hidden=!events;
+    $("currentEvents").setAttribute("aria-pressed",String(eventPeriod==="current"));
+    $("pastEvents").setAttribute("aria-pressed",String(eventPeriod==="past"));
     $("priceSortToggle").setAttribute("aria-pressed",String(priceSortAsc));
     $("priceSortLabel").textContent=priceSortAsc?"Lowest price":"Highest price";
     const search=$("collectiblesSearch");
-    search.placeholder=passes?"Search passes...":"Search badges...";
-    search.setAttribute("aria-label",passes?"Search passes":"Search badges");
+    search.placeholder=passes?"Search passes...":events?"Search events...":"Search badges...";
+    search.setAttribute("aria-label",passes?"Search passes":events?"Search events":"Search badges");
     if(search.value!==collectiblesQueries[collectiblesTab])search.value=collectiblesQueries[collectiblesTab];
-    const list=extras?(passes?extras.passes||[]:extras.badges||[]):[];
+    const list=extras?(passes?extras.passes||[]:events?extras.events||[]:extras.badges||[]):[];
     const query=collectiblesQueries[collectiblesTab].trim().toLocaleLowerCase();
-    const visible=list.filter(item=>(!passes||$("showOffsale").checked||item.isForSale)&&(!query||(item.name||"").toLocaleLowerCase().includes(query)));
+    const now=Date.now();
+    const visible=list.filter(item=>(!passes||$("showOffsale").checked||item.isForSale)&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
     if(passes)visible.sort((a,b)=>{
       const aPrice=a.isForSale&&Number.isFinite(a.price)?a.price:null;
       const bPrice=b.isForSale&&Number.isFinite(b.price)?b.price:null;
@@ -386,15 +425,19 @@
       if(bPrice===null)return -1;
       return priceSortAsc?aPrice-bPrice:bPrice-aPrice;
     });
-    $("collectiblesGrid").replaceChildren(...visible.map(item=>collectibleCard(item,collectiblesTab)));
+    if(events)visible.sort((a,b)=>eventPeriod==="past"?Date.parse(b.end)-Date.parse(a.end):Number(Date.parse(a.start)>now)-Number(Date.parse(b.start)>now)||Date.parse(a.start)-Date.parse(b.start));
+    $("collectiblesGrid").classList.toggle("events-grid",events);
+    $("collectiblesGrid").replaceChildren(...visible.map(item=>events?eventCard(item):collectibleCard(item,collectiblesTab)));
     const message=$("collectiblesMessage");
     message.hidden=Boolean(visible.length);
-    if(!visible.length)message.textContent=!extras?"Loading…":extras.error?"Couldn't load this collection right now.":query?`No ${passes?"passes":"badges"} match your search.`:passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${passes?"passes":"badges"} found.`;
+    if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?`No ${eventPeriod} events found.`:passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${collectiblesTab} found.`;
   }
-  for(const [id,kind] of [["passesTab","passes"],["badgesTab","badges"]]){
+  const tabOrder=[["passesTab","passes"],["badgesTab","badges"],["eventsTab","events"]];
+  for(const [index,[id,kind]] of tabOrder.entries()){
     $(id).addEventListener("click",()=>{collectiblesTab=kind;renderCollectibles();});
-    $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const other=kind==="passes"?"badgesTab":"passesTab";$(other).click();$(other).focus();}});
+    $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const next=tabOrder[(index+(event.key==="ArrowRight"?1:tabOrder.length-1))%tabOrder.length][0];$(next).click();$(next).focus();}});
   }
+  for(const [id,period] of [["currentEvents","current"],["pastEvents","past"]])$(id).addEventListener("click",()=>{eventPeriod=period;renderCollectibles();});
   $("showOffsale").addEventListener("change",renderCollectibles);
   $("priceSortToggle").addEventListener("click",()=>{priceSortAsc=!priceSortAsc;renderCollectibles();});
   $("collectiblesSearch").addEventListener("input",event=>{collectiblesQueries[collectiblesTab]=event.target.value;renderCollectibles();});
@@ -402,8 +445,8 @@
     try{
       const response=await fetch(`${ROOT}data/extras.json`,{cache:"no-store"});
       if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],badges:[]};
-    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],badges:[]};}
+      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],badges:[],events:[]};
+    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],badges:[],events:[]};}
     renderCollectibles();
   }
   loadExtras();

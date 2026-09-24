@@ -48,8 +48,8 @@ async function thumbnails(kind, ids) {
   for (let index = 0; index < ids.length; index += 100) {
     const batch = ids.slice(index, index + 100);
     const url = new URL(`https://thumbnails.roblox.com/v1/${kind}`);
-    url.searchParams.set(kind === "game-passes" ? "gamePassIds" : "badgeIds", batch.join(","));
-    url.searchParams.set("size", "150x150");
+    url.searchParams.set(kind === "game-passes" ? "gamePassIds" : kind === "assets" ? "assetIds" : "badgeIds", batch.join(","));
+    url.searchParams.set("size", kind === "assets" ? "768x432" : "150x150");
     url.searchParams.set("format", "Png");
     url.searchParams.set("isCircular", "false");
     const result = await getJson(url);
@@ -58,7 +58,44 @@ async function thumbnails(kind, ids) {
   return urls;
 }
 
-async function collectGame(universeId) {
+async function collectEvents(universeId, cachedEvents = []) {
+  const items = [];
+  let cursor = "";
+  const seen = new Set();
+  for (let page = 0; page < 100; page++) {
+    const url = new URL(`https://apis.roblox.com/virtual-events/v1/universes/${universeId}/virtual-events`);
+    if (cursor) url.searchParams.set("cursor", cursor);
+    const result = await getJson(url);
+    if (!Array.isArray(result.data)) throw new Error(`Missing events in ${url}`);
+    items.push(...result.data.filter(item => item.eventVisibility === "public"));
+    cursor = result.nextPageCursor || "";
+    if (!cursor) break;
+    if (seen.has(cursor)) throw new Error(`Repeated event cursor for universe ${universeId}`);
+    seen.add(cursor);
+    if (page === 99) throw new Error(`Too many event pages for universe ${universeId}`);
+  }
+  const events = new Map(cachedEvents.map(item => [item.id, item]));
+  for (const item of items) {
+    const thumbnail = [...(item.thumbnails || [])].sort((a, b) => a.rank - b.rank)[0];
+    const event = {
+      id: String(item.id),
+      name: item.displayTitle || item.title || "Untitled event",
+      description: item.displayDescription || item.description || "",
+      subtitle: item.displaySubtitle || item.subtitle || "",
+      category: [...(item.eventCategories || [])].sort((a, b) => a.rank - b.rank)[0]?.category || null,
+      start: item.eventTime?.startUtc || null,
+      end: item.eventTime?.endUtc || null,
+      thumbnailAssetId: thumbnail?.mediaId || null,
+      thumbnailUrl: null,
+    };
+    if (Number.isFinite(Date.parse(event.start)) && Number.isFinite(Date.parse(event.end))) events.set(event.id, event);
+  }
+  const mediaIds = [...new Set([...events.values()].map(item => item.thumbnailAssetId).filter(Boolean))];
+  const images = await thumbnails("assets", mediaIds);
+  return [...events.values()].map(item => ({ ...item, thumbnailUrl: images.get(String(item.thumbnailAssetId)) || item.thumbnailUrl || null }));
+}
+
+async function collectGame(universeId, cached) {
   const [passes, badges] = await Promise.all([
     allPages(`https://apis.roblox.com/game-passes/v1/universes/${universeId}/game-passes?passView=Full&pageSize=100`, "gamePasses", "nextPageToken", "pageToken"),
     allPages(`https://badges.roblox.com/v1/universes/${universeId}/badges?limit=100&sortOrder=Desc`, "data", "nextPageCursor", "cursor"),
@@ -67,8 +104,14 @@ async function collectGame(universeId) {
     thumbnails("game-passes", passes.map(item => item.id)),
     thumbnails("badges/icons", badges.map(item => item.id)),
   ]);
+  let events = cached?.events || [];
+  let eventsError = false;
+  try { events = await collectEvents(universeId, cached?.events || []); }
+  catch (error) { console.warn(`Events for ${universeId}: ${String(error)}`); eventsError = true; }
   return {
     fetchedAt: new Date().toISOString(),
+    events,
+    eventsError,
     passes: passes.map(item => ({
       id: item.id,
       name: item.displayName || item.name || "Untitled pass",
@@ -96,18 +139,18 @@ const result = { ok: true, generatedAt: new Date().toISOString(), games: {} };
 for (const game of games) {
   const cached = previous.games?.[game.slug];
   const hasAwardedCounts = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount"));
-  if (cached && hasAwardedCounts && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
+  if (cached && hasAwardedCounts && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
     result.games[game.slug] = cached;
     continue;
   }
   try {
     const universeId = game.universeId || ids.get(game.slug);
     if (!universeId) throw new Error("Missing universe ID");
-    result.games[game.slug] = await collectGame(universeId);
-    console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].badges.length} badges`);
+    result.games[game.slug] = await collectGame(universeId, cached);
+    console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
   } catch (error) {
     console.warn(`${game.slug}: ${String(error)}`);
-    result.games[game.slug] = cached || { error: true, passes: [], badges: [] };
+    result.games[game.slug] = cached || { error: true, passes: [], badges: [], events: [] };
   }
 }
 await mkdir(path.dirname(output), { recursive: true });
