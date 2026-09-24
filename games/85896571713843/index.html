@@ -195,15 +195,18 @@
 
   function drawChart(){
     const host=$("chartHost"), note=$("chartNote"), tip=$("chartTooltip"); tip.classList.add("hidden"); if(chartPoints.length<2){host.innerHTML="";$("chartStats").innerHTML="";note.textContent=`Collecting ${chartLabels[chartMetric].toLowerCase()} history…`;note.classList.remove("hidden");note.classList.add("flex");return;} note.classList.add("hidden");note.classList.remove("flex");
-    const W=1000,H=400,PL=44,PR=44,PT=18,PB=42; const xs=chartPoints.map(p=>p.x),ys=chartPoints.map(p=>p.y);const minX=Math.min(...xs),maxX=Math.max(...xs),lo=Math.min(...ys),hi=Math.max(...ys);const margin=(hi-lo)*.12||Math.max(1,hi*.08);const yMin=Math.max(0,lo-margin),yMax=hi+margin;
+    const W=Math.max(260,host.clientWidth),H=Math.max(220,host.clientHeight);
+    const PL=chartMetric==="visits"?70:chartMetric==="favorites"?62:52,PR=32,PT=18,PB=34;
+    const navPanel=$("chartNavigatorPanel");navPanel.style.width=`${W-PL-PR}px`;navPanel.style.marginLeft=`${PL}px`;navPanel.style.marginRight="0";
+    const xs=chartPoints.map(p=>p.x),ys=chartPoints.map(p=>p.y);const minX=Math.min(...xs),maxX=Math.max(...xs),lo=Math.min(...ys),hi=Math.max(...ys);const margin=(hi-lo)*.12||Math.max(1,hi*.08);const yMin=Math.max(0,lo-margin),yMax=hi+margin;
     const x=t=>PL+(t-minX)/(maxX-minX||1)*(W-PL-PR), y=v=>PT+(1-(v-yMin)/(yMax-yMin||1))*(H-PT-PB);
     const axisLabel=value=>chartMetric==="visits"&&value>=1000000
       ? `${(value/1000000).toFixed(Math.min(4,Math.max(1,Math.ceil(Math.log10(4000000/(yMax-yMin||1))))))}M`
-      : compact(Math.round(value));
-    const ticks=4; let grid="";for(let i=0;i<=ticks;i++){const yy=PT+i*(H-PT-PB)/ticks,val=yMax-i*(yMax-yMin)/ticks;grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-3}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="${chartMetric==="visits"?9:11}">${axisLabel(val)}</text>`;}
-    let xt="";for(let i=0;i<5;i++){const t=minX+i*(maxX-minX)/4,xx=x(t);xt+=`<text x="${xx}" y="${H-12}" text-anchor="middle" fill="#64748b" font-size="11">${chartRange==="1d"?clockLabel(t):dayLabel(t)}</text>`;}
+      : yMax-yMin<1000?fmt(Math.round(value)):compact(Math.round(value));
+    const ticks=Math.min(10,Math.max(4,Math.floor(H/95))); let grid="";for(let i=0;i<=ticks;i++){const yy=PT+i*(H-PT-PB)/ticks,val=yMax-i*(yMax-yMin)/ticks;grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-7}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${axisLabel(val)}</text>`;}
+    const xTicks=Math.min(11,Math.max(3,Math.floor((W-PL-PR)/155)));let xt="";for(let i=0;i<xTicks;i++){const t=minX+i*(maxX-minX)/(xTicks-1),xx=x(t);xt+=`<text x="${xx}" y="${H-10}" text-anchor="middle" fill="#64748b" font-size="11">${chartRange==="1d"?clockLabel(t):dayLabel(t)}</text>`;}
     const line=chartPoints.map((p,i)=>`${i?"L":"M"}${x(p.x).toFixed(1)} ${y(p.y).toFixed(1)}`).join(" "); const area=`${line} L${x(chartPoints.at(-1).x)} ${H-PB} L${x(chartPoints[0].x)} ${H-PB} Z`;
-    host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" width="100%" height="100%" aria-label="${chartLabels[chartMetric]} history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden" vector-effect="non-scaling-stroke"/></svg>`;
+    host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${chartLabels[chartMetric]} history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML=`<span class="chart-stat">High <b>${fmt(Math.max(...ys))}</b></span><span class="chart-stat">Low <b>${fmt(Math.min(...ys))}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(ys.reduce((a,b)=>a+b,0)/ys.length))}</b></span>`;
     const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"); const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const xx=x(best.x);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");tip.innerHTML=`<b>${fmt(best.y)} ${chartLabels[chartMetric].toLowerCase()}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";}; svg.addEventListener("pointermove",move);svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");tip.classList.add("hidden");});
   }
@@ -401,6 +404,10 @@
   }
   loadExtras();
   Tracker.setupChartFullscreen($("gameChartPanel"),$("gameFullscreenToggle"));
+  if(typeof ResizeObserver==="function"){
+    let size="";
+    new ResizeObserver(()=>{const wrap=$("chartWrap"),next=`${wrap.clientWidth}x${wrap.clientHeight}`;if(next===size)return;size=next;requestAnimationFrame(drawChart);}).observe($("chartWrap"));
+  }
   document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.addEventListener("click",()=>loadRange(b.dataset.range,true)));
   Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
 })();
