@@ -132,16 +132,22 @@ function buildHistory(raw, rangeKey, nowSec) {
   const series = {};
   for (const [slug, points] of Object.entries(raw.games)) {
     const buckets = new Map();
-    for (const [t, playing] of points) {
+    for (const [t, playing, favorites, visits] of points) {
       if (since !== null && t < since) continue;
       const key = Math.floor(t / bucket) * bucket;
-      const entry = buckets.get(key) || { sum: 0, count: 0, peak: 0 };
+      const entry = buckets.get(key) || { sum: 0, count: 0, peak: 0, favoritesSum: 0, favoritesCount: 0, visitsSum: 0, visitsCount: 0 };
       entry.sum += playing; entry.count += 1; entry.peak = Math.max(entry.peak, playing);
+      if (Number.isFinite(favorites)) { entry.favoritesSum += favorites; entry.favoritesCount += 1; }
+      if (Number.isFinite(visits)) { entry.visitsSum += visits; entry.visitsCount += 1; }
       buckets.set(key, entry);
     }
     series[slug] = [...buckets.entries()]
       .sort((a, b) => a[0] - b[0])
-      .map(([key, e]) => ({ t: new Date(key * 1000).toISOString(), playing: Math.round(e.sum / e.count), peak: e.peak }));
+      .map(([key, e]) => ({
+        t: new Date(key * 1000).toISOString(), playing: Math.round(e.sum / e.count), peak: e.peak,
+        favorites: e.favoritesCount ? Math.round(e.favoritesSum / e.favoritesCount) : null,
+        visits: e.visitsCount ? Math.round(e.visitsSum / e.visitsCount) : null,
+      }));
   }
 
   return {
@@ -189,8 +195,9 @@ const live = await fetchLive(games);
 for (const game of live) {
   const points = (raw.games[game.slug] ||= []);
   const last = points[points.length - 1];
-  if (last && nowSec - last[0] < 60) points[points.length - 1] = [nowSec, game.playing];
-  else points.push([nowSec, game.playing]);
+  const reading = [nowSec, game.playing, game.favorites, game.visits];
+  if (last && nowSec - last[0] < 60) points[points.length - 1] = reading;
+  else points.push(reading);
 }
 const cutoff = nowSec - RETENTION_DAYS * 86400;
 for (const slug of Object.keys(raw.games)) raw.games[slug] = raw.games[slug].filter(([t]) => t >= cutoff);

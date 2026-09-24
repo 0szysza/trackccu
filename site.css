@@ -126,13 +126,12 @@ body {
 /* Compare chart: horizontal drags scrub the chart, vertical drags still scroll the page. */
 .chart-wrap { touch-action: pan-y; }
 .chart-wrap svg text { user-select: none; }
-.chart-navigator-panel { margin-top:18px; }
+.game-stat-stack { display:grid;gap:12px; }
+.chart-heading,.chart-controls { display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap; }
+.chart-controls { justify-content:flex-end; }
+.chart-navigator-panel { width:87.2%;margin:8px auto 0; }
 .chart-navigator-panel[hidden] { display:none; }
-.chart-navigator-heading,.chart-navigator-axis { display:flex;justify-content:space-between;gap:12px;color:#64748b;font-size:.68rem; }
-.chart-navigator-heading { margin-bottom:7px; }
-.chart-navigator-heading span:last-child { color:#94a3b8;white-space:nowrap; }
-.chart-navigator-axis { margin-top:6px; }
-.chart-navigator { position:relative;height:72px;overflow:hidden;border:1px solid #293149;border-radius:9px;background:#0c1424;touch-action:none;user-select:none; }
+.chart-navigator { position:relative;height:56px;overflow:hidden;border:1px solid #293149;border-radius:9px;background:#0c1424;touch-action:none;user-select:none; }
 .chart-navigator svg { position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none; }
 .chart-navigator-shade { position:absolute;top:0;bottom:0;background:rgba(5,9,18,.58);pointer-events:none; }
 .chart-navigator-shade-left { left:0; }
@@ -144,7 +143,7 @@ body {
 .chart-navigator-handle-start { left:0; }
 .chart-navigator-handle-end { right:0; }
 .chart-navigator-handle:focus-visible { outline:2px solid #fff;outline-offset:-2px; }
-@media (max-width:639px) { .chart-navigator-heading span:first-child { display:none; } .chart-navigator-heading { justify-content:flex-end; } }
+@media (max-width:639px) { .chart-controls { width:100%;justify-content:space-between; } .chart-navigator-panel { width:85%; } }
 .chart-line { filter: drop-shadow(0 0 3px var(--c)); }
 
 /* ---------- Shared vector icons ---------- */
@@ -280,10 +279,15 @@ body {
 /* ---------- Game passes and badges ---------- */
 .collectibles-header,.collectibles-options { display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap; }
 .collectibles-header { margin-bottom:16px; }
+.collectibles-header-controls { display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap; }
 .collectibles-tabs { display:inline-flex;gap:3px;padding:4px;background:#0b0f1c;border:1px solid #283047;border-radius:11px; }
 .collectibles-tabs button { border:0;border-radius:8px;background:transparent;color:#94a3b8;padding:8px 13px;font-size:.75rem;font-weight:750;cursor:pointer; }
 .collectibles-tabs button:hover { color:#fff; }
 .collectibles-tabs button[aria-selected="true"] { background:#263149;box-shadow:inset 0 0 0 1px #334155;color:#fff; }
+.collectibles-sort-toggle { display:inline-flex;align-items:center;gap:7px;padding:9px 11px;border:1px solid #283047;border-radius:10px;background:#0b0f1c;color:#cbd5e1;font-size:.75rem;font-weight:700;cursor:pointer; }
+.collectibles-sort-toggle:hover { border-color:#475569;color:#fff; }
+.collectibles-sort-toggle[aria-pressed="true"] svg { transform:scaleY(-1); }
+.collectibles-sort-toggle[hidden] { display:none; }
 .collectibles-options { justify-content:flex-end;margin:0 0 16px;min-height:28px; }
 .collectibles-options[hidden] { display:none; }
 .collectibles-search-wrap { display:flex;align-items:center;gap:8px;min-width:220px;max-width:320px;flex:1;padding:8px 11px;background:#0b0f1c;border:1px solid #283047;border-radius:10px;color:#64748b; }
@@ -300,6 +304,7 @@ body {
 .offsale-toggle input:checked + .offsale-switch::after { transform:translateX(13px); }
 .offsale-toggle input:focus-visible + .offsale-switch { outline:2px solid #00f0ff;outline-offset:3px; }
 .collectibles-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px; }
+@media (min-width:1180px) { .collectibles-grid { grid-template-columns:repeat(6,minmax(0,1fr)); } }
 .collectible-card { display:flex;flex-direction:column;min-width:0;padding:10px 10px 14px;background:#111528;border:1px solid #293149;border-radius:16px; }
 .collectible-art { display:grid;place-items:center;width:100%;aspect-ratio:1/1;overflow:visible;background:transparent;border:0; }
 .collectible-art img { display:block;width:100%;height:100%;object-fit:contain; }
