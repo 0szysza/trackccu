@@ -55,6 +55,7 @@
     $("membersStat").textContent = fmt(data.members);
     $("totalVisits").textContent = fmt(data.totalVisits);
     $("totalFavorites").textContent = fmt(data.totalFavorites);
+    $("totalPlayers").textContent = fmt(data.totalPlayers);
     $("description").textContent = data.description || "No description available.";
     showDate("created", "createdExact", data.createdAt);
     showDate("trackingSince", "trackingExact", data.trackingSince);

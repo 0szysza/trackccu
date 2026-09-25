@@ -132,7 +132,7 @@
     <dialog id="eventDialog" class="event-dialog" aria-labelledby="eventModalTitle" aria-describedby="eventModalDescription">
       <div class="event-dialog-top"><span id="eventModalCategory" class="event-category"></span><button id="eventDialogClose" type="button" class="event-dialog-close" aria-label="Close event details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
       <img id="eventModalImage" class="event-dialog-image" alt="" hidden>
-      <div class="event-dialog-body"><p id="eventModalStatus" class="event-dialog-status"></p><h2 id="eventModalTitle"></h2><p id="eventModalSubtitle" class="event-dialog-subtitle" hidden></p><div class="event-dialog-links"><span id="eventModalInterested"></span><a id="eventModalLink" href="#" target="_blank" rel="noopener noreferrer">Open on Roblox ↗</a></div><div class="event-dialog-times"><div><span>Starts</span><time id="eventModalStart"></time></div><div><span>Ends</span><time id="eventModalEnd"></time></div></div><p id="eventModalDescription" class="event-dialog-description" hidden></p></div>
+      <div class="event-dialog-body"><p id="eventModalStatus" class="event-dialog-status"></p><h2 id="eventModalTitle"></h2><p id="eventModalSubtitle" class="event-dialog-subtitle" hidden></p><div class="event-dialog-links"><span id="eventModalInterested" class="event-interested"></span><a id="eventModalLink" href="#" target="_blank" rel="noopener noreferrer" class="event-roblox-link">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div><div class="event-dialog-times"><div><span>Starts</span><time id="eventModalStart"></time></div><div><span>Ends</span><time id="eventModalEnd"></time></div></div><p id="eventModalDescription" class="event-dialog-description" hidden></p></div>
     </dialog>
   </div>
 </main>
@@ -372,7 +372,9 @@
   const eventCategory=category=>eventCategories[category]||((category||"Event").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/^./,letter=>letter.toUpperCase()));
   const eventState=item=>Date.parse(item.end)<=Date.now()?"Ended":Date.parse(item.start)>Date.now()?"Upcoming":"Live now";
   const eventUrl=item=>`https://www.roblox.com/events/${encodeURIComponent(item.id)}`;
-  const interestedLabel=item=>`Interested ${fmt(item.interestedCount)}`;
+  const eventInterestedIcon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+  const eventExternalIcon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+  function setInterested(element,item){element.innerHTML=eventInterestedIcon;const label=document.createElement("span");label.textContent="Interested ";const count=document.createElement("strong");count.textContent=fmt(item.interestedCount);label.append(count);element.append(label);}
   function openEvent(item){
     const dialog=$("eventDialog"),image=$("eventModalImage"),description=$("eventModalDescription"),subtitle=$("eventModalSubtitle");
     $("eventModalCategory").textContent=eventCategory(item.category);
@@ -380,7 +382,7 @@
     $("eventModalTitle").textContent=item.name;
     subtitle.textContent=item.subtitle||"";subtitle.hidden=!item.subtitle;
     image.hidden=!item.thumbnailUrl;dialog.classList.toggle("has-image",Boolean(item.thumbnailUrl));if(item.thumbnailUrl)image.src=item.thumbnailUrl;else image.removeAttribute("src");
-    $("eventModalInterested").textContent=interestedLabel(item);
+    setInterested($("eventModalInterested"),item);
     $("eventModalLink").href=eventUrl(item);
     $("eventModalStart").dateTime=item.start;$("eventModalStart").textContent=fullDateTime(item.start);
     $("eventModalEnd").dateTime=item.end;$("eventModalEnd").textContent=fullDateTime(item.end);
@@ -391,15 +393,15 @@
     const card=document.createElement("article");card.className="event-card";
     const open=document.createElement("button");open.type="button";open.className="event-card-open";open.setAttribute("aria-label",`Show details for ${item.name}`);
     const art=document.createElement("div");art.className="event-card-art";
-    if(item.thumbnailUrl){const image=document.createElement("img");image.src=item.thumbnailUrl;image.alt="";image.loading="lazy";image.onerror=()=>image.remove();art.append(image);}
+    if(item.thumbnailUrl){const image=document.createElement("img");image.src=item.thumbnailUrl;image.alt="";image.loading="lazy";image.onerror=()=>{image.remove();art.classList.add("event-card-art-empty");};art.append(image);}else art.classList.add("event-card-art-empty");
     const category=document.createElement("span");category.className="event-category";category.textContent=eventCategory(item.category);art.append(category);
     const body=document.createElement("div");body.className="event-card-body";
     const title=document.createElement("h3");title.textContent=item.name;body.append(title);
     if(item.description){const more=document.createElement("span");more.className="event-card-more";more.textContent="Show description";body.append(more);}
     open.append(art,body);open.addEventListener("click",()=>openEvent(item));
     const footer=document.createElement("div");footer.className="event-card-footer";
-    const interested=document.createElement("span");interested.textContent=interestedLabel(item);
-    const link=document.createElement("a");link.href=eventUrl(item);link.target="_blank";link.rel="noopener noreferrer";link.textContent="Roblox ↗";link.setAttribute("aria-label",`Open ${item.name} on Roblox`);
+    const interested=document.createElement("span");interested.className="event-interested";setInterested(interested,item);
+    const link=document.createElement("a");link.href=eventUrl(item);link.target="_blank";link.rel="noopener noreferrer";link.className="event-roblox-link";link.innerHTML=`Open on Roblox ${eventExternalIcon}`;link.setAttribute("aria-label",`Open ${item.name} on Roblox`);
     footer.append(interested,link);card.append(open,footer);return card;
   }
   $("eventDialogClose").addEventListener("click",()=>$("eventDialog").close());

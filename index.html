@@ -32,9 +32,9 @@
       <h1>Roblox CCU, <span>live and over time.</span></h1>
       <p>CCU Tracker follows Roblox games and their groups every 5 minutes. Check live players and group members, explore their history, or compare two games side by side.</p>
       <div class="home-hero-actions">
-        <a href="games" class="home-primary-btn">Browse games <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg></a>
-        <a href="groups" class="home-secondary-btn">Browse groups</a>
-        <a href="compare" class="home-secondary-btn">Compare two games</a>
+        <a href="games" class="home-action-btn home-action-games"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-icon" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Browse games</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+        <a href="groups" class="home-action-btn home-action-groups"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-icon" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Browse groups</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+        <a href="compare" class="home-action-btn home-action-compare"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-icon" aria-hidden="true"><path d="m16 3 4 4-4 4M20 7H4m4 14-4-4 4-4m-4 4h16"/></svg><span>Compare two games</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
       </div>
     </div>
     <dl class="home-hero-stats" aria-label="Tracker totals">
@@ -45,7 +45,6 @@
   </section>
 
   <section class="space-y-6">
-    <p class="text-xs uppercase tracking-[.18em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon ui-icon-md icon-accent" aria-hidden="true"><path d="M16.247 7.761a6 6 0 0 1 0 8.478"/><path d="M19.075 4.933a10 10 0 0 1 0 14.134"/><path d="M4.925 19.067a10 10 0 0 1 0-14.134"/><path d="M7.753 16.239a6 6 0 0 1 0-8.478"/><circle cx="12" cy="12" r="2"/></svg>Live now</p>
     <div class="space-y-4">
     <div class="flex items-end justify-between gap-4">
       <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tracked games</h2>
@@ -111,7 +110,7 @@
       const data = live.get(group.id);
       return `<a href="groups/${group.id}/" class="home-game-chip home-group-chip" data-group-id="${group.id}">
         <div class="home-game-art"><img src="${data?.iconUrl || iconFallback}" alt="${group.label} icon"></div>
-        <div class="home-game-meta"><div class="home-group-heading"><strong>${escapeHtml(group.label)}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</strong><span class="home-group-owner">by ${escapeHtml(data?.owner?.name || "—")}${verifiedBadgeHtml(data?.owner?.hasVerifiedBadge)}</span></div><div class="home-group-summary"><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div><div class="home-game-stats"><span>Total Players</span><b>${fmt(data?.totalPlayers)}</b></div></div></div>
+        <div class="home-game-meta"><div class="home-group-heading"><strong>${escapeHtml(group.label)}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</strong></div><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div></div>
       </a>`;
     }).join("");
   }
