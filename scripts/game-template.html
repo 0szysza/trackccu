@@ -441,7 +441,7 @@
     const columns=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length);
     const limit=columns*2,view=events?`events:${eventPeriod}`:collectiblesTab,expanded=Boolean(expandedCollectibles[view]);
     grid.replaceChildren(...(expanded?visible:visible.slice(0,limit)).map(item=>events?eventCard(item):collectibleCard(item,collectiblesTab)));
-    const more=$("collectiblesMore");more.hidden=visible.length<=limit;more.textContent=expanded?"Show less":`Show more (${visible.length-limit})`;more.dataset.view=view;
+    const more=$("collectiblesMore");more.hidden=visible.length<=limit;more.textContent=expanded?"Show less":"Show more";more.dataset.view=view;
     const message=$("collectiblesMessage");
     message.hidden=Boolean(visible.length);
     if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?eventPeriod==="past"?"No past events saved yet. Events move here after they end.":"No current or upcoming events found.":passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${collectiblesTab} found.`;
