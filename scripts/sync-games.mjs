@@ -20,6 +20,7 @@
 // are optional too; without them the site falls back to Roblox's own icon,
 // then to the site's generic icon.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -31,6 +32,7 @@ const OUT_DIR = process.env.OUT_DIR || REPO_ROOT;
 
 const games = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
 const groups = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8"));
+const cssHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "site.css"))).digest("hex").slice(0, 12);
 for (const game of games) game.color ??= 65535; // default Discord embed colour (BGS blue)
 
 /* ---------- 1. site.js CATALOG block ---------- */
@@ -98,6 +100,7 @@ const groupTemplate = await readFile(path.join(here, "group-template.html"), "ut
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name));
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);
+
