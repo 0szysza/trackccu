@@ -155,7 +155,9 @@ async function collectGame(universeId, cached, archivedEvents) {
     badges: badges.map(item => ({
       id: item.id,
       name: item.displayName || item.name || "Untitled badge",
+      description: item.displayDescription || item.description || "",
       awardedCount: Number.isFinite(item.statistics?.awardedCount) ? item.statistics.awardedCount : null,
+      winRatePercentage: Number.isFinite(item.statistics?.winRatePercentage) ? item.statistics.winRatePercentage : null,
       created: item.created || null,
       updated: item.updated || null,
       iconUrl: badgeIcons.get(String(item.id)) || null,
@@ -182,13 +184,13 @@ const ids = new Map((live.games || []).map(game => [game.slug, game.universeId])
 const result = { ok: true, generatedAt: new Date().toISOString(), games: {} };
 for (const game of games) {
   const cached = previous.games?.[game.slug];
-  const hasAwardedCounts = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount"));
+  const hasBadgeDetails = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount") && Object.hasOwn(badge, "winRatePercentage") && Object.hasOwn(badge, "description"));
   const hasPassDescriptions = cached?.passes?.every(pass => Object.hasOwn(pass, "description"));
   try {
     const universeId = game.universeId || ids.get(game.slug);
     if (!universeId) throw new Error("Missing universe ID");
     const archive = eventArchive[game.slug] || [];
-    if (cached && hasAwardedCounts && hasPassDescriptions && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
+    if (cached && hasBadgeDetails && hasPassDescriptions && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
       let events = [...new Map([...archive, ...cached.events].map(item => [item.id, item])).values()];
       let eventsError = false;
       try { events = await collectEvents(universeId, cached.events, archive); }
@@ -207,4 +209,3 @@ for (const game of games) {
 await mkdir(path.dirname(output), { recursive: true });
 await writeFile(output, JSON.stringify(result));
 console.log(`Wrote ${output}`);
-
