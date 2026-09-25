@@ -472,30 +472,39 @@ body.event-modal-open { overflow:hidden; }
 .pass-dialog-hero img { display:block;width:118px;height:118px;object-fit:contain; }
 .pass-dialog-hero img[hidden],.pass-dialog-description[hidden] { display:none; }
 .pass-dialog-game { color:#94a3b8;font-size:.77rem;font-weight:700; }
-.pass-dialog-game span { color:#cbd5e1; }
+.pass-dialog-game a { color:#cbd5e1;text-decoration:none; }
+.pass-dialog-game a:hover { color:#34bfe5;text-decoration:underline; }
 .pass-dialog-hero h2 { margin-top:5px;color:#fff;font-size:clamp(1.3rem,3vw,1.85rem);font-weight:800;line-height:1.2;overflow-wrap:anywhere; }
 .pass-dialog-description { margin-top:10px;color:#94a3b8;font-size:.84rem;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere; }
-.pass-dialog-metrics { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px; }
-.pass-dialog-metrics>div,.pass-dialog-dates>div { min-width:0;padding:13px 15px;border:1px solid #293149;border-radius:11px;background:#111528; }
-.pass-dialog-metrics span,.pass-dialog-dates span { display:block;margin-bottom:7px;color:#64748b;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }
-.pass-dialog-metrics strong,.pass-dialog-dates strong { display:flex;align-items:center;gap:5px;color:#f8fafc;font-size:1rem;font-weight:800;overflow-wrap:anywhere; }
-.pass-dialog-metrics .pass-dialog-price { color:#34bfe5; }
-.pass-dialog-metrics .pass-dialog-price.is-offsale { color:#94a3b8; }
+.pass-dialog-summary { display:grid;grid-template-columns:minmax(130px,1fr) minmax(0,2fr);gap:10px; }
+.pass-dialog-metric,.pass-dialog-votes,.pass-dialog-dates>div { min-width:0;padding:13px 15px;border:1px solid #293149;border-radius:11px;background:#111528; }
+.pass-dialog-label { display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#64748b;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }
+.pass-dialog-label svg,.pass-dialog-history-heading h3 svg { width:14px;height:14px;flex:none;color:#34bfe5; }
+.pass-dialog-metric strong,.pass-dialog-dates strong { display:flex;align-items:center;gap:5px;color:#f8fafc;font-size:1rem;font-weight:800;overflow-wrap:anywhere; }
+.pass-dialog-metric .pass-dialog-price { color:#34bfe5; }
+.pass-dialog-metric .pass-dialog-price.is-offsale { color:#94a3b8; }
+.pass-dialog-votes .pass-dialog-label { justify-content:space-between; }
+.pass-dialog-votes .pass-dialog-label strong { color:#f8fafc;font-size:.78rem;letter-spacing:0; }
+.pass-vote-bar { height:5px;overflow:hidden;border-radius:10px;background:#44506a; }
+.pass-vote-bar span { display:block;height:100%;border-radius:inherit;background:#34bfe5; }
+.pass-vote-counts { display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;color:#cbd5e1; }
+.pass-vote-counts>span { display:inline-flex;align-items:center;gap:5px; }
+.pass-vote-counts strong { font-size:.78rem;font-weight:800; }
+.pass-vote-counts svg { width:15px;height:15px; }
 .pass-dialog-price svg { width:18px;height:18px;flex:none; }
 .pass-dialog-dates { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
 .pass-dialog-dates small { display:block;margin-top:5px;color:#64748b;font-size:.72rem; }
 .pass-dialog-history { min-width:0;padding:16px;border:1px solid #293149;border-radius:12px;background:#111528; }
 .pass-dialog-history-heading { display:flex;align-items:center;justify-content:space-between;gap:12px; }
-.pass-dialog-history-heading h3 { color:#f8fafc;font-size:.97rem;font-weight:800; }
-.pass-dialog-history-heading span,.pass-price-note { color:#64748b;font-size:.72rem; }
+.pass-dialog-history-heading h3 { display:flex;align-items:center;gap:7px;color:#f8fafc;font-size:.97rem;font-weight:800; }
+.pass-dialog-history-heading span { color:#64748b;font-size:.72rem; }
 .pass-price-chart { display:grid;place-items:center;min-height:210px;margin-top:14px; }
 .pass-price-chart svg { display:block;max-width:100%; }
 .pass-chart-empty { color:#64748b;font-size:.82rem;text-align:center; }
-.pass-price-note { margin-top:7px; }
 .pass-dialog-link { display:inline-flex;align-items:center;gap:5px;width:max-content;color:#34bfe5;font-size:.82rem;font-weight:800;text-decoration:none; }
 .pass-dialog-link:hover { color:#a5f3fc;text-decoration:underline; }
 .pass-dialog-link svg { width:14px;height:14px; }
-@media (max-width:600px) { .pass-dialog-content { gap:14px;padding:18px; } .pass-dialog-hero { grid-template-columns:84px minmax(0,1fr);gap:12px; } .pass-dialog-hero img { width:84px;height:84px; } .pass-dialog-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) { .pass-dialog-content { gap:14px;padding:18px; } .pass-dialog-hero { grid-template-columns:84px minmax(0,1fr);gap:12px; } .pass-dialog-hero img { width:84px;height:84px; } .pass-dialog-summary { grid-template-columns:1fr; } }
 .collectible-card { display:flex;flex-direction:column;min-width:0;padding:10px 10px 14px;background:#111528;border:1px solid #293149;border-radius:16px; }
 .collectible-card-pass { cursor:pointer;transition:border-color .15s; }
 .collectible-card-pass:hover { border-color:#34bfe5; }
@@ -528,4 +537,3 @@ body.event-modal-open { overflow:hidden; }
 #gameRanges .range-btn:hover { color:#cbd5e1; }
 #gameRanges .range-btn[aria-pressed="true"] { color:#f8fafc;background:#263149;box-shadow:inset 0 0 0 1px #334155; }
 #gameRanges[aria-busy="true"] .range-btn { cursor:progress; }
-

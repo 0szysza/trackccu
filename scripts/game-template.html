@@ -137,10 +137,10 @@
     <dialog id="passDialog" class="pass-dialog" aria-labelledby="passModalTitle">
       <div class="pass-dialog-top"><span class="pass-dialog-kicker">Game pass</span><button id="passDialogClose" type="button" class="event-dialog-close" aria-label="Close pass details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
       <div class="pass-dialog-content">
-        <div class="pass-dialog-hero"><img id="passModalImage" alt="" hidden><div><p class="pass-dialog-game">From <span id="passModalGame"></span></p><h2 id="passModalTitle"></h2><p id="passModalDescription" class="pass-dialog-description" hidden></p></div></div>
-        <div class="pass-dialog-metrics"><div><span>Price</span><strong id="passModalPrice" class="pass-dialog-price"></strong></div><div><span>Game upvotes</span><strong id="passModalUpvotes"></strong></div><div><span>Game rating</span><strong id="passModalRating"></strong></div></div>
-        <div class="pass-dialog-dates"><div><span>Created</span><strong id="passModalCreated"></strong><small id="passModalCreatedExact"></small></div><div><span>Updated</span><strong id="passModalUpdated"></strong><small id="passModalUpdatedExact"></small></div></div>
-        <div class="pass-dialog-history"><div class="pass-dialog-history-heading"><h3>Price history</h3><span id="passModalTrackedSince"></span></div><div id="passPriceChart" class="pass-price-chart" role="img" aria-label="Price history chart"></div><p id="passPriceNote" class="pass-price-note"></p></div>
+        <div class="pass-dialog-hero"><img id="passModalImage" alt="" hidden><div><p class="pass-dialog-game">From <a id="passModalGame" href="#" target="_blank" rel="noopener noreferrer"></a></p><h2 id="passModalTitle"></h2><p id="passModalDescription" class="pass-dialog-description" hidden></p></div></div>
+        <div class="pass-dialog-summary"><div class="pass-dialog-metric"><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 3-6 6 12 12 6-6L9 3Z"/><path d="m13 7-6 6"/></svg> Price</span><strong id="passModalPrice" class="pass-dialog-price"></strong></div><div class="pass-dialog-votes"><span class="pass-dialog-label">Game rating <strong id="passModalRating"></strong></span><div class="pass-vote-bar" role="img" aria-label="Game upvotes and downvotes"><span id="passVoteBarFill"></span></div><div class="pass-vote-counts"><span title="Game upvotes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3Z"/><path d="M7 10 12 2a3 3 0 0 1 3 3v3h4.5a2.5 2.5 0 0 1 2.45 3l-1.8 9A2.5 2.5 0 0 1 17.7 22H7"/></svg><strong id="passModalUpvotes"></strong></span><span title="Game downvotes"><strong id="passModalDownvotes"></strong><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3Z"/><path d="m17 14-5 8a3 3 0 0 1-3-3v-3H4.5a2.5 2.5 0 0 1-2.45-3l1.8-9A2.5 2.5 0 0 1 6.3 2H17"/></svg></span></div></div></div>
+        <div class="pass-dialog-dates"><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg> Created</span><strong id="passModalCreated"></strong><small id="passModalCreatedExact"></small></div><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.36 6.36L3 16"/><path d="M8 16H3v5"/></svg> Updated</span><strong id="passModalUpdated"></strong><small id="passModalUpdatedExact"></small></div></div>
+        <div class="pass-dialog-history"><div class="pass-dialog-history-heading"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 2 5-6"/></svg> Price history</h3><span id="passModalTrackedSince"></span></div><div id="passPriceChart" class="pass-price-chart" role="img" aria-label="Price history chart"></div></div>
         <a id="passModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer">Open pass on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
       </div>
     </dialog>
@@ -356,10 +356,10 @@
   }
   let openPassItem=null;
   function drawPassPriceChart(item){
-    const chart=$("passPriceChart"),note=$("passPriceNote"),since=$("passModalTrackedSince");
+    const chart=$("passPriceChart"),since=$("passModalTrackedSince");
     const readings=(item.priceHistory||[]).map(point=>({x:Date.parse(point.t),price:point.price})).filter(point=>Number.isFinite(point.x)&&(point.price===null||Number.isFinite(point.price))).sort((a,b)=>a.x-b.x);
     const priced=readings.filter(point=>Number.isFinite(point.price));
-    if(!priced.length){chart.innerHTML='<p class="pass-chart-empty">No price recorded yet.</p>';note.textContent=item.isForSale?"Price tracking will start with the next update.":"This pass is offsale. Price tracking starts when a price is available.";since.textContent="";return;}
+    if(!priced.length){chart.innerHTML='<p class="pass-chart-empty">No price data</p>';since.textContent="";return;}
     const first=readings[0].x,last=Math.max(first,Date.parse(item.priceLastObservedAt)||Date.now());
     since.textContent=`Since ${dateLabel(first)}`;
     const W=Math.max(280,chart.clientWidth),H=210,L=58,R=18,T=20,B=34;
@@ -376,17 +376,20 @@
       if(next&&Number.isFinite(next.price))paths+=`M${x(next.x).toFixed(1)} ${y(point.price).toFixed(1)}V${y(next.price).toFixed(1)}`;
       dots+=`<circle cx="${x(point.x).toFixed(1)}" cy="${y(point.price).toFixed(1)}" r="4" fill="#34bfe5" stroke="#15192d" stroke-width="2"><title>${fmt(point.price)} Robux · ${fullDateTime(point.x)}</title></circle>`;
     }
-    chart.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="210" role="img" aria-label="Recorded price history for ${String(item.name||"pass").replace(/[&<>"']/g,"")}">${grid}<path d="${paths}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}<text x="${L}" y="${H-9}" fill="#64748b" font-size="11">${dateLabel(first)}</text><text x="${W-R}" y="${H-9}" text-anchor="end" fill="#64748b" font-size="11">${last-first<60000?"First reading":dateLabel(last)}</text></svg>`;
-    note.textContent=readings.length===1?last-first<3600000?"First price reading recorded. Future changes will appear here.":"No price changes recorded since tracking started.":item.isForSale?"Price changes appear here after each update.":"This pass is currently offsale.";
+    const dates=last-first<60000?`<text x="${W/2}" y="${H-9}" text-anchor="middle" fill="#64748b" font-size="11">${dateLabel(first)}</text>`:`<text x="${L}" y="${H-9}" fill="#64748b" font-size="11">${dateLabel(first)}</text><text x="${W-R}" y="${H-9}" text-anchor="end" fill="#64748b" font-size="11">${dateLabel(last)}</text>`;
+    chart.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="210" role="img" aria-label="Recorded price history for ${String(item.name||"pass").replace(/[&<>"']/g,"")}">${grid}<path d="${paths}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}${dates}</svg>`;
   }
   function openPass(item){
     openPassItem=item;
     const dialog=$("passDialog"),image=$("passModalImage"),description=$("passModalDescription"),price=$("passModalPrice");
-    $("passModalTitle").textContent=item.name||"Untitled pass";$("passModalGame").textContent=latest?.liveName||game.label;
+    $("passModalTitle").textContent=item.name||"Untitled pass";$("passModalGame").textContent=latest?.liveName||game.label;$("passModalGame").href=game.url;
     description.textContent=item.description||"";description.hidden=!item.description;
     image.hidden=!item.iconUrl;dialog.querySelector(".pass-dialog-hero").classList.toggle("no-image",!item.iconUrl);if(item.iconUrl)image.src=item.iconUrl;else image.removeAttribute("src");
     price.replaceChildren();price.classList.toggle("is-offsale",!item.isForSale);if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}else price.textContent="Offsale";
-    $("passModalUpvotes").textContent=fmt(latest?.upVotes);$("passModalRating").textContent=Number.isFinite(latest?.ratingPercent)?`${latest.ratingPercent}%`:"—";
+    const up=Number(latest?.upVotes),down=Number(latest?.downVotes),hasVotes=Number.isFinite(up)&&Number.isFinite(down)&&up+down>0;
+    $("passModalUpvotes").textContent=hasVotes?fmt(up):"—";$("passModalDownvotes").textContent=hasVotes?fmt(down):"—";
+    $("passModalRating").textContent=hasVotes?`${Math.round(up/(up+down)*100)}%`:"—";$("passVoteBarFill").style.width=hasVotes?`${up/(up+down)*100}%`:"0%";
+    dialog.querySelector(".pass-vote-bar").setAttribute("aria-label",hasVotes?`Game rating: ${fmt(up)} upvotes and ${fmt(down)} downvotes`:"Game rating unavailable");
     for(const [label,exact,stamp] of [["passModalCreated","passModalCreatedExact",item.created],["passModalUpdated","passModalUpdatedExact",item.updated]]){$(label).textContent=relativeTime(stamp);$(exact).textContent=fullDateTime(stamp);}
     $("passModalLink").href=`https://www.roblox.com/game-pass/${encodeURIComponent(item.id)}/`;
     dialog.showModal();document.body.classList.add("event-modal-open");drawPassPriceChart(item);$("passDialogClose").focus();
@@ -534,4 +537,3 @@
   Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
 })();
 </script></body></html>
-
