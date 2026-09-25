@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const { CATALOG, groupById, groupIdForGame, $, fmt, niceAxis, dayLabel, clockLabel, chartDateTime, relativeTime, fullDateTime, iconFallback, gameChipHtml } = Tracker;
+  const { CATALOG, groupById, groupIdForGame, $, fmt, zeroTrendHtml, niceAxis, dayLabel, clockLabel, chartDateTime, relativeTime, fullDateTime, iconFallback, gameChipHtml } = Tracker;
   Tracker.mountChrome("groups");
   const id = location.pathname.replace(/\/+$/, "").split("/").pop();
   const group = groupById.get(id);
@@ -39,8 +39,9 @@
       for (const point of trendPoints) if (Math.abs(point.x - target) < Math.abs(near.x - target)) near = point;
       if (Math.abs(near.x - target) > tolerance) { el.textContent = ""; continue; }
       const delta = latest.members - near.y;
-      el.textContent = delta === 0 ? `No change in ${label}` : `${delta > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(delta))} in ${label}`;
-      el.className = delta > 0 ? "text-emerald-400" : delta < 0 ? "text-rose-400" : "text-slate-400";
+      if (delta === 0) el.innerHTML = zeroTrendHtml;
+      else el.textContent = `${delta > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(delta))} in ${label}`;
+      el.className = delta > 0 ? "text-emerald-400" : delta < 0 ? "text-rose-400" : "text-slate-400 trend-flat";
     }
   }
   function paintGroup(payload) {
@@ -76,6 +77,7 @@
     const allowed = new Set(latest?.gameSlugs || CATALOG.filter((game) => groupIdForGame(game) === id).map((game) => game.slug));
     const games = CATALOG.filter((game) => allowed.has(game.slug));
     const live = new Map((Tracker.live.payload?.games || []).map((game) => [game.slug, game]));
+    games.sort((a, b) => (live.get(b.slug)?.playing ?? -1) - (live.get(a.slug)?.playing ?? -1));
     const strip = $("groupGames");
     strip.innerHTML = games.map((game) => gameChipHtml(game, live.get(game.slug))).join("");
   }

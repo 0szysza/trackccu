@@ -72,6 +72,8 @@
   const fmt = (value) =>
     typeof value === "number" && Number.isFinite(value) ? nf.format(value) : "—";
 
+  const zeroTrendHtml = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg><span>0</span>';
+
   function compact(value) {
     if (value >= 1000000) return (value / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
     if (value >= 1000) return (value / 1000).toFixed(1).replace(/\.0$/, "") + "k";
@@ -375,7 +377,7 @@
 
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
-    $, fmt, compact, niceAxis, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
+    $, fmt, zeroTrendHtml, compact, niceAxis, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
     setText, iconFor, iconFallback, verifiedBadgeHtml, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();

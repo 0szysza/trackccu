@@ -55,7 +55,7 @@
     if (Math.abs(nearest.x - target) > tolerance) return "";
     const delta = members - nearest.y;
     const color = delta > 0 ? "text-emerald-400" : delta < 0 ? "text-rose-400" : "text-slate-400";
-    return `<span class="${color} normal-case tracking-normal font-semibold text-right">${delta === 0 ? `No change in ${label}` : `${delta > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(delta))} in ${label}`}</span>`;
+    return `<span class="${color} normal-case tracking-normal font-semibold text-right${delta === 0 ? " trend-flat" : ""}">${delta === 0 ? Tracker.zeroTrendHtml : `${delta > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(delta))} in ${label}`}</span>`;
   }
   function spark(points, id) {
     if (points.length < 2) return `<div class="h-full flex items-center justify-center text-xs text-slate-500">Collecting history…</div>`;
@@ -103,3 +103,4 @@
 </script>
 </body>
 </html>
+

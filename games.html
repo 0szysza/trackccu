@@ -333,10 +333,10 @@
       return;
     }
     const diff = playing - nearest.y;
-    el.textContent = diff === 0 ? `no change in ${label}`
-      : `${diff > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(diff))} in ${label}`;
+    if (diff === 0) el.innerHTML = Tracker.zeroTrendHtml;
+    else el.textContent = `${diff > 0 ? "▲ +" : "▼ −"}${fmt(Math.abs(diff))} in ${label}`;
     el.className = "normal-case tracking-normal font-semibold text-right "
-      + (diff > 0 ? "text-emerald-400" : diff < 0 ? "text-rose-400" : "text-slate-400");
+      + (diff > 0 ? "text-emerald-400" : diff < 0 ? "text-rose-400" : "text-slate-400 trend-flat");
   }
 
   function paintTrends() {
@@ -376,3 +376,4 @@
 </script>
 </body>
 </html>
+

@@ -198,8 +198,9 @@
       for(const p of trendPoints)if(Math.abs(p.x-target)<Math.abs(near.x-target))near=p;
       if(Math.abs(near.x-target)>toleranceMs||!Number.isFinite(near.y)){el.textContent="";continue;}
       const diff=latest.playing-near.y;
-      el.textContent=diff===0?`No change in ${label}`:`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in ${label}`;
-      el.className=diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400";
+      if(diff===0)el.innerHTML=Tracker.zeroTrendHtml;
+      else el.textContent=`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in ${label}`;
+      el.className=diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400 trend-flat";
     }
   }
 
