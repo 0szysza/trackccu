@@ -78,6 +78,16 @@
     return String(value);
   }
 
+  function niceAxis(low, high, targetIntervals = 5) {
+    const rough = Math.max(1, high - low) / Math.max(1, targetIntervals);
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rough)));
+    const step = [1, 2, 5, 10].map(multiplier => multiplier * magnitude).find(value => value >= rough) || 10 * magnitude;
+    const min = Math.max(0, Math.floor(low / step) * step);
+    const max = Math.max(min + step, Math.ceil(high / step) * step);
+    const ticks = Array.from({ length: Math.round((max - min) / step) + 1 }, (_, index) => min + index * step);
+    return { min, max, step, ticks };
+  }
+
   const dayFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
   const clockFmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
   const chartDateTimeFmt = new Intl.DateTimeFormat("en-US", {
@@ -365,7 +375,8 @@
 
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
-    $, fmt, compact, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
+    $, fmt, compact, niceAxis, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
     setText, iconFor, iconFallback, verifiedBadgeHtml, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();
+

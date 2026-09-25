@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const { CATALOG, groupById, groupIdForGame, $, fmt, dayLabel, clockLabel, chartDateTime, relativeTime, fullDateTime, iconFallback, gameChipHtml } = Tracker;
+  const { CATALOG, groupById, groupIdForGame, $, fmt, niceAxis, dayLabel, clockLabel, chartDateTime, relativeTime, fullDateTime, iconFallback, gameChipHtml } = Tracker;
   Tracker.mountChrome("groups");
   const id = location.pathname.replace(/\/+$/, "").split("/").pop();
   const group = groupById.get(id);
@@ -139,12 +139,13 @@
     const first = visible[0].x, last = visible.at(-1).x;
     let low = Infinity, high = -Infinity, sum = 0;
     for (const point of visible) { low = Math.min(low, point.y); high = Math.max(high, point.y); sum += point.y; }
-    const margin = (high - low) * .12 || Math.max(1, high * .02), minY = Math.max(0, low - margin), maxY = high + margin;
+    const margin = (high - low) * .12 || Math.max(1, high * .02);
+    const axis = niceAxis(Math.max(0, low - margin), high + margin, Math.min(10, Math.max(4, Math.floor((H - PT - PB) / 90))));
+    const minY = axis.min, maxY = axis.max;
     const x = (time) => PL + (time - first) / (last - first || 1) * (W - PL - PR);
     const y = (value) => PT + (1 - (value - minY) / (maxY - minY || 1)) * (H - PT - PB);
-    const ticks = Math.min(10, Math.max(4, Math.floor(H / 95)));
     let grid = "";
-    for (let i = 0; i <= ticks; i++) { const yy = PT + i * (H - PT - PB) / ticks, value = maxY - i * (maxY - minY) / ticks; grid += `<line x1="${PL}" y1="${yy}" x2="${W - PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL - 7}" y="${yy + 4}" text-anchor="end" fill="#64748b" font-size="11">${fmt(Math.round(value))}</text>`; }
+    for (const value of axis.ticks) { const yy = y(value); grid += `<line x1="${PL}" y1="${yy}" x2="${W - PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL - 7}" y="${yy + 4}" text-anchor="end" fill="#64748b" font-size="11">${fmt(value)}</text>`; }
     const xTicks = Math.min(11, Math.max(3, Math.floor((W - PL - PR) / 155)));
     let labels = "";
     for (let i = 0; i < xTicks; i++) { const time = first + i * (last - first) / (xTicks - 1); labels += `<text x="${x(time)}" y="${H - 10}" text-anchor="middle" fill="#64748b" font-size="11">${range === "1d" ? clockLabel(time) : dayLabel(time)}</text>`; }
@@ -222,3 +223,4 @@
   }
   Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadRange(range); loadTrend(); });
 })();
+

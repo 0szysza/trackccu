@@ -148,7 +148,7 @@
 (() => {
   "use strict";
 
-  const { CATALOG, CONFIG, bySlug, $, fmt, compact, dayLabel, clockLabel, setText, iconFor } = Tracker;
+  const { CATALOG, CONFIG, bySlug, $, fmt, compact, niceAxis, dayLabel, clockLabel, setText, iconFor } = Tracker;
   Tracker.mountChrome("compare");
 
   // Slot colours are fixed (a = cyan, b = pink); only which game sits in a
@@ -451,29 +451,6 @@
     $("chartTitle").textContent = mode === "players" ? "Concurrent players" : "Share of the two games' players";
   }
 
-  function niceStep(rough) {
-    if (rough <= 0) return 1;
-    const magnitude = Math.pow(10, Math.floor(Math.log10(rough)));
-    const n = rough / magnitude;
-    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * magnitude;
-  }
-
-  // 3–6 gridline intervals, whichever leaves the least empty space on top.
-  function niceScale(maxY, desiredTicks = null) {
-    if (desiredTicks) {
-      const step = niceStep(Math.max(1, maxY) / desiredTicks);
-      const count = Math.max(1, Math.ceil(maxY / step));
-      return { step, count, top: step * count };
-    }
-    let best = null;
-    for (const count of [4, 3, 5, 6]) {
-      const step = niceStep(Math.max(1, maxY) / count);
-      const top = step * count;
-      if (!best || top < best.top * 0.98) best = { step, count, top };
-    }
-    return best;
-  }
-
   function nearest(points, t) {
     let lo = 0, hi = points.length - 1;
     while (hi - lo > 1) {
@@ -615,18 +592,19 @@
     if (minX === maxX) { minX -= 3600000; maxX += 3600000; }
     const xOf = (t) => pad.left + ((t - minX) / (maxX - minX)) * plotW;
 
-    let ticks, yTop, fmtTick;
+    let ticks, yBottom = 0, yTop, fmtTick;
     if (mode === "share") {
       yTop = 100; ticks = [0, 25, 50, 75, 100]; fmtTick = (v) => v + "%";
     } else {
-      const maxY = Math.max(...series.flatMap((s) => s.points.map((p) => p.y)));
+      const values = series.flatMap((s) => s.points.map((p) => p.y));
+      const low = Math.min(...values), high = Math.max(...values);
+      const margin = (high - low) * .12 || Math.max(1, high * .02);
       const fullscreen = document.fullscreenElement === $("compareChartPanel") || $("compareChartPanel").classList.contains("chart-fullscreen-fallback");
-      const scale = niceScale(maxY, fullscreen ? Math.min(10, Math.max(5, Math.floor(h / 105))) : null);
-      yTop = scale.top;
-      ticks = Array.from({ length: scale.count + 1 }, (_, i) => scale.step * i);
-      fmtTick = compact;
+      const axis = niceAxis(Math.max(0, low - margin), high + margin, fullscreen ? Math.min(10, Math.max(5, Math.floor(h / 105))) : 5);
+      yBottom = axis.min; yTop = axis.max; ticks = axis.ticks;
+      fmtTick = fmt;
     }
-    const yOf = (v) => pad.top + plotH - (Math.min(v, yTop) / yTop) * plotH;
+    const yOf = (v) => pad.top + plotH - ((Math.min(yTop, Math.max(yBottom, v)) - yBottom) / (yTop - yBottom)) * plotH;
 
     const svg = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, class: "block", role: "img",
       "aria-label": mode === "share" ? "Share of players over time" : "Concurrent players over time" });
@@ -905,3 +883,4 @@
 </script>
 </body>
 </html>
+

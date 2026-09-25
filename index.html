@@ -94,6 +94,7 @@
   Tracker.mountChrome("home");
   const strip = $("homeGames");
   const groupStrip = $("homeGroups");
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
   function renderHomeGames(payload) {
     const live = new Map((payload?.games || []).map((data) => [data.slug, data]));
     const ranked = [...CATALOG].sort((a, b) => {
@@ -110,7 +111,7 @@
       const data = live.get(group.id);
       return `<a href="groups/${group.id}/" class="home-game-chip home-group-chip" data-group-id="${group.id}">
         <div class="home-game-art"><img src="${data?.iconUrl || iconFallback}" alt="${group.label} icon"></div>
-        <div class="home-game-meta"><strong>${group.label}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</strong><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div></div>
+        <div class="home-game-meta"><div class="home-group-heading"><strong>${escapeHtml(group.label)}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</strong><span class="home-group-owner">by ${escapeHtml(data?.owner?.name || "—")}${verifiedBadgeHtml(data?.owner?.hasVerifiedBadge)}</span></div><div class="home-group-summary"><div class="home-game-stats"><span>Members</span><b>${fmt(data?.members)}</b></div><div class="home-game-stats"><span>Total Players</span><b>${fmt(data?.totalPlayers)}</b></div></div></div>
       </a>`;
     }).join("");
   }
@@ -142,3 +143,4 @@
 </script>
 </body>
 </html>
+

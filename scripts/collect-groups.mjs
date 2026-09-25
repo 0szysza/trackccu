@@ -122,6 +122,7 @@ const liveGroups = GROUPS.map((seed, index) => {
   const games = publicGames.get(id) || [];
   const totalVisits = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.visits ?? game.placeVisits ?? 0), 0);
   const totalFavorites = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.favoritedCount ?? 0), 0);
+  const totalPlayers = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.playing ?? game.playing ?? 0), 0);
   const points = (raw.groups[id] ||= []);
   const sample = [now, info.memberCount, totalVisits, totalFavorites];
   if (points.length && now - points.at(-1)[0] < 60) points[points.length - 1] = sample;
@@ -132,7 +133,7 @@ const liveGroups = GROUPS.map((seed, index) => {
     description: info.description || created.description || "",
     createdAt: created.created || null,
     owner: ownerId ? { id: ownerId, name: info.owner?.displayName || info.owner?.username || String(ownerId), username: info.owner?.username || null, hasVerifiedBadge: info.owner?.hasVerifiedBadge === true } : null,
-    members: info.memberCount, totalVisits, totalFavorites,
+    members: info.memberCount, totalVisits, totalFavorites, totalPlayers,
     hasVerifiedBadge: info.hasVerifiedBadge === true,
     iconUrl: iconById.get(id) || null,
     trackingSince: new Date(points[0][0] * 1000).toISOString(),
@@ -151,3 +152,4 @@ await Promise.all([
   ...Object.keys(RANGES).map((range) => writeFile(path.join(dataDir, `group-history-${range}.json`), JSON.stringify(history(raw, range, now)))),
 ]);
 console.log(`Stored ${liveGroups.length} groups and ${Object.values(raw.groups).reduce((sum, points) => sum + points.length, 0)} group history points.`);
+

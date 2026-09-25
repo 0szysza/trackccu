@@ -1,4 +1,260 @@
 {
+  "bgs": [
+    {
+      "id": "7198277840176022293",
+      "name": "😇 UPDATE 80",
+      "description": "😇  New Permanent World, Heaven!\n👑  New Halo Tier Pass, Halo Conversion, & Halo Currency!\n🏝️  4 New Islands\n🥚  3 New Heavenly Themed Eggs!\n💎  Limited Time Wispful Egg!\n🐶  30+ New Pets!\n📜  New Secret Bounty System!\n⭐ Updated Trading, much more secure now!\n❤️ Added the ability to Auto Rejoin while hatching & bubbling!\n🎁 Gamepass, Pet, & Boost Gifting!\n⭐ Restored Original Lighting!\n🍀 Updated Boost Robux Costs!\n⚙️ Tons of Bug Fixes! (Equipped Pets, Chat Notifications, & more!)",
+      "subtitle": "❤️ THE OG BGS IS BACK!",
+      "category": "newContent",
+      "start": "2026-07-25T20:00:23.298+00:00",
+      "end": "2026-07-27T18:00:23.298+00:00",
+      "thumbnailAssetId": 118120979787135,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-3cffe008e38f4fb9968565a950545c6e/768/432/Image/Png/noFilter",
+      "interestedCount": 1771
+    },
+    {
+      "id": "4057266641912857231",
+      "name": "👿 Update 81!",
+      "description": "👿 New Demon Island!\n🥚 Demonic Egg!\n💎 1 Permanent Secret Pet, 2 Limited Secret Pets!\n🎩 Demon Hat Crate!\n🐶 20+ New Pets\n🏆 VIP Wheel Spin!\n🌎 Teleport Gamepass!\n⚙️ Fixed some Bugs!\n❤️ Re-balanced some Pet Stats! (Angelic Shard, etc)\n🔮 Overworld, Candy Land, Beach, & Atlantis Secrets now have Mythics!\n👽 A countdown has appeared....\n🧱 🐧 👑",
+      "subtitle": "❤️ New Update!",
+      "category": "newContent",
+      "start": "2026-07-31T20:00:31.746+00:00",
+      "end": "2026-08-15T18:00:31.746+00:00",
+      "thumbnailAssetId": 106979243693747,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b93e3f5691805153c1628cf306214992/768/432/Image/Png/noFilter",
+      "interestedCount": 2677
+    },
+    {
+      "id": "4687746584551752245",
+      "name": "👽 ANOMALY LANDING",
+      "description": "👽 Aliens have landed in The Overworld!\n🌑 Explore the new Alien Moon Island!\n💎 New Alien Coins Currency!\n🥚 2 New Space-Themed Eggs!\n🐶 25+ New Pets\n🏆 Alien Shop, Wheel Spin, & more!\n👑 Season 25 of the Bubble Pass is here!\n💎 3 New Bounty Pets! + Bounty Index!\n🔮 Extraterrestrial Rewards, 150 Tiers!\n🍹 New Super Potion! Raises a Pet's Level to 25 and Enchant to 40 in one use!\n⚙️ Made Adjustments to Auto Rejoin, Hatching, & overall performance!\n⭐ 10 Total Trading Slots!\n❤️ Shadow Realm added to the Teleport Interface!",
+      "subtitle": "👽 LIMITED WORLD",
+      "category": "newContent",
+      "start": "2026-08-14T20:00:07.299+00:00",
+      "end": "2026-08-17T18:00:07.299+00:00",
+      "thumbnailAssetId": 139288559641259,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6ebd517c4f08ccfca53299e0f34ed2e5/768/432/Image/Png/noFilter",
+      "interestedCount": 2924
+    },
+    {
+      "id": "5957442848143049267",
+      "name": "Alien Event Part 2!",
+      "description": "👽 Alien Part 2 is coming to Bubble Gum Simulator!\n🥚 New Hacker Themed Egg!\n🐶 10+ New Pets\n🏆 New 14 Day Alien Challenges!\n⭐ 14 Day Challenges can be reset & completed again when all quests are complete once! \n🔥 New Badge Rewards!\n💎 Alien Shop Restocked!\n⭐ Season Premium Gifting Added!\n🔮 Mythic Secrets added to Rainbow World & Mystic Forest!\n⚙️ Fixed Hat Auto Delete & Various other bugs!\n\n🎁 The Limited Time Celebration Event + Egg arrive in 1 week!",
+      "subtitle": "New Update!",
+      "category": "newContent",
+      "start": "2026-08-29T18:00:29.863+00:00",
+      "end": "2026-09-11T18:00:29.863+00:00",
+      "thumbnailAssetId": 105113834490071,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-228ddf27d937b49d9d6acaf91142539d/768/432/Image/Png/noFilter",
+      "interestedCount": 2384
+    },
+    {
+      "id": "1546799816435171927",
+      "name": "🎊 Celebration Event!",
+      "description": "🎊 A Special Celebration Event is coming to Bubble Gum Simulator! 🎊\n\n🥚 New Celebration Egg!\n💎 Features New Versions of older iconic secrets such as Pot O Gold, Trophy, & Easter Basket!\n🔥 The only egg with a Tier 4 Legendary!\n🎁 New Heaven Gum Shop! 2 Gums, 2 Flavors, & 2 Faces!\n🏆 Celebration Challenges! Complete to unlock rewards! Can be reset and completed again!\n⚔️ Limited Time Sword Hat Crate + Dominus Astra Secret Hat!\n⚙️ Bug Fixes & more!",
+      "subtitle": "🎊 Extra Update!",
+      "category": "newContent",
+      "start": "2026-09-04T18:00:53.046+00:00",
+      "end": "2026-09-11T18:00:53.046+00:00",
+      "thumbnailAssetId": 107884256588963,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-458c9892c7db2f0bedeeda1f73741fe4/768/432/Image/Png/noFilter",
+      "interestedCount": 2449
+    }
+  ],
+  "jailbreak": [
+    {
+      "id": "902887991488020718",
+      "name": "Winter Update! [2024]",
+      "description": "Join us for a snow covered map, Season 24: Winter Rally, plus a surprise or two! More info to come. Follow this event to be the first to know when the update drops.",
+      "subtitle": "Heavy snow forecasted!",
+      "category": "newContent",
+      "start": "2024-12-20T21:30:00+00:00",
+      "end": "2024-12-27T21:30:00+00:00",
+      "thumbnailAssetId": 98051797172117,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-f7a9b072edfa169a947eef380154949f/768/432/Image/Png/noFilter",
+      "interestedCount": 34499
+    },
+    {
+      "id": "309324135488291093",
+      "name": "⏰ New Limited!",
+      "description": "Catch this vehicle if you can, our newest limited vehicle is arriving soon to celebrate Summer 2025. Limited time only.\n\nSign up to be notified.",
+      "subtitle": "Sign Up, Be Notified.",
+      "category": "newContent",
+      "start": "2025-06-27T20:00:01+00:00",
+      "end": "2025-07-04T06:59:01+00:00",
+      "thumbnailAssetId": 106029994858722,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-65e6d08601b1b451707500dc985b99d9/768/432/Image/Png/noFilter",
+      "interestedCount": 47364
+    },
+    {
+      "id": "1213271587453403544",
+      "name": "The Hatch x Jailbreak",
+      "description": "Roblox's latest event, The Hatch, is working with Jailbreak! Sign up to be notified. Requires a visit from the Event Hub to take part.",
+      "subtitle": "Sign up, be notified!",
+      "category": "festival",
+      "start": "2025-07-02T17:00:00+00:00",
+      "end": "2025-07-12T19:00:00+00:00",
+      "thumbnailAssetId": 106627557547901,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b5140671429dd1388d4bc1afbb87bb0c/768/432/Image/Png/noFilter",
+      "interestedCount": 4475
+    },
+    {
+      "id": "624787490514665751",
+      "name": "🏴‍☠️ Season 27: PIRATES!",
+      "description": "Ahoy! Celebrate summer with a PIRATES themed Season 27, along with more new cosmetics we have yet to announce. \n\nSign up to be notified!",
+      "subtitle": "Win themed prizes!",
+      "category": "newSeason",
+      "start": "2025-06-27T20:00:01+00:00",
+      "end": "2025-08-26T06:59:01+00:00",
+      "thumbnailAssetId": 81964022935540,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-86103d0a6f16f7206a6066b194ba7555/768/432/Image/Png/noFilter",
+      "interestedCount": 28644
+    },
+    {
+      "id": "5300548626869387726",
+      "name": "Season 28: Cyberpunk City",
+      "description": "Season 28 featuring:\n🧪 Cyberpunk themed city and prizes.\n🧪 2 New Vehicles: WYNDR and Katana.\n🧪 New Tier 3 Safes with cyber themed items.\n🧪 Use code 4region4 for 14,000 cash! Release day only!\n",
+      "subtitle": "Out now!",
+      "category": "newContent",
+      "start": "2025-08-29T19:45:32+00:00",
+      "end": "2025-10-21T06:59:00+00:00",
+      "thumbnailAssetId": 95705468427537,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-545edc41999bcafb0f1d615f46578976/768/432/Image/Png/noFilter",
+      "interestedCount": 142740
+    },
+    {
+      "id": "5104859752144044550",
+      "name": "The EPIC [BUG FIX] Update",
+      "description": "🔨 We've heard your cries! We've seen your reports! Be prepared for the biggest list of bug fixes you have ever seen! We are looking all over the game and fixing as much as we can. Plus we might introduce a new thing or two...\n\nThis is a bonus content update in addition to our regularly scheduled October update that is to be announced. Sign up to be notified.\n\nStay tuned! ",
+      "subtitle": "Bonus / Be Notified",
+      "category": "newContent",
+      "start": "2025-10-03T19:30:15+00:00",
+      "end": "2025-10-24T06:59:15+00:00",
+      "thumbnailAssetId": 126109087642358,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a91a2db682646872a8109f584ad374a7/768/432/Image/Png/noFilter",
+      "interestedCount": 87236
+    },
+    {
+      "id": "1028491014529876540",
+      "name": "Fall + Season 29: ROBLOX!",
+      "description": "Work towards (classic) Roblox themed prizes in this stylized Season 29! \n\nWith it, expect further changes to the game! We are far from done! ",
+      "subtitle": "Roblox Items & Fall Vibes",
+      "category": "newSeason",
+      "start": "2025-10-24T19:30:54+00:00",
+      "end": "2025-11-08T18:55:54+00:00",
+      "thumbnailAssetId": 108786187765328,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9064e46201d48d4f6bf62959e2af9d21/768/432/Image/Png/noFilter",
+      "interestedCount": 159376
+    },
+    {
+      "id": "2576082944913048112",
+      "name": "The Winter Update!",
+      "description": "Winter Update [Dec 19]\n- New Limited, at the Prison. Code limited2025 for 15k Cash.\n- Snowstorms.\n- 2 New escapes.\n- Gamepass Gifting.\n- Season 30: Dark Winter\n- Radial Nuke Reward.\n- Testing: Some players can join as a Criminal instead of a Prisoner.\n- Testing: High-Roller server option, free at 5M Cash.",
+      "subtitle": "2025: Dark Winter",
+      "category": "newSeason",
+      "start": "2025-12-19T23:00:49+00:00",
+      "end": "2026-01-01T23:00:49+00:00",
+      "thumbnailAssetId": 113700794447001,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2fd0521a37bb041ea0a3909fe8c33326/768/432/Image/Png/noFilter",
+      "interestedCount": 118900
+    },
+    {
+      "id": "6187575968278512346",
+      "name": "Return of the FORCEFIELD",
+      "description": "Out now.",
+      "subtitle": "At the Military Base!",
+      "category": "newFeature",
+      "start": "2026-02-06T23:00:45+00:00",
+      "end": "2026-02-10T19:00:45+00:00",
+      "thumbnailAssetId": 74501536450303,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-14bad5090608b5b1161b9954c789096d/768/432/Image/Png/noFilter",
+      "interestedCount": 27423
+    },
+    {
+      "id": "6537673664701923991",
+      "name": "Season 31",
+      "description": "Season 31: Freestyle features prizes of every theme! It's our greatest season lineup of prizes ever! ",
+      "subtitle": "New vehicles and more!",
+      "category": "newSeason",
+      "start": "2026-02-20T22:00:34+00:00",
+      "end": "2026-03-02T19:00:34+00:00",
+      "thumbnailAssetId": 121404259494240,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-77dbaa2ff47f49b180cf7c5cf31ace0d/768/432/Image/Png/noFilter",
+      "interestedCount": 41296
+    },
+    {
+      "id": "2671289784789500577",
+      "name": "2026 LIVE EVENT & UPDATE",
+      "description": "A rare celebration of Jailbreak, only seen once every few years, is happening this June! Sign up and be notified when the event is about to begin, and enjoy a large update once the event concludes. \n\nWitness history with other players, LIVE. Spread the word and bring a friend!",
+      "subtitle": "Spread the word",
+      "category": "festival",
+      "start": "2026-06-13T15:50:03.021+00:00",
+      "end": "2026-06-14T15:50:03.021+00:00",
+      "thumbnailAssetId": 119437378867167,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-e5bc881b21e008c0128e7291d0a25f49/768/432/Image/Png/noFilter",
+      "interestedCount": 369030
+    },
+    {
+      "id": "6421592384919962212",
+      "name": "REPLAY 1 (Live Event)",
+      "description": "Celebrating our biggest update ever. Missed our epic event and want to experience it yourself? Catch 1 of our 4 replays we're offering this weekend!  \n\nThe event begins 5 minutes after the posted start time to give notified players a chance to join and get situated. All replays are automatically triggered by our system to go off at their set times. Thank you!",
+      "subtitle": "Last Chance!",
+      "category": "festival",
+      "start": "2026-06-20T17:25:13.507+00:00",
+      "end": "2026-06-20T17:45:13.507+00:00",
+      "thumbnailAssetId": 103606836038782,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-44b8b51900907c58e78d5e0fe2f9a081/768/432/Image/Png/noFilter",
+      "interestedCount": 17610
+    },
+    {
+      "id": "1890118981902271107",
+      "name": "REPLAY 2 (Live Event)",
+      "description": "(By popular demand, this is our bonus replay option!) \n\nCelebrating our biggest update ever. Missed our epic event and want to experience it yourself? Catch 1 of our 4 replays we're offering this weekend!  \n\nThe event begins 5 minutes after the posted start time to give notified players a chance to join and get situated. All replays are automatically triggered by our system to go off at their set times. Thank you!",
+      "subtitle": "Last Chance!",
+      "category": "festival",
+      "start": "2026-06-21T01:25:13.998+00:00",
+      "end": "2026-06-21T01:45:13.998+00:00",
+      "thumbnailAssetId": 128018838547268,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c672377fc2faddd2b782a8786d028ad4/768/432/Image/Png/noFilter",
+      "interestedCount": 12287
+    },
+    {
+      "id": "6667625703820886590",
+      "name": "REPLAY 3 (Live Event)",
+      "description": "Celebrating our biggest update ever. Missed our epic event and want to experience it yourself? Catch 1 of our 4 replays we're offering this weekend!  \n\nThe event begins 5 minutes after the posted start time to give notified players a chance to join and get situated. All replays are automatically triggered by our system to go off at their set times. Thank you!",
+      "subtitle": "Last Chance!",
+      "category": "festival",
+      "start": "2026-06-21T19:25:00.426+00:00",
+      "end": "2026-06-21T19:45:00.426+00:00",
+      "thumbnailAssetId": 94695749412506,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b2679cf4b935f9f214f2a3e1506eee41/768/432/Image/Png/noFilter",
+      "interestedCount": 13437
+    },
+    {
+      "id": "8810279197240066706",
+      "name": "REPLAY 4 (Live Event)",
+      "description": "Celebrating our biggest update ever. Missed our epic event and want to experience it yourself? Catch 1 of our 4 replays we're offering this weekend!  \n\nThe event begins 5 minutes after the posted start time to give notified players a chance to join and get situated. All replays are automatically triggered by our system to go off at their set times. Thank you!",
+      "subtitle": "Last Chance!",
+      "category": "festival",
+      "start": "2026-06-22T01:25:41.042+00:00",
+      "end": "2026-06-22T01:45:41.042+00:00",
+      "thumbnailAssetId": 109896780216267,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-88dff876ee72e140ddaa22e02ff67679/768/432/Image/Png/noFilter",
+      "interestedCount": 12064
+    },
+    {
+      "id": "1049837584861233724",
+      "name": "Jailbreak // Chapter 4",
+      "description": "It's our biggest content update ever. Jailbreak has returned to the desert.\n+ New City and Locations\n+ New Apartments\n+ New Small Store Robbery, with animations.\n+ New Main Menu, Speedometer, Side Panel, and XP Bar designs.\n+ PowerPlant and Tomb Updates.\n+ 5 New Vehicles.\n+ Canyons with twisting roads.\n+ New Mansion, Soccer, and Nuke awards.\n+ New Season 32 with Prizes and Contracts.\n+ Prison updates, and a whole lot more.",
+      "subtitle": "A call back to the desert",
+      "category": "newMap",
+      "start": "2026-06-13T22:30:41.271+00:00",
+      "end": "2026-07-04T23:30:41.271+00:00",
+      "thumbnailAssetId": null,
+      "thumbnailUrl": null,
+      "interestedCount": 833
+    }
+  ],
   "petsim99": [
     {
       "id": "7334718006379675844",
@@ -8,7 +264,9 @@
       "category": "contentUpdate",
       "start": "2024-09-07T16:00:00+00:00",
       "end": "2024-09-08T17:00:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ebb2f8eb2e40d7a0759b461f2d753ca9/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 138788652625184,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ebb2f8eb2e40d7a0759b461f2d753ca9/768/432/Image/Png/noFilter",
+      "interestedCount": 30535
     },
     {
       "id": "695446719904350355",
@@ -18,7 +276,9 @@
       "category": "contentUpdate",
       "start": "2024-10-19T16:00:35+00:00",
       "end": "2024-10-20T16:00:35+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-4037a1b0d9b1b97b6e3933d5da1306a1/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 84290634640125,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-4037a1b0d9b1b97b6e3933d5da1306a1/768/432/Image/Png/noFilter",
+      "interestedCount": 18096
     },
     {
       "id": "1360375013896356051",
@@ -28,7 +288,9 @@
       "category": "newContent",
       "start": "2024-12-14T17:00:04+00:00",
       "end": "2024-12-21T16:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-97c2c90bb8f4d006526637245ba6856b/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 130370559919508,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-97c2c90bb8f4d006526637245ba6856b/768/432/Image/Png/noFilter",
+      "interestedCount": 56454
     },
     {
       "id": "7172160915571998973",
@@ -38,7 +300,9 @@
       "category": "newFeature",
       "start": "2024-12-21T17:00:00+00:00",
       "end": "2024-12-28T16:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-87249609dae614261c1058785f217b72/768/432/UnapprovedImage/Png/noFilter"
+      "thumbnailAssetId": 110908449233624,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-87249609dae614261c1058785f217b72/768/432/UnapprovedImage/Png/noFilter",
+      "interestedCount": 14654
     },
     {
       "id": "6240385851862024475",
@@ -48,7 +312,9 @@
       "category": "challenge",
       "start": "2025-01-11T17:00:00+00:00",
       "end": "2025-01-18T16:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-76c47310d7755020da5980318527fa8d/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 117669140835086,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-76c47310d7755020da5980318527fa8d/768/432/Image/Png/noFilter",
+      "interestedCount": 5657
     },
     {
       "id": "4340371264127107317",
@@ -58,7 +324,9 @@
       "category": "newContent",
       "start": "2025-02-08T17:00:28+00:00",
       "end": "2025-02-15T16:59:28+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ea80fa4eb9a29265f46eaec1020c7ef4/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 137214217317726,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ea80fa4eb9a29265f46eaec1020c7ef4/768/432/Image/Png/noFilter",
+      "interestedCount": 27055
     },
     {
       "id": "3562111341061472512",
@@ -68,7 +336,9 @@
       "category": "newContent",
       "start": "2025-03-08T17:00:21+00:00",
       "end": "2025-03-15T16:00:21+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-310e27a88aabfb150870c7133294f4c3/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 97275067816072,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-310e27a88aabfb150870c7133294f4c3/768/432/Image/Png/noFilter",
+      "interestedCount": 17299
     },
     {
       "id": "5070697498890993941",
@@ -78,7 +348,9 @@
       "category": "itemDrop",
       "start": "2025-04-19T16:00:00+00:00",
       "end": "2025-04-19T17:00:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0ef2e4509f0c43f6f5745debc1f5f92f/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 95486925814802,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0ef2e4509f0c43f6f5745debc1f5f92f/768/432/Image/Png/noFilter",
+      "interestedCount": 99777
     },
     {
       "id": "9040176148207370513",
@@ -88,7 +360,9 @@
       "category": "newContent",
       "start": "2025-04-26T16:00:00+00:00",
       "end": "2025-05-03T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-878eb1a86524bde79867c252b8ddb176/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 76018048081543,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-878eb1a86524bde79867c252b8ddb176/768/432/Image/Png/noFilter",
+      "interestedCount": 25612
     },
     {
       "id": "5130978927553806591",
@@ -98,7 +372,9 @@
       "category": "newMap",
       "start": "2025-05-10T16:00:26+00:00",
       "end": "2025-05-17T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9ca43c073019efb3c4e9b5ede64effa4/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 135378686587395,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9ca43c073019efb3c4e9b5ede64effa4/768/432/Image/Png/noFilter",
+      "interestedCount": 24660
     },
     {
       "id": "2353331675533672813",
@@ -108,7 +384,9 @@
       "category": "newContent",
       "start": "2025-05-17T16:00:00+00:00",
       "end": "2025-05-24T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-26454dae81fdf02a18b2502bf2b70307/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 134632893620250,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-26454dae81fdf02a18b2502bf2b70307/768/432/Image/Png/noFilter",
+      "interestedCount": 23619
     },
     {
       "id": "1018332218883047678",
@@ -118,7 +396,9 @@
       "category": "newContent",
       "start": "2025-05-24T16:00:00+00:00",
       "end": "2025-05-31T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6519ba0990f19e750e787741323c000c/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 88952704541620,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6519ba0990f19e750e787741323c000c/768/432/Image/Png/noFilter",
+      "interestedCount": 8591
     },
     {
       "id": "8673905703189741946",
@@ -128,7 +408,9 @@
       "category": "newContent",
       "start": "2025-05-31T16:00:00+00:00",
       "end": "2025-06-14T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aae5a61d14dee8a98c118b22c09d5238/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 116237997099447,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aae5a61d14dee8a98c118b22c09d5238/768/432/Image/Png/noFilter",
+      "interestedCount": 11135
     },
     {
       "id": "2886513860525424899",
@@ -138,7 +420,9 @@
       "category": "newContent",
       "start": "2025-06-14T16:00:00+00:00",
       "end": "2025-06-28T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-70accf0aed939f9107aa6cb18e6fa777/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 87270926042714,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-70accf0aed939f9107aa6cb18e6fa777/768/432/Image/Png/noFilter",
+      "interestedCount": 12616
     },
     {
       "id": "4042975338454319347",
@@ -148,7 +432,9 @@
       "category": "newContent",
       "start": "2025-06-28T16:00:00+00:00",
       "end": "2025-07-12T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-920272959e391fb755592d780715f4af/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 139303626794000,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-920272959e391fb755592d780715f4af/768/432/Image/Png/noFilter",
+      "interestedCount": 7588
     },
     {
       "id": "7600653748536082797",
@@ -158,7 +444,9 @@
       "category": "festival",
       "start": "2025-07-12T16:15:00+00:00",
       "end": "2025-07-12T17:15:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-99c7e280376ae830b9b961dcd8e5175e/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 98845655209810,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-99c7e280376ae830b9b961dcd8e5175e/768/432/Image/Png/noFilter",
+      "interestedCount": 2590
     },
     {
       "id": "5184609333764948276",
@@ -168,7 +456,9 @@
       "category": "newContent",
       "start": "2025-07-12T16:00:00+00:00",
       "end": "2025-07-19T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a0e8c78a188dd35a6d59434ba516b4be/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 86683396588545,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a0e8c78a188dd35a6d59434ba516b4be/768/432/Image/Png/noFilter",
+      "interestedCount": 7616
     },
     {
       "id": "2417386193688461919",
@@ -178,7 +468,9 @@
       "category": "itemDrop",
       "start": "2025-10-18T17:00:51+00:00",
       "end": "2025-10-18T18:00:51+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-946cd55c9b7c7fd9911906cb65f43175/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 107080705815206,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-946cd55c9b7c7fd9911906cb65f43175/768/432/Image/Png/noFilter",
+      "interestedCount": 23379
     },
     {
       "id": "7502944801449050668",
@@ -188,7 +480,9 @@
       "category": "newContent",
       "start": "2025-10-18T16:00:00+00:00",
       "end": "2025-11-01T15:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ca244e8aaf1ff8c9bba175f3d0123c19/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 114720887912582,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ca244e8aaf1ff8c9bba175f3d0123c19/768/432/Image/Png/noFilter",
+      "interestedCount": 98936
     },
     {
       "id": "7494646678037463600",
@@ -198,7 +492,9 @@
       "category": "newContent",
       "start": "2025-11-22T17:00:00+00:00",
       "end": "2025-12-06T16:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0642ab6b7eb0544ea133cbb66b0f3be5/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 133430262771098,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0642ab6b7eb0544ea133cbb66b0f3be5/768/432/Image/Png/noFilter",
+      "interestedCount": 51192
     },
     {
       "id": "5517358385948525196",
@@ -208,7 +504,9 @@
       "category": "itemDrop",
       "start": "2026-01-01T00:00:00+00:00",
       "end": "2026-01-01T05:00:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-661c853b0485e9dd3ec80421b534680e/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 127821762185566,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-661c853b0485e9dd3ec80421b534680e/768/432/Image/Png/noFilter",
+      "interestedCount": 51777
     },
     {
       "id": "2105558207022498452",
@@ -218,7 +516,9 @@
       "category": "newContent",
       "start": "2025-12-20T17:00:00+00:00",
       "end": "2026-01-17T16:59:00+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-3802e081efbe0508f2a2575a574143e0/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 129618569243725,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-3802e081efbe0508f2a2575a574143e0/768/432/Image/Png/noFilter",
+      "interestedCount": 60210
     },
     {
       "id": "2331548215708615423",
@@ -228,7 +528,9 @@
       "category": "newContent",
       "start": "2026-03-21T16:00:59.337+00:00",
       "end": "2026-03-29T04:00:59.338+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-739bcda87ef9406de765575405d2f2a5/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 105049130988539,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-739bcda87ef9406de765575405d2f2a5/768/432/Image/Png/noFilter",
+      "interestedCount": 22233
     },
     {
       "id": "3810035543098655389",
@@ -238,7 +540,9 @@
       "category": "newContent",
       "start": "2026-03-14T16:00:10.752+00:00",
       "end": "2026-04-04T15:00:10.752+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b5f65d759cb30da2546479870c347418/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 136352328317890,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-b5f65d759cb30da2546479870c347418/768/432/Image/Png/noFilter",
+      "interestedCount": 64585
     },
     {
       "id": "8309116792714953322",
@@ -248,7 +552,9 @@
       "category": "itemDrop",
       "start": "2026-04-22T16:00:11.157+00:00",
       "end": "2026-04-22T17:00:11.157+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-708a45248d40aa49ea5528f7d15099e2/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 122649741256073,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-708a45248d40aa49ea5528f7d15099e2/768/432/Image/Png/noFilter",
+      "interestedCount": 44404
     },
     {
       "id": "4177808829184082545",
@@ -258,7 +564,9 @@
       "category": "newContent",
       "start": "2026-04-18T16:00:00.962+00:00",
       "end": "2026-05-02T16:00:00.962+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-603350ca55b04781cab302a19f6894f5/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 106190346978456,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-603350ca55b04781cab302a19f6894f5/768/432/Image/Png/noFilter",
+      "interestedCount": 55310
     },
     {
       "id": "4526501243136377485",
@@ -268,7 +576,9 @@
       "category": "challenge",
       "start": "2026-05-02T18:55:03.503+00:00",
       "end": "2026-05-04T16:00:03.503+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0aa0625de18b940d31c01451f4e171db/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 102282462090110,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0aa0625de18b940d31c01451f4e171db/768/432/Image/Png/noFilter",
+      "interestedCount": 105
     },
     {
       "id": "4948776723962528306",
@@ -278,7 +588,9 @@
       "category": "itemDrop",
       "start": "2026-05-02T19:00:28.566+00:00",
       "end": "2026-05-16T16:00:28.566+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2b853f6d3ca681d92acfe6fff55278ab/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 118614324434882,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2b853f6d3ca681d92acfe6fff55278ab/768/432/Image/Png/noFilter",
+      "interestedCount": 64
     },
     {
       "id": "4701405673810952866",
@@ -288,7 +600,9 @@
       "category": "newContent",
       "start": "2026-05-16T16:00:29.407+00:00",
       "end": "2026-05-23T16:00:29.407+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-7d65e3981ae235c8cc84b0b06da077b4/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 89509142378801,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-7d65e3981ae235c8cc84b0b06da077b4/768/432/Image/Png/noFilter",
+      "interestedCount": 92556
     },
     {
       "id": "7672642938278642317",
@@ -298,7 +612,9 @@
       "category": "newContent",
       "start": "2026-05-09T16:00:49.696+00:00",
       "end": "2026-05-23T16:00:49.696+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-1e8996cd6bb70f3b5be9ca98d6d571c5/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 109728468657244,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-1e8996cd6bb70f3b5be9ca98d6d571c5/768/432/Image/Png/noFilter",
+      "interestedCount": 88719
     },
     {
       "id": "8015915926484550226",
@@ -308,7 +624,9 @@
       "category": "newContent",
       "start": "2026-06-20T16:00:33.578+00:00",
       "end": "2026-06-27T16:00:33.578+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ce3e3592a250ec1fea6f661b1ca55d6e/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 106837619941090,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ce3e3592a250ec1fea6f661b1ca55d6e/768/432/Image/Png/noFilter",
+      "interestedCount": 70872
     },
     {
       "id": "7254638943105319506",
@@ -318,7 +636,9 @@
       "category": "newContent",
       "start": "2026-06-13T16:00:38.279+00:00",
       "end": "2026-06-27T16:39:38.279+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c296c343cf0955fa0ef67f8b921f659c/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 112339386940099,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c296c343cf0955fa0ef67f8b921f659c/768/432/Image/Png/noFilter",
+      "interestedCount": 77386
     },
     {
       "id": "4220205133063127671",
@@ -328,7 +648,9 @@
       "category": "newContent",
       "start": "2026-06-27T16:00:05.716+00:00",
       "end": "2026-07-11T16:00:05.716+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-5049e6a819d97baf96b4eb1337d5ffa3/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 104375746855099,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-5049e6a819d97baf96b4eb1337d5ffa3/768/432/Image/Png/noFilter",
+      "interestedCount": 47794
     },
     {
       "id": "2479585863504364185",
@@ -338,7 +660,9 @@
       "category": "newContent",
       "start": "2026-07-11T16:00:39.629+00:00",
       "end": "2026-07-25T16:00:39.629+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-69539186dd9342b70afad9647ccdb39a/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 84673812796910,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-69539186dd9342b70afad9647ccdb39a/768/432/Image/Png/noFilter",
+      "interestedCount": 53580
     },
     {
       "id": "2171964801369113199",
@@ -348,7 +672,9 @@
       "category": "newContent",
       "start": "2026-08-01T16:00:56.734+00:00",
       "end": "2026-08-08T16:00:56.734+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a833e5f787e6ef2c2e1b49a59c1bce4e/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 101622163202828,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a833e5f787e6ef2c2e1b49a59c1bce4e/768/432/Image/Png/noFilter",
+      "interestedCount": 53017
     },
     {
       "id": "821314553483756151",
@@ -358,7 +684,9 @@
       "category": "newContent",
       "start": "2026-08-15T16:00:49.575+00:00",
       "end": "2026-08-22T16:00:49.575+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-221c04bbe721c5b8927780dfa66d859b/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 131885731663952,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-221c04bbe721c5b8927780dfa66d859b/768/432/Image/Png/noFilter",
+      "interestedCount": 77752
     },
     {
       "id": "9054565659421311625",
@@ -368,7 +696,9 @@
       "category": "newContent",
       "start": "2026-08-22T16:00:29.148+00:00",
       "end": "2026-09-05T16:00:29.148+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2c08405c09811888c466c65fedcd191e/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 122294603253164,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2c08405c09811888c466c65fedcd191e/768/432/Image/Png/noFilter",
+      "interestedCount": 37307
     },
     {
       "id": "2122267173371118226",
@@ -378,7 +708,9 @@
       "category": "newContent",
       "start": "2026-08-29T16:00:53.393+00:00",
       "end": "2026-09-05T16:00:53.393+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-8a190f0068c17db5da28be827d6acc7c/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 77079610501142,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-8a190f0068c17db5da28be827d6acc7c/768/432/Image/Png/noFilter",
+      "interestedCount": 26501
     },
     {
       "id": "4704032603630600811",
@@ -388,7 +720,985 @@
       "category": "newContent",
       "start": "2026-09-12T16:00:36.909+00:00",
       "end": "2026-09-19T16:00:36.909+00:00",
-      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-d391f644e68f726a3f5eb6782a9e867c/768/432/Image/Png/noFilter"
+      "thumbnailAssetId": 103676839146468,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-d391f644e68f726a3f5eb6782a9e867c/768/432/Image/Png/noFilter",
+      "interestedCount": 36653
+    }
+  ],
+  "rcu": [
+    {
+      "id": "7963070650046480639",
+      "name": "🐢 Release ",
+      "description": "🐢 Rebirth Champions: Ultimate - Release!\nCheck out sequel to one of the most popular clicker game!\n\n🎁 Join us in waiting room before the release! You will receive a free gift!",
+      "subtitle": "Game Release!",
+      "category": "newContent",
+      "start": "2025-03-21T18:00:35+00:00",
+      "end": "2025-03-21T19:00:35+00:00",
+      "thumbnailAssetId": 97519456460076,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-84366582ccdb7a07b2f3e0394888f419/768/432/Image/Png/noFilter",
+      "interestedCount": 1738
+    },
+    {
+      "id": "7822998496886915286",
+      "name": "Update 0.5",
+      "description": "🚨 Update 0.5 for Rebirth Champions: Ultimate!\n\n⚔️ Unlock Kingdom world!\n🛡️ Create your own clan!\n+MORE!",
+      "subtitle": "Kingdom World + Clans",
+      "category": "newContent",
+      "start": "2025-03-22T18:00:00+00:00",
+      "end": "2025-03-22T19:00:00+00:00",
+      "thumbnailAssetId": 73218639017159,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ae86a0f44ec4b05261646bb9435d3375/768/432/Image/Png/noFilter",
+      "interestedCount": 1308
+    },
+    {
+      "id": "5543444413333373181",
+      "name": "Easter Event",
+      "description": "Join us at the Easter 2025 event! 🐰\n\nComplete the Egg Hunt to get the free rewards! 🥚\nUnlock the Easter World and hatch the rarest pets! 🐶\n\nIt's the best time to start your journey! 👀",
+      "subtitle": "Egg Hunt + Easter World!",
+      "category": "newContent",
+      "start": "2025-04-18T17:00:43+00:00",
+      "end": "2025-04-20T17:00:43+00:00",
+      "thumbnailAssetId": 113943796173161,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a25193726dde7319ffcaecc152ec6901/768/432/Image/Png/noFilter",
+      "interestedCount": 17460
+    },
+    {
+      "id": "534515939905634515",
+      "name": "Easter Event - Part 2! 🌸",
+      "description": "Join us at the part 2 of the Easter Event! 🌸\n\nNew Event Egg & Pets + MORE! 🐶\nLast week to complete the Egg Hunt and get the free rewards! 🥚\n\nIt's the best time to start your journey! 👀",
+      "subtitle": "New pets & more!",
+      "category": "newContent",
+      "start": "2025-04-25T17:00:30+00:00",
+      "end": "2025-04-27T18:00:30+00:00",
+      "thumbnailAssetId": 92357942186623,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a25193726dde7319ffcaecc152ec6901/768/432/Image/Png/noFilter",
+      "interestedCount": 8237
+    },
+    {
+      "id": "7454455827481231690",
+      "name": "🔮 Magic World!",
+      "description": "Join us for the update 7 in Rebirth Champions: Ultimate! 🪄\n\n🔮 Discover a new Magic World!\n📕 Unlock new features & boosts from Mastery!\n🎉 Hatch limited 50M Pets from the new F2P Exclusive Egg!\n\nIt's the best time to start your journey! 👀",
+      "subtitle": "New World & More!",
+      "category": "newContent",
+      "start": "2025-05-09T17:00:56+00:00",
+      "end": "2025-05-11T18:00:56+00:00",
+      "thumbnailAssetId": 99235125952465,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9b30f35ff545be68413787b9a95b2242/768/432/Image/Png/noFilter",
+      "interestedCount": 6063
+    },
+    {
+      "id": "251007223249764631",
+      "name": "Update 9!",
+      "description": "Join us for the update 9 in Rebirth Champions: Ultimate! 🍌\n\n🐒 Discover a new Jungle World!\n🌳 Use wood to get useful items!\n\nIt's the best time to start your journey! 👀",
+      "subtitle": "🍌 Jungle World!",
+      "category": "newContent",
+      "start": "2025-05-23T17:00:16+00:00",
+      "end": "2025-05-29T17:00:16+00:00",
+      "thumbnailAssetId": 139975579976129,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-950b66081770558ba94597257520b443/768/432/Image/Png/noFilter",
+      "interestedCount": 4586
+    },
+    {
+      "id": "5157208177185128756",
+      "name": "Update 10!",
+      "description": "???",
+      "subtitle": "New Update!",
+      "category": "newContent",
+      "start": "2025-05-30T17:00:07+00:00",
+      "end": "2025-06-05T17:00:07+00:00",
+      "thumbnailAssetId": 110270163930478,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-bd9f4c7a5dfa8ddaee52a0cdc8c2b5ee/768/432/Image/Png/noFilter",
+      "interestedCount": 6248
+    },
+    {
+      "id": "2118069664765182242",
+      "name": "Summer Event!",
+      "description": "Join us at the Summer 2025 event! 🌴\n\nFind the hidden treasure and get free rewards! 🗝️\nUnlock the Summer World and hatch the rarest pets! 🐶\n\nIt's the best time to start your journey! 👀",
+      "subtitle": "New Summer Event! 🌴",
+      "category": "newContent",
+      "start": "2025-06-20T10:21:36+00:00",
+      "end": "2025-06-27T17:55:23+00:00",
+      "thumbnailAssetId": 83374284131813,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2e0c2cb4ad2666c578c7fc548e4eb1eb/768/432/Image/Png/noFilter",
+      "interestedCount": 8478
+    },
+    {
+      "id": "6089806567324778904",
+      "name": "New World!",
+      "description": "🚀🚀🚀",
+      "subtitle": "Space World + Season 2 🚀",
+      "category": "newContent",
+      "start": "2025-07-04T18:00:59+00:00",
+      "end": "2025-07-11T17:00:59+00:00",
+      "thumbnailAssetId": 109565255312620,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-039b3c0097fb5f8dc07c8b97aa5b0817/768/432/Image/Png/noFilter",
+      "interestedCount": 20876
+    },
+    {
+      "id": "6187359127178314163",
+      "name": "Update 18!",
+      "description": "New Update! ",
+      "subtitle": "New Pets + MORE!",
+      "category": "newContent",
+      "start": "2025-07-25T18:00:37+00:00",
+      "end": "2025-08-01T17:00:37+00:00",
+      "thumbnailAssetId": 95211122184050,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2339b03e042f78108f0e15c0021c22cc/768/432/Image/Png/noFilter",
+      "interestedCount": 1740
+    },
+    {
+      "id": "6518292868035772851",
+      "name": "Update 19!",
+      "description": "Season 3 + MORE!",
+      "subtitle": "Season 3 + MORE!",
+      "category": "newContent",
+      "start": "2025-08-01T18:00:43+00:00",
+      "end": "2025-08-08T17:00:43+00:00",
+      "thumbnailAssetId": 106170794344063,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-a6f10fad03de5e4b68a2b15d7fa3f35f/768/432/Image/Png/noFilter",
+      "interestedCount": 303
+    },
+    {
+      "id": "6376073328569614830",
+      "name": "Update 20!",
+      "description": "New Map + Space Mine!",
+      "subtitle": "New Map + Space Mine!",
+      "category": "newContent",
+      "start": "2025-08-08T18:00:27+00:00",
+      "end": "2025-08-15T17:00:27+00:00",
+      "thumbnailAssetId": 134540545308240,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c86f5a62c29902b38f62b24bc5e1f96f/768/432/Image/Png/noFilter",
+      "interestedCount": 1125
+    },
+    {
+      "id": "9083940552344076784",
+      "name": "Update 21!",
+      "description": "Spaceship Map + Explorer's Room!",
+      "subtitle": "New Update!",
+      "category": "newContent",
+      "start": "2025-08-15T18:00:57+00:00",
+      "end": "2025-08-22T17:00:57+00:00",
+      "thumbnailAssetId": 138016267937776,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 1025
+    },
+    {
+      "id": "3341434724856627643",
+      "name": "Update 22!",
+      "description": "New Event World & MORE!",
+      "subtitle": "New Event!",
+      "category": "newContent",
+      "start": "2025-08-22T18:00:57+00:00",
+      "end": "2025-09-05T17:00:57+00:00",
+      "thumbnailAssetId": 138875158980849,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 9181
+    },
+    {
+      "id": "8793433293861945827",
+      "name": "Update 24!",
+      "description": "New Map & Mine Part 2! ⛏️",
+      "subtitle": "New Map & Mine Part 2! ⛏️",
+      "category": "newContent",
+      "start": "2025-09-05T18:00:13+00:00",
+      "end": "2025-09-12T17:00:13+00:00",
+      "thumbnailAssetId": 90547301851364,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-e323dd7b0235ac7edf7274b06ba4ba60/768/432/Image/Png/noFilter",
+      "interestedCount": 1226
+    },
+    {
+      "id": "1131121503614271977",
+      "name": "Update 25!",
+      "description": "New Map & Season 4!",
+      "subtitle": "New Map & Season 4! 🏆",
+      "category": "newContent",
+      "start": "2025-09-12T18:00:13+00:00",
+      "end": "2025-09-19T17:00:13+00:00",
+      "thumbnailAssetId": 74008961246241,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 2290
+    },
+    {
+      "id": "1256057315413197362",
+      "name": "Fall Event! 🍂",
+      "description": "Join the new Update 26 with the limited Fall Egg, hatchable F2P Supreme and more!\n",
+      "subtitle": "Limited Egg & MORE!",
+      "category": "newContent",
+      "start": "2025-09-19T18:00:21+00:00",
+      "end": "2025-09-26T17:00:21+00:00",
+      "thumbnailAssetId": 84965822767771,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1419
+    },
+    {
+      "id": "3035610321100997117",
+      "name": "New Map & MORE!",
+      "description": "New update!",
+      "subtitle": "New Map & MORE! ⚙️",
+      "category": "newContent",
+      "start": "2025-09-26T18:00:10+00:00",
+      "end": "2025-10-03T17:00:10+00:00",
+      "thumbnailAssetId": 102422910272672,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-5b55b58f178adbb9c60bc3d66c1cceef/768/432/Image/Png/noFilter",
+      "interestedCount": 1019
+    },
+    {
+      "id": "6557532261967462928",
+      "name": "New Update!",
+      "description": "New Map & MORE!",
+      "subtitle": "New Map & MORE!",
+      "category": "newContent",
+      "start": "2025-10-03T18:00:22+00:00",
+      "end": "2025-10-10T17:00:22+00:00",
+      "thumbnailAssetId": 94631258777733,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 918
+    },
+    {
+      "id": "212198642763432545",
+      "name": "New Update!",
+      "description": "New Map & Dungeon Part 2!",
+      "subtitle": "New Map & Dungeon Part 2!",
+      "category": "newContent",
+      "start": "2025-10-10T18:00:56+00:00",
+      "end": "2025-10-17T17:00:56+00:00",
+      "thumbnailAssetId": 83885704586482,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 756
+    },
+    {
+      "id": "8026633972882342495",
+      "name": "Update 30!",
+      "description": "New Map & More! 🌟",
+      "subtitle": "New Map & More! 🌟",
+      "category": "newContent",
+      "start": "2025-10-17T18:00:47+00:00",
+      "end": "2025-10-24T17:00:47+00:00",
+      "thumbnailAssetId": 117856395061722,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 888
+    },
+    {
+      "id": "6634361156414472791",
+      "name": "Halloween Event!",
+      "description": "HUGE Update! 🎃",
+      "subtitle": "HUGE Update! 🎃",
+      "category": "newContent",
+      "start": "2025-10-24T18:00:47+00:00",
+      "end": "2025-11-07T18:00:47+00:00",
+      "thumbnailAssetId": 118714539234104,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-29aac1c80b00f5a094cb62dccbdf95f0/768/432/Image/Png/noFilter",
+      "interestedCount": 2830
+    },
+    {
+      "id": "8824433135245328975",
+      "name": "Admin Abuse!",
+      "description": "Start update with extra luck & MORE!",
+      "subtitle": "Limited Pets & Boosts!",
+      "category": "itemDrop",
+      "start": "2025-11-08T18:00:18+00:00",
+      "end": "2025-11-08T19:00:18+00:00",
+      "thumbnailAssetId": 81941709623055,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 3444
+    },
+    {
+      "id": "6964950477783695977",
+      "name": "Update 33",
+      "description": "",
+      "subtitle": "New Update!",
+      "category": "newContent",
+      "start": "2025-11-07T19:00:43+00:00",
+      "end": "2025-11-14T18:00:43+00:00",
+      "thumbnailAssetId": 118988966631733,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6a8193ec3380228d12888c67d609a6ec/768/432/Image/Png/noFilter",
+      "interestedCount": 2218
+    },
+    {
+      "id": "4250494635865801332",
+      "name": "Admin Abuse",
+      "description": "",
+      "subtitle": "Admin Abuse!",
+      "category": "itemDrop",
+      "start": "2025-11-15T12:00:45+00:00",
+      "end": "2025-11-15T13:00:45+00:00",
+      "thumbnailAssetId": 114127030849624,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 3611
+    },
+    {
+      "id": "1325522195329057428",
+      "name": "Update 34!",
+      "description": "World 3 & MORE! 🐟",
+      "subtitle": "World 3 & MORE! 🐟",
+      "category": "newContent",
+      "start": "2025-11-14T19:00:45+00:00",
+      "end": "2025-11-21T18:00:45+00:00",
+      "thumbnailAssetId": 102689380173967,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2909
+    },
+    {
+      "id": "2333768995397436028",
+      "name": "Admin Abuse",
+      "description": "",
+      "subtitle": "Luck Events & MORE!",
+      "category": "itemDrop",
+      "start": "2025-11-22T21:00:39+00:00",
+      "end": "2025-11-22T22:00:39+00:00",
+      "thumbnailAssetId": 84108846864958,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 4118
+    },
+    {
+      "id": "1999962213006967466",
+      "name": "Thanksgiving Event!",
+      "description": "",
+      "subtitle": "Limited Egg & MORE! 🦃",
+      "category": "newContent",
+      "start": "2025-11-21T19:00:39+00:00",
+      "end": "2025-11-28T18:00:39+00:00",
+      "thumbnailAssetId": 103940308485718,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0af1c93b774f2b6de69fb505397e2642/768/432/Image/Png/noFilter",
+      "interestedCount": 4229
+    },
+    {
+      "id": "5147597002979934860",
+      "name": "Admin Abuse!",
+      "description": "Luck Events & MORE!",
+      "subtitle": "Luck Events & MORE!",
+      "category": "itemDrop",
+      "start": "2025-11-29T18:00:45+00:00",
+      "end": "2025-11-29T18:45:45+00:00",
+      "thumbnailAssetId": 80701168892046,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 2834
+    },
+    {
+      "id": "3335053184102826610",
+      "name": "Update 37!",
+      "description": "Limited Egg & MORE!",
+      "subtitle": "Limited Egg & MORE!",
+      "category": "newContent",
+      "start": "2025-12-05T19:00:45+00:00",
+      "end": "2025-12-12T18:00:45+00:00",
+      "thumbnailAssetId": 134590245963429,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 3611
+    },
+    {
+      "id": "1507800246879257186",
+      "name": "Christmas Admin Abuse!",
+      "description": "",
+      "subtitle": "Limited Egg & Free Items!",
+      "category": "itemDrop",
+      "start": "2025-12-17T19:00:46+00:00",
+      "end": "2025-12-17T20:00:46+00:00",
+      "thumbnailAssetId": 117460635151077,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-bd06b8c720d154c58047a08a0f43c989/768/432/Image/Png/noFilter",
+      "interestedCount": 2751
+    },
+    {
+      "id": "559861794550317655",
+      "name": "Christmas Admin Abuse! #2",
+      "description": "",
+      "subtitle": "Limited Egg + Free Items!",
+      "category": "itemDrop",
+      "start": "2025-12-19T18:00:46+00:00",
+      "end": "2025-12-19T18:45:46+00:00",
+      "thumbnailAssetId": 104747920107610,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-bd06b8c720d154c58047a08a0f43c989/768/432/Image/Png/noFilter",
+      "interestedCount": 3698
+    },
+    {
+      "id": "88292802269283036",
+      "name": "Christmas Part 2!",
+      "description": "",
+      "subtitle": "Santa Hunt & MORE!",
+      "category": "newContent",
+      "start": "2025-12-19T19:00:46+00:00",
+      "end": "2025-12-27T18:00:46+00:00",
+      "thumbnailAssetId": 72070648457243,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-48398733f04b9c2b070734fc744e6966/768/432/Image/Png/noFilter",
+      "interestedCount": 2467
+    },
+    {
+      "id": "1029510352334488183",
+      "name": "New Year Event!",
+      "description": "",
+      "subtitle": "Limited Egg & MORE!",
+      "category": "newContent",
+      "start": "2025-12-28T19:00:46+00:00",
+      "end": "2026-01-02T18:00:46+00:00",
+      "thumbnailAssetId": 118477854568669,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 5091
+    },
+    {
+      "id": "1714664518421578306",
+      "name": "Christmas Event!",
+      "description": "HUGE Update! 🎅",
+      "subtitle": "HUGE Update! 🎅",
+      "category": "newContent",
+      "start": "2025-12-12T19:00:45+00:00",
+      "end": "2026-01-02T18:55:45+00:00",
+      "thumbnailAssetId": 95202582697265,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-48398733f04b9c2b070734fc744e6966/768/432/Image/Png/noFilter",
+      "interestedCount": 5942
+    },
+    {
+      "id": "1657967112485601912",
+      "name": "Update 42!",
+      "description": "Season 6 + MORE!",
+      "subtitle": "Season 6 + MORE! 🏆",
+      "category": "newContent",
+      "start": "2026-01-09T19:00:51+00:00",
+      "end": "2026-01-16T18:00:51+00:00",
+      "thumbnailAssetId": 83430629576433,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2645
+    },
+    {
+      "id": "1664908088168940131",
+      "name": "Admin Abuse",
+      "description": "Luck Boost & MORE!",
+      "subtitle": "Luck Boost & MORE! 🍀",
+      "category": "itemDrop",
+      "start": "2026-01-16T18:00:57+00:00",
+      "end": "2026-01-16T18:45:57+00:00",
+      "thumbnailAssetId": 83236188812252,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 1674
+    },
+    {
+      "id": "5683625699030336116",
+      "name": "Update 43!",
+      "description": "Fishing Part 2! ",
+      "subtitle": "Fishing Part 2! 🐟",
+      "category": "newContent",
+      "start": "2026-01-16T19:00:01+00:00",
+      "end": "2026-01-23T18:00:01+00:00",
+      "thumbnailAssetId": 123677440816187,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-6e9498da29592ae7a029cff2f9935a19/768/432/Image/Png/noFilter",
+      "interestedCount": 1234
+    },
+    {
+      "id": "6486657919277072965",
+      "name": "Admin Abuse",
+      "description": "Extra Luck & MORE!",
+      "subtitle": "Extra Luck & MORE!",
+      "category": "itemDrop",
+      "start": "2026-01-30T18:00:37+00:00",
+      "end": "2026-01-30T18:45:37+00:00",
+      "thumbnailAssetId": 104834659428422,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 3044
+    },
+    {
+      "id": "7416889973791261423",
+      "name": "Update 45",
+      "description": "New Egg & MORE! 🏆",
+      "subtitle": "New Egg & MORE! 🏆",
+      "category": "newContent",
+      "start": "2026-01-30T19:00:45+00:00",
+      "end": "2026-02-06T18:00:45+00:00",
+      "thumbnailAssetId": 76810002142130,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2324
+    },
+    {
+      "id": "8747062098644435675",
+      "name": "Valentine's Day Event",
+      "description": "❤️❤️❤️❤️❤️",
+      "subtitle": "Event World & MORE! ❤️",
+      "category": "newContent",
+      "start": "2026-02-06T19:00:45+00:00",
+      "end": "2026-02-20T18:00:45+00:00",
+      "thumbnailAssetId": 79616080503963,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c745e3f3b02cd09e4c8a2acc7d9ce095/768/432/Image/Png/noFilter",
+      "interestedCount": 3482
+    },
+    {
+      "id": "1753138523042218607",
+      "name": "Admin Abuse",
+      "description": "Extra Luck & MORE! 🍀",
+      "subtitle": "Extra Luck & MORE! 🍀",
+      "category": "itemDrop",
+      "start": "2026-02-20T18:00:04+00:00",
+      "end": "2026-02-20T18:45:04+00:00",
+      "thumbnailAssetId": 139249832964398,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 1659
+    },
+    {
+      "id": "4320132457433924314",
+      "name": "Update 48!",
+      "description": "New Season & MORE! 🏆",
+      "subtitle": "New Season & MORE! 🏆",
+      "category": "newContent",
+      "start": "2026-02-20T19:00:54+00:00",
+      "end": "2026-02-27T18:00:54+00:00",
+      "thumbnailAssetId": 77950172374705,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1213
+    },
+    {
+      "id": "4199018607075787408",
+      "name": "Update 49!",
+      "description": "Bee World & MORE! 🐝",
+      "subtitle": "Bee World & MORE! 🐝",
+      "category": "newContent",
+      "start": "2026-02-27T19:00:07.2+00:00",
+      "end": "2026-03-06T18:30:07.2+00:00",
+      "thumbnailAssetId": 110900547143788,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-bcee68c2dc254fc238803116edb39ef0/768/432/Image/Png/noFilter",
+      "interestedCount": 1322
+    },
+    {
+      "id": "6561184374300213808",
+      "name": "Update 50!",
+      "description": "New Egg & MORE! 💜",
+      "subtitle": "New Egg & MORE! 💜",
+      "category": "newContent",
+      "start": "2026-03-06T19:00:07.2+00:00",
+      "end": "2026-03-13T18:30:07.2+00:00",
+      "thumbnailAssetId": 121710993545805,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2870
+    },
+    {
+      "id": "8754189187374252688",
+      "name": "Anniversary Admin Abuse!",
+      "description": "Join and get a chance to hatch a limited supreme pet!",
+      "subtitle": "Luck Events & MORE! 🎉",
+      "category": "itemDrop",
+      "start": "2026-03-21T17:00:28.776+00:00",
+      "end": "2026-03-21T17:50:28.776+00:00",
+      "thumbnailAssetId": 83032921836088,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 2292
+    },
+    {
+      "id": "5353463966079255139",
+      "name": "Anniversary Event!",
+      "description": "Join the anniversary update and fight RCU bosses to get the best pets! ⚔️👀",
+      "subtitle": "Limited World & MORE! 🎉",
+      "category": "newContent",
+      "start": "2026-03-13T19:00:07.2+00:00",
+      "end": "2026-03-27T18:00:07.2+00:00",
+      "thumbnailAssetId": 130256496740126,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-949f66659e06f7d7e047088d212287eb/768/432/Image/Png/noFilter",
+      "interestedCount": 44849
+    },
+    {
+      "id": "7930335844920066671",
+      "name": "Update 53",
+      "description": "New Egg & MORE! ✨",
+      "subtitle": "New Egg & MORE! ✨",
+      "category": "newContent",
+      "start": "2026-03-27T19:00:28.776+00:00",
+      "end": "2026-04-03T17:05:28.776+00:00",
+      "thumbnailAssetId": 119914523824323,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2508
+    },
+    {
+      "id": "7358414426371916375",
+      "name": "Easter Event 2026!",
+      "description": "Egg Hunt & MORE! 🥚",
+      "subtitle": "Egg Hunt & MORE! 🥚",
+      "category": "newContent",
+      "start": "2026-04-03T18:00:28.776+00:00",
+      "end": "2026-04-17T17:00:28.776+00:00",
+      "thumbnailAssetId": 112119247937027,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-cbdc1879931fd3e220cace6d505efea1/768/432/Image/Png/noFilter",
+      "interestedCount": 43099
+    },
+    {
+      "id": "1451442921655108284",
+      "name": "Update 56",
+      "description": "New Egg & MORE! 🛡️",
+      "subtitle": "New Egg & MORE! 🛡️",
+      "category": "newContent",
+      "start": "2026-04-17T18:00:15.037+00:00",
+      "end": "2026-04-24T17:00:15.037+00:00",
+      "thumbnailAssetId": 106462141837947,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1961
+    },
+    {
+      "id": "7883551240808956497",
+      "name": "Update 57",
+      "description": "Season 8 & MORE! ⭐",
+      "subtitle": "Season 8 & MORE! ⭐",
+      "category": "newContent",
+      "start": "2026-04-24T18:00:15.037+00:00",
+      "end": "2026-05-01T17:00:15.037+00:00",
+      "thumbnailAssetId": 75472698621210,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 2316
+    },
+    {
+      "id": "6828282036789314170",
+      "name": "Update 58",
+      "description": "New Egg & MORE! 🎒",
+      "subtitle": "New Egg & MORE! 🎒",
+      "category": "newContent",
+      "start": "2026-05-01T18:00:47.45+00:00",
+      "end": "2026-05-08T17:00:47.45+00:00",
+      "thumbnailAssetId": 140474067449388,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2659
+    },
+    {
+      "id": "921631839523832463",
+      "name": "Update 59",
+      "description": "New Egg & MORE! 💎",
+      "subtitle": "New Egg & MORE! 💎",
+      "category": "newContent",
+      "start": "2026-05-08T18:00:23.329+00:00",
+      "end": "2026-05-15T17:00:23.329+00:00",
+      "thumbnailAssetId": 96296378063707,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 960
+    },
+    {
+      "id": "4211128324954653250",
+      "name": "Update 60",
+      "description": "New Egg & MORE! ✨",
+      "subtitle": "New Egg & MORE! ✨",
+      "category": "newContent",
+      "start": "2026-05-15T18:00:23.329+00:00",
+      "end": "2026-05-22T17:00:23.329+00:00",
+      "thumbnailAssetId": 97648780808263,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1647
+    },
+    {
+      "id": "7312379417458770620",
+      "name": "Update 61 & 62",
+      "description": "Event currency, weapons and more! 👀",
+      "subtitle": "Magic Tower Event 🪄",
+      "category": "newContent",
+      "start": "2026-05-22T18:00:23.329+00:00",
+      "end": "2026-06-05T17:00:23.329+00:00",
+      "thumbnailAssetId": 73605810286301,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-92cbf76f01275683290fa946c2f8ce19/768/432/Image/Png/noFilter",
+      "interestedCount": 2430
+    },
+    {
+      "id": "7539221922568077886",
+      "name": "Admin Abuse",
+      "description": "Extra Luck & MORE! 🍀",
+      "subtitle": "Extra Luck & MORE! 🍀",
+      "category": "itemDrop",
+      "start": "2026-06-05T17:00:22.986+00:00",
+      "end": "2026-06-05T17:45:22.986+00:00",
+      "thumbnailAssetId": 135619043218946,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-35012c2c603992a3399ba490cce72622/768/432/Image/Png/noFilter",
+      "interestedCount": 1312
+    },
+    {
+      "id": "4794557775395029554",
+      "name": "Update 63",
+      "description": "Season 9 & MORE! 🏆",
+      "subtitle": "Season 9 & MORE! 🏆",
+      "category": "newContent",
+      "start": "2026-06-05T18:00:22.986+00:00",
+      "end": "2026-06-12T17:00:22.986+00:00",
+      "thumbnailAssetId": 108366331101257,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 845
+    },
+    {
+      "id": "6660097290226762321",
+      "name": "Update 64",
+      "description": "New Map & MORE! 🪨",
+      "subtitle": "New Map & MORE! 🪨",
+      "category": "newContent",
+      "start": "2026-06-12T18:00:22.986+00:00",
+      "end": "2026-06-19T17:00:22.986+00:00",
+      "thumbnailAssetId": 129905590530908,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 1331
+    },
+    {
+      "id": "2801317904916808274",
+      "name": "Update 65",
+      "description": "New Map & MORE!🥷",
+      "subtitle": "New Map & MORE!🥷",
+      "category": "newContent",
+      "start": "2026-06-19T18:00:22.986+00:00",
+      "end": "2026-06-26T17:00:22.986+00:00",
+      "thumbnailAssetId": 120937265922834,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1612
+    },
+    {
+      "id": "7593505919732941413",
+      "name": "Update 66",
+      "description": "Summer Event! 🌴",
+      "subtitle": "Summer Event! 🌴",
+      "category": "newContent",
+      "start": "2026-06-26T18:00:22.986+00:00",
+      "end": "2026-07-10T18:00:22.986+00:00",
+      "thumbnailAssetId": 129494156425783,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0ab6bb66b1626fb77ab1c4d172100fb8/768/432/Image/Png/noFilter",
+      "interestedCount": 2532
+    },
+    {
+      "id": "567606195720946349",
+      "name": "Update 69",
+      "description": "New World & MORE! ⌛",
+      "subtitle": "New World & MORE! ⌛",
+      "category": "newContent",
+      "start": "2026-07-17T18:00:34.201+00:00",
+      "end": "2026-07-24T17:00:34.201+00:00",
+      "thumbnailAssetId": 86810307825999,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 1299
+    },
+    {
+      "id": "8645965927424328458",
+      "name": "Update 70",
+      "description": "New Map & MORE! 🌾",
+      "subtitle": "New Map & MORE! 🌾",
+      "category": "newContent",
+      "start": "2026-07-24T18:00:55.978+00:00",
+      "end": "2026-07-31T17:00:55.978+00:00",
+      "thumbnailAssetId": 107320928683058,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 1792
+    },
+    {
+      "id": "4546939300075405986",
+      "name": "Update 71",
+      "description": "Season 10 & MORE! 🏆",
+      "subtitle": "Season 10 & MORE! 🏆",
+      "category": "newContent",
+      "start": "2026-07-31T18:00:55.978+00:00",
+      "end": "2026-08-07T17:00:55.978+00:00",
+      "thumbnailAssetId": 133691069543390,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c173dfd7fb45b9ad9bf1a70053b2d87b/768/432/Image/Png/noFilter",
+      "interestedCount": 2055
+    },
+    {
+      "id": "802309757477192254",
+      "name": "Update 72",
+      "description": "New Egg, Items & More! ⭐",
+      "subtitle": "New Egg, Items & More! ⭐",
+      "category": "newContent",
+      "start": "2026-08-07T18:00:11.088+00:00",
+      "end": "2026-08-14T17:00:11.088+00:00",
+      "thumbnailAssetId": 87556604937305,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 850
+    },
+    {
+      "id": "4649774018780594845",
+      "name": "Pets Factory Event",
+      "description": "Event World & MORE! 🏭",
+      "subtitle": "Event World & MORE! 🏭",
+      "category": "newContent",
+      "start": "2026-08-28T18:00:54.961+00:00",
+      "end": "2026-09-04T17:00:54.961+00:00",
+      "thumbnailAssetId": 96716085619732,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2041ead3dfd0364857bf25417ec270cf/768/432/Image/Png/noFilter",
+      "interestedCount": 18014
+    },
+    {
+      "id": "4979355927741334114",
+      "name": "Update 76",
+      "description": "Pets Factory Part 2! 🏭",
+      "subtitle": "Pets Factory Part 2! 🏭",
+      "category": "newContent",
+      "start": "2026-09-04T18:00:54.961+00:00",
+      "end": "2026-09-11T17:00:54.961+00:00",
+      "thumbnailAssetId": 111166882738001,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2041ead3dfd0364857bf25417ec270cf/768/432/Image/Png/noFilter",
+      "interestedCount": 16362
+    },
+    {
+      "id": "6260240107417240319",
+      "name": "Update 77",
+      "description": "New Egg & MORE! 🎣",
+      "subtitle": "New Egg & MORE! 🎣",
+      "category": "newContent",
+      "start": "2026-09-11T18:00:54.961+00:00",
+      "end": "2026-09-18T17:00:54.961+00:00",
+      "thumbnailAssetId": 89993483923623,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-aa74f3f6a0eea80c8b669f06c34e7fc6/768/432/Image/Png/noFilter",
+      "interestedCount": 12320
+    }
+  ],
+  "us": [
+    {
+      "id": "9049861879636951230",
+      "name": "PART 2 Halloween Event",
+      "description": "Part 2 of the Halloween Event! \n\nHalloween map expansion\nNew perks\nNew quests\nLimited Ethereal Hat (UGC)\nNew features 👀",
+      "subtitle": "",
+      "category": "systemUpdate",
+      "start": "2024-10-26T17:00:30+00:00",
+      "end": "2024-11-17T18:00:30+00:00",
+      "thumbnailAssetId": 79772231436126,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-2ad4e995dbeaa7bc9d483c6599ac6353/768/432/Image/Png/noFilter",
+      "interestedCount": 303
+    },
+    {
+      "id": "1650217660775661766",
+      "name": "Winter Event",
+      "description": "Unboxers, please take your seats.. next stop is the WINTER EVENT! \n\nThe Winter Event will be released on December 13th at 5PM UTC!",
+      "subtitle": " ",
+      "category": "newContent",
+      "start": "2024-12-13T17:00:30+00:00",
+      "end": "2025-01-27T17:00:00+00:00",
+      "thumbnailAssetId": 127602127008090,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-7645cd9ddcf7e0e3963e2b13ae22ea90/768/432/Image/Png/noFilter",
+      "interestedCount": 580
+    },
+    {
+      "id": "5201782680783159561",
+      "name": "✨GALAXY WORLD✨",
+      "description": "A new world is coming to Unboxing Simulator along with new hats and pets. We’re also adding the first permanent Box Rush to the game!",
+      "subtitle": "Areas, Box Rush and more!",
+      "category": "newContent",
+      "start": "2025-05-16T16:00:15+00:00",
+      "end": "2025-05-23T16:00:00+00:00",
+      "thumbnailAssetId": 98716447917536,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-052c730e5ba610a46d849a6187ee6f2c/768/432/Image/Png/noFilter",
+      "interestedCount": 1086
+    },
+    {
+      "id": "6382837099046633730",
+      "name": "Merchant",
+      "description": "",
+      "subtitle": "???",
+      "category": "newContent",
+      "start": "2025-06-06T16:00:01+00:00",
+      "end": "2025-06-16T16:00:01+00:00",
+      "thumbnailAssetId": 77499389190838,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0513d14bdb7e373e3c339671f053887d/768/432/Image/Png/noFilter",
+      "interestedCount": 681
+    },
+    {
+      "id": "3470618660873961856",
+      "name": "Trading Plaza: Part 2",
+      "description": "Trading plaza is expanding!  Check out what is currently planned:\n\n- more items to decorate your plot\n- new booths\n- new larger plot size\n- move objects around your plot manually\n- create auctions\n- new box field area in trading plaza\n- and more!\n\nFollow the update to be notified when it releases!",
+      "subtitle": "Expand and Customize!",
+      "category": "expansion",
+      "start": "2025-06-21T16:00:58+00:00",
+      "end": "2025-07-02T04:59:58+00:00",
+      "thumbnailAssetId": 100503918073978,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-3109d69e1ccf0c5442da0d5356d7e94a/768/432/Image/Png/noFilter",
+      "interestedCount": 627
+    },
+    {
+      "id": "8916414538748526883",
+      "name": "Summer Event",
+      "description": "First Summer Event in Unboxing Simulator is coming!\nBrand new event unlike any event we have ever done before.",
+      "subtitle": "Coming soon",
+      "category": "newContent",
+      "start": "2025-07-11T18:00:00+00:00",
+      "end": "2025-08-01T16:00:13+00:00",
+      "thumbnailAssetId": 113636389314085,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-37f8948782cd2f216888fa8c62f6383c/768/432/Image/Png/noFilter",
+      "interestedCount": 4516
+    },
+    {
+      "id": "5435639626058170691",
+      "name": "Summer Event: Part 2",
+      "description": "",
+      "subtitle": "Event ends on 15th",
+      "category": "newContent",
+      "start": "2025-07-26T16:00:59+00:00",
+      "end": "2025-09-15T16:00:59+00:00",
+      "thumbnailAssetId": 96241097251705,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-0c3518c903951ca1100b4572961362a9/768/432/Image/Png/noFilter",
+      "interestedCount": 1047
+    },
+    {
+      "id": "1440568183982129869",
+      "name": "Christmas 2025",
+      "description": "It's christmasssss timeeeeee!",
+      "subtitle": "Christmas 2025",
+      "category": "newContent",
+      "start": "2025-12-23T18:00:00+00:00",
+      "end": "2026-02-14T17:00:06+00:00",
+      "thumbnailAssetId": 139000666523768,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9bb02312f1e4a946d34ef0a8849dcf08/768/432/Image/Png/noFilter",
+      "interestedCount": 222
+    },
+    {
+      "id": "2242260830571463276",
+      "name": "Valentines Update!",
+      "description": "new pets, heart bombrain, and more!",
+      "subtitle": "new content!",
+      "category": "newContent",
+      "start": "2026-02-14T17:00:38+00:00",
+      "end": "2026-04-01T16:00:38+00:00",
+      "thumbnailAssetId": 72159134781373,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-ee01686492030e358dd3871553f2390c/768/432/Image/Png/noFilter",
+      "interestedCount": 104
+    },
+    {
+      "id": "3242508219440038531",
+      "name": "EASTER EVENT!",
+      "description": "Join us for Unboxing Simulator's annual Easter Event!",
+      "subtitle": "Eggs, eggs and more eggs",
+      "category": "newContent",
+      "start": "2026-04-03T18:00:28.436+00:00",
+      "end": "2026-05-03T18:00:28.436+00:00",
+      "thumbnailAssetId": 107602174519005,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-1effdfdb4aa5c0ca42c7260adf1e48d6/768/432/Image/Png/noFilter",
+      "interestedCount": 230
+    },
+    {
+      "id": "8591045148555739745",
+      "name": "EASTER EVENT PART 2!",
+      "description": "Follow for updates and if we end up changing the release date!",
+      "subtitle": "Hit the follow button!",
+      "category": "newContent",
+      "start": "2026-04-17T18:00:00+00:00",
+      "end": "2026-05-31T18:00:36.419+00:00",
+      "thumbnailAssetId": 127640371624861,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-1c00c794cf60f21995b534d26e1212fe/768/432/Image/Png/noFilter",
+      "interestedCount": 972
+    },
+    {
+      "id": "2019142629534597767",
+      "name": "4th of July Admin Abuse!",
+      "description": "Join us for an in-game 4th of July celebration!",
+      "subtitle": "Coming soon!",
+      "category": "newContent",
+      "start": "2026-07-04T18:00:47.977+00:00",
+      "end": "2026-07-05T07:00:47.977+00:00",
+      "thumbnailAssetId": 133438142149676,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-c62efcb3ca5c55af3fe5b40aa39afc4b/768/432/Image/Png/noFilter",
+      "interestedCount": 168
+    },
+    {
+      "id": "7073647503517811301",
+      "name": "SUMMER EVENT!",
+      "description": "Follow the event to get notified!",
+      "subtitle": "Summer 2026",
+      "category": "newContent",
+      "start": "2026-06-12T18:00:00.638+00:00",
+      "end": "2026-08-29T18:00:00.638+00:00",
+      "thumbnailAssetId": 93366805503720,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-074d16f4ca2a8486eb3ea7e1c64250c2/768/432/Image/Png/noFilter",
+      "interestedCount": 391
+    },
+    {
+      "id": "7024352103447528210",
+      "name": "Admin Abuse!",
+      "description": "join us for our next admin abuse!",
+      "subtitle": "admin abuse chaos!",
+      "category": "newContent",
+      "start": "2026-09-05T18:00:58.032+00:00",
+      "end": "2026-09-06T03:00:58.032+00:00",
+      "thumbnailAssetId": 116143658347124,
+      "thumbnailUrl": "https://tr.rbxcdn.com/180DAY-9fed2c8703b3fa896383891287b3e5f1/768/432/Image/Png/noFilter",
+      "interestedCount": 417
     }
   ]
 }
