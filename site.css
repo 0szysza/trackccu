@@ -278,10 +278,11 @@ body.chart-fullscreen-open { overflow:hidden; }
 .home-game-count { color:#34bfe5; }
 .home-game-stats svg { width:15px;height:15px;flex:none; }
 .home-group-chip .home-game-art { border-bottom:0; }
+.home-group-chip .home-game-art img { transform:scale(1.03);transform-origin:center; }
 .home-group-chip .home-game-stats { position:relative;border-top:0;color:#94a3b8;font-size:.75rem;padding-top:.55rem; }
 .home-group-chip .home-game-stats::before { content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#293149; }
 .home-group-chip .home-game-stats b { color:#e2e8f0;font-size:.8rem; }
-.home-group-chip .home-game-meta { grid-template-rows:minmax(2.15rem,1fr) auto;min-height:4.8rem; }
+.home-group-chip .home-game-meta { position:relative;z-index:1;grid-template-rows:minmax(2.15rem,1fr) auto;min-height:calc(4.8rem + 2px);margin-top:-2px;background:#111528; }
 .home-group-heading { min-width:0; }
 .roblox-verified-badge { display:inline-block;width:.8em;height:.8em;min-width:14px;min-height:14px;margin-left:.18em;vertical-align:-.08em;object-fit:contain; }
 
@@ -292,13 +293,14 @@ body.chart-fullscreen-open { overflow:hidden; }
 .group-detail-hero { display:flex;min-height:220px;overflow:hidden; }
 .group-detail-icon { display:block;width:220px;height:220px;aspect-ratio:1/1;flex:0 0 220px;border-right:1px solid #334155; }
 .group-detail-content { display:flex;flex:1;flex-direction:column;justify-content:space-between;gap:20px;min-width:0;padding:22px 26px; }
-.group-detail-links { display:flex;align-items:center;flex-wrap:wrap;column-gap:18px;row-gap:7px;margin-top:8px; }
-.group-detail-links .ui-icon { width:15px;height:15px;flex:none; }
-.group-detail-owner { display:inline-flex;align-items:center;gap:.35rem;color:#94a3b8;font-size:.84rem; }
-.group-owner-name { overflow-wrap:anywhere; }
-.group-owner-name a { color:#e2e8f0;font-size:.84rem;font-weight:750;text-decoration:none; }
+.group-detail-top { display:flex;align-items:flex-start;justify-content:space-between;gap:20px;min-width:0; }
+.group-detail-heading { min-width:0;flex:1; }
+.group-detail-heading .ui-icon { width:15px;height:15px; }
+.group-hero-owner { flex:0 1 250px;min-width:0;padding-top:3px; }
+.group-owner-name { display:block;margin-top:7px;color:#f8fafc;font-size:clamp(1.15rem,2.1vw,1.65rem);font-weight:800;line-height:1.2;overflow-wrap:anywhere; }
+.group-owner-name a { color:inherit;font-size:inherit;font-weight:inherit;text-decoration:none; }
 .group-owner-name a:hover { color:#34bfe5; }
-.group-detail-owner .roblox-verified-badge { width:14px;height:14px;min-width:14px;min-height:14px; }
+.group-hero-owner .roblox-verified-badge { width:.82em;height:.82em;min-width:16px;min-height:16px; }
 .group-meta-bar { display:grid;grid-template-columns:repeat(2,minmax(0,1fr)); }
 .group-meta-bar .game-meta-item:first-child { border-left:0; }
 @media (max-width:639px) {
@@ -308,6 +310,9 @@ body.chart-fullscreen-open { overflow:hidden; }
   .group-detail-hero { min-height:150px; }
   .group-detail-icon { width:150px;height:150px;flex-basis:150px; }
   .group-detail-content { padding:15px;gap:14px; }
+  .group-detail-top { flex-direction:column;gap:10px; }
+  .group-hero-owner { flex-basis:auto; }
+  .group-owner-name { margin-top:3px;font-size:1rem; }
   .group-detail-content #membersNow { font-size:2.25rem; }
   .group-meta-bar { grid-template-columns:1fr; }
 }
