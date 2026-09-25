@@ -23,10 +23,19 @@ async function getJson(url, noCache = false) {
 }
 
 async function previousData() {
-  try {
-    if (SITE_URL) return await getJson(`${SITE_URL}/data/extras.json?t=${Date.now()}`);
-    return JSON.parse(await readFile(output, "utf8"));
-  } catch { return { games: {} }; }
+  // Past events disappear from Roblox's public universe list. The deployed
+  // extras file is their history, so a transient fetch failure must stop this
+  // build instead of replacing the archive with only current events.
+  if (SITE_URL) {
+    const data = await getJson(`${SITE_URL}/data/extras.json?t=${Date.now()}`);
+    if (!data?.games || typeof data.games !== "object") throw new Error("Invalid previous extras archive");
+    return data;
+  }
+  try { return JSON.parse(await readFile(output, "utf8")); }
+  catch (error) {
+    if (error.code === "ENOENT") return { games: {} };
+    throw error;
+  }
 }
 
 async function allPages(firstUrl, listKey, tokenKey, param) {
@@ -174,7 +183,9 @@ for (const game of games) {
     console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
   } catch (error) {
     console.warn(`${game.slug}: ${String(error)}`);
-    result.games[game.slug] = cached || { error: true, passes: [], badges: [], events: [] };
+    const fallback = cached || { error: true, passes: [], badges: [], events: [] };
+    const events = [...new Map([...archive, ...(fallback.events || [])].map(item => [item.id, item])).values()];
+    result.games[game.slug] = { ...fallback, events };
   }
 }
 await mkdir(path.dirname(output), { recursive: true });
