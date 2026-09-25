@@ -134,6 +134,16 @@
       <img id="eventModalImage" class="event-dialog-image" alt="" hidden>
       <div class="event-dialog-body"><p id="eventModalStatus" class="event-dialog-status"></p><h2 id="eventModalTitle"></h2><p id="eventModalSubtitle" class="event-dialog-subtitle" hidden></p><div class="event-dialog-links"><span id="eventModalInterested" class="event-interested"></span><a id="eventModalLink" href="#" target="_blank" rel="noopener noreferrer" class="event-roblox-link">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div><div class="event-dialog-times"><div><span>Starts</span><time id="eventModalStart"></time></div><div><span>Ends</span><time id="eventModalEnd"></time></div></div><p id="eventModalDescription" class="event-dialog-description" hidden></p></div>
     </dialog>
+    <dialog id="passDialog" class="pass-dialog" aria-labelledby="passModalTitle">
+      <div class="pass-dialog-top"><span class="pass-dialog-kicker">Game pass</span><button id="passDialogClose" type="button" class="event-dialog-close" aria-label="Close pass details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <div class="pass-dialog-content">
+        <div class="pass-dialog-hero"><img id="passModalImage" alt="" hidden><div><p class="pass-dialog-game">From <span id="passModalGame"></span></p><h2 id="passModalTitle"></h2><p id="passModalDescription" class="pass-dialog-description" hidden></p></div></div>
+        <div class="pass-dialog-metrics"><div><span>Price</span><strong id="passModalPrice" class="pass-dialog-price"></strong></div><div><span>Game upvotes</span><strong id="passModalUpvotes"></strong></div><div><span>Game rating</span><strong id="passModalRating"></strong></div></div>
+        <div class="pass-dialog-dates"><div><span>Created</span><strong id="passModalCreated"></strong><small id="passModalCreatedExact"></small></div><div><span>Updated</span><strong id="passModalUpdated"></strong><small id="passModalUpdatedExact"></small></div></div>
+        <div class="pass-dialog-history"><div class="pass-dialog-history-heading"><h3>Price history</h3><span id="passModalTrackedSince"></span></div><div id="passPriceChart" class="pass-price-chart" role="img" aria-label="Price history chart"></div><p id="passPriceNote" class="pass-price-note"></p></div>
+        <a id="passModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer">Open pass on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+      </div>
+    </dialog>
   </div>
 </main>
 <div id="site-footer"></div>
@@ -344,6 +354,43 @@
     if(stamp){time.dateTime=stamp;time.dataset.exact=fullDateTime(stamp);time.setAttribute("aria-label",`${label}: ${fullDateTime(stamp)}`);}
     row.append(heading,time);return row;
   }
+  let openPassItem=null;
+  function drawPassPriceChart(item){
+    const chart=$("passPriceChart"),note=$("passPriceNote"),since=$("passModalTrackedSince");
+    const readings=(item.priceHistory||[]).map(point=>({x:Date.parse(point.t),price:point.price})).filter(point=>Number.isFinite(point.x)&&(point.price===null||Number.isFinite(point.price))).sort((a,b)=>a.x-b.x);
+    const priced=readings.filter(point=>Number.isFinite(point.price));
+    if(!priced.length){chart.innerHTML='<p class="pass-chart-empty">No price recorded yet.</p>';note.textContent=item.isForSale?"Price tracking will start with the next update.":"This pass is offsale. Price tracking starts when a price is available.";since.textContent="";return;}
+    const first=readings[0].x,last=Math.max(first,Date.parse(item.priceLastObservedAt)||Date.now());
+    since.textContent=`Since ${dateLabel(first)}`;
+    const W=Math.max(280,chart.clientWidth),H=210,L=58,R=18,T=20,B=34;
+    const minX=last-first<60000?first-30*60000:first,maxX=last-first<60000?first+30*60000:last;
+    const prices=priced.map(point=>point.price),low=Math.min(...prices),high=Math.max(...prices);
+    const axis=niceAxis(Math.max(0,low-Math.max(1,(high-low)*.15,high*.08)),high+Math.max(1,(high-low)*.15,high*.08),4);
+    const x=value=>L+(value-minX)/(maxX-minX)*(W-L-R),y=value=>T+(1-(value-axis.min)/(axis.max-axis.min))*(H-T-B);
+    let grid="";for(const value of axis.ticks){const yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#293149"/><text x="${L-9}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${fmt(value)}</text>`;}
+    let paths="",dots="";
+    for(let i=0;i<readings.length;i++){
+      const point=readings[i];if(!Number.isFinite(point.price))continue;
+      const next=readings[i+1],end=next?next.x:last;
+      if(end>point.x)paths+=`M${x(point.x).toFixed(1)} ${y(point.price).toFixed(1)}H${x(end).toFixed(1)}`;
+      if(next&&Number.isFinite(next.price))paths+=`M${x(next.x).toFixed(1)} ${y(point.price).toFixed(1)}V${y(next.price).toFixed(1)}`;
+      dots+=`<circle cx="${x(point.x).toFixed(1)}" cy="${y(point.price).toFixed(1)}" r="4" fill="#34bfe5" stroke="#15192d" stroke-width="2"><title>${fmt(point.price)} Robux · ${fullDateTime(point.x)}</title></circle>`;
+    }
+    chart.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="210" role="img" aria-label="Recorded price history for ${String(item.name||"pass").replace(/[&<>"']/g,"")}">${grid}<path d="${paths}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}<text x="${L}" y="${H-9}" fill="#64748b" font-size="11">${dateLabel(first)}</text><text x="${W-R}" y="${H-9}" text-anchor="end" fill="#64748b" font-size="11">${last-first<60000?"First reading":dateLabel(last)}</text></svg>`;
+    note.textContent=readings.length===1?"No price changes recorded since tracking started.":item.isForSale?"Price changes appear here after each update.":"This pass is currently offsale.";
+  }
+  function openPass(item){
+    openPassItem=item;
+    const dialog=$("passDialog"),image=$("passModalImage"),description=$("passModalDescription"),price=$("passModalPrice");
+    $("passModalTitle").textContent=item.name||"Untitled pass";$("passModalGame").textContent=latest?.liveName||game.label;
+    description.textContent=item.description||"";description.hidden=!item.description;
+    image.hidden=!item.iconUrl;dialog.querySelector(".pass-dialog-hero").classList.toggle("no-image",!item.iconUrl);if(item.iconUrl)image.src=item.iconUrl;else image.removeAttribute("src");
+    price.replaceChildren();price.classList.toggle("is-offsale",!item.isForSale);if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}else price.textContent="Offsale";
+    $("passModalUpvotes").textContent=fmt(latest?.upVotes);$("passModalRating").textContent=Number.isFinite(latest?.ratingPercent)?`${latest.ratingPercent}%`:"—";
+    for(const [label,exact,stamp] of [["passModalCreated","passModalCreatedExact",item.created],["passModalUpdated","passModalUpdatedExact",item.updated]]){$(label).textContent=relativeTime(stamp);$(exact).textContent=fullDateTime(stamp);}
+    $("passModalLink").href=`https://www.roblox.com/game-pass/${encodeURIComponent(item.id)}/`;
+    dialog.showModal();document.body.classList.add("event-modal-open");drawPassPriceChart(item);$("passDialogClose").focus();
+  }
   function collectibleCard(item,kind){
     const card=document.createElement("article");card.className="collectible-card";
     const art=document.createElement("div");art.className="collectible-art";
@@ -367,7 +414,13 @@
       const count=document.createElement("strong");count.textContent=fmt(item.awardedCount);
       won.append(label,count);dates.append(won);
     }
-    card.append(art,nameLine,dates);return card;
+    card.append(art,nameLine,dates);
+    if(kind==="passes"){
+      card.classList.add("collectible-card-pass");card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Show details for ${item.name||"pass"}`);
+      card.addEventListener("click",()=>{card.focus();openPass(item);});
+      card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openPass(item);}});
+    }
+    return card;
   }
   const eventCategories={newContent:"New Content",itemDrop:"Item Drop",newSeason:"New Season",contentUpdate:"Content Update",newFeature:"New Feature",quest:"Quest",systemUpdate:"System Update",locationUpdate:"Location Update",expansion:"Expansion",challenge:"Challenge"};
   const eventCategory=category=>eventCategories[category]||((category||"Event").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/^./,letter=>letter.toUpperCase()));
@@ -408,6 +461,10 @@
   $("eventDialogClose").addEventListener("click",()=>$("eventDialog").close());
   $("eventDialog").addEventListener("click",event=>{if(event.target===$("eventDialog"))$("eventDialog").close();});
   $("eventDialog").addEventListener("close",()=>document.body.classList.remove("event-modal-open"));
+  $("passDialogClose").addEventListener("click",()=>$("passDialog").close());
+  $("passDialog").addEventListener("click",event=>{if(event.target===$("passDialog"))$("passDialog").close();});
+  $("passDialog").addEventListener("close",()=>{openPassItem=null;document.body.classList.remove("event-modal-open");});
+  window.addEventListener("resize",()=>{if(openPassItem&&$("passDialog").open)requestAnimationFrame(()=>drawPassPriceChart(openPassItem));});
   function renderCollectibles(){
     const passes=collectiblesTab==="passes",events=collectiblesTab==="events";
     $("collectiblesTitle").textContent=passes?"Passes":events?"Events":"Badges";

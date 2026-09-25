@@ -145,6 +145,7 @@ async function collectGame(universeId, cached, archivedEvents) {
     passes: passes.map(item => ({
       id: item.id,
       name: item.displayName || item.name || "Untitled pass",
+      description: item.displayDescription || item.description || "",
       price: Number.isFinite(item.price) ? item.price : null,
       isForSale: item.isForSale === true,
       created: item.created || null,
@@ -162,6 +163,19 @@ async function collectGame(universeId, cached, archivedEvents) {
   };
 }
 
+function trackPassPrices(passes, previousPasses, observedAt) {
+  const previousById = new Map((previousPasses || []).map(pass => [String(pass.id), pass]));
+  return passes.map(pass => {
+    const previous = previousById.get(String(pass.id));
+    const priceHistory = Array.isArray(previous?.priceHistory)
+      ? previous.priceHistory.filter(point => Number.isFinite(Date.parse(point?.t)) && (point.price === null || Number.isFinite(point.price)))
+      : [];
+    const price = pass.isForSale && Number.isFinite(pass.price) ? pass.price : null;
+    if (!priceHistory.length || priceHistory.at(-1).price !== price) priceHistory.push({ t: observedAt, price });
+    return { ...pass, priceHistory, priceLastObservedAt: observedAt };
+  });
+}
+
 const previous = await previousData();
 const live = JSON.parse(await readFile(path.join(OUT_DIR, "data", "live.json"), "utf8"));
 const ids = new Map((live.games || []).map(game => [game.slug, game.universeId]));
@@ -169,23 +183,25 @@ const result = { ok: true, generatedAt: new Date().toISOString(), games: {} };
 for (const game of games) {
   const cached = previous.games?.[game.slug];
   const hasAwardedCounts = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount"));
+  const hasPassDescriptions = cached?.passes?.every(pass => Object.hasOwn(pass, "description"));
   try {
     const universeId = game.universeId || ids.get(game.slug);
     if (!universeId) throw new Error("Missing universe ID");
     const archive = eventArchive[game.slug] || [];
-    if (cached && hasAwardedCounts && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
+    if (cached && hasAwardedCounts && hasPassDescriptions && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
       let events = [...new Map([...archive, ...cached.events].map(item => [item.id, item])).values()];
       let eventsError = false;
       try { events = await collectEvents(universeId, cached.events, archive); }
       catch (error) { console.warn(`Events for ${universeId}: ${String(error)}`); eventsError = true; }
       result.games[game.slug] = { ...cached, events, eventsError, eventsFetchedAt: new Date().toISOString() };
     } else result.games[game.slug] = await collectGame(universeId, cached, archive);
+    result.games[game.slug].passes = trackPassPrices(result.games[game.slug].passes, cached?.passes, result.games[game.slug].fetchedAt);
     console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
   } catch (error) {
     console.warn(`${game.slug}: ${String(error)}`);
     const fallback = cached || { error: true, passes: [], badges: [], events: [] };
     const events = [...new Map([...archive, ...(fallback.events || [])].map(item => [item.id, item])).values()];
-    result.games[game.slug] = { ...fallback, events };
+    result.games[game.slug] = { ...fallback, events, passes: trackPassPrices(fallback.passes || [], cached?.passes, fallback.fetchedAt || new Date().toISOString()) };
   }
 }
 await mkdir(path.dirname(output), { recursive: true });

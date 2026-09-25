@@ -438,7 +438,9 @@ body.event-modal-open { overflow:hidden; }
 .event-dialog::-webkit-scrollbar { display:none; }
 .event-dialog::backdrop { background:rgba(4,8,18,.76);backdrop-filter:blur(7px); }
 .event-dialog-top { position:sticky;z-index:2;top:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:#15192d; }
-.event-dialog.has-image .event-dialog-top { box-sizing:border-box;min-height:58px;margin-bottom:-58px;background:linear-gradient(180deg,rgba(4,8,18,.9),rgba(4,8,18,.7) 62%,rgba(4,8,18,.3)); }
+.event-dialog.has-image .event-dialog-top { box-sizing:border-box;min-height:58px;margin-bottom:-58px;background:transparent; }
+.event-dialog.has-image .event-dialog-top::before { content:"";position:absolute;top:0;left:0;right:0;height:112px;background:linear-gradient(180deg,rgba(4,8,18,.88),rgba(4,8,18,.62) 38%,transparent);pointer-events:none; }
+.event-dialog.has-image .event-dialog-top>* { position:relative; }
 .event-dialog-close { display:grid;place-items:center;width:34px;height:34px;flex:none;border:1px solid #334155;border-radius:9px;background:#0f172a;color:#cbd5e1;cursor:pointer; }
 .event-dialog-close:hover { border-color:#64748b;color:#fff; }
 .event-dialog-close:focus-visible { outline:2px solid #34bfe5;outline-offset:2px; }
@@ -459,7 +461,45 @@ body.event-modal-open { overflow:hidden; }
 .event-dialog-times time { display:block;margin-top:5px;color:#f8fafc;font-size:.85rem;font-weight:700; }
 .event-dialog-description { margin-top:22px;padding-top:18px;border-top:1px solid #293149;color:#cbd5e1;font-size:.88rem;line-height:1.65;white-space:pre-line;overflow-wrap:anywhere; }
 @media (max-width:600px) { .event-dialog-body { padding:18px; } .event-dialog-times { grid-template-columns:1fr; } }
+.pass-dialog { position:fixed;inset:0;box-sizing:border-box;width:min(760px,calc(100vw - 24px));max-width:none;max-height:90vh;margin:auto;padding:0;overflow-y:auto;scrollbar-width:none;border:1px solid #3b4863;border-radius:18px;background:#15192d;color:#f8fafc;box-shadow:0 28px 90px rgba(0,0,0,.5); }
+.pass-dialog::-webkit-scrollbar { display:none; }
+.pass-dialog::backdrop { background:rgba(4,8,18,.76);backdrop-filter:blur(7px); }
+.pass-dialog-top { position:sticky;z-index:2;top:0;display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #293149;background:#15192d; }
+.pass-dialog-kicker { color:#34bfe5;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase; }
+.pass-dialog-content { display:grid;gap:20px;padding:24px; }
+.pass-dialog-hero { display:grid;grid-template-columns:118px minmax(0,1fr);align-items:center;gap:20px;min-width:0; }
+.pass-dialog-hero.no-image { grid-template-columns:1fr; }
+.pass-dialog-hero img { display:block;width:118px;height:118px;object-fit:contain; }
+.pass-dialog-hero img[hidden],.pass-dialog-description[hidden] { display:none; }
+.pass-dialog-game { color:#94a3b8;font-size:.77rem;font-weight:700; }
+.pass-dialog-game span { color:#cbd5e1; }
+.pass-dialog-hero h2 { margin-top:5px;color:#fff;font-size:clamp(1.3rem,3vw,1.85rem);font-weight:800;line-height:1.2;overflow-wrap:anywhere; }
+.pass-dialog-description { margin-top:10px;color:#94a3b8;font-size:.84rem;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere; }
+.pass-dialog-metrics { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px; }
+.pass-dialog-metrics>div,.pass-dialog-dates>div { min-width:0;padding:13px 15px;border:1px solid #293149;border-radius:11px;background:#111528; }
+.pass-dialog-metrics span,.pass-dialog-dates span { display:block;margin-bottom:7px;color:#64748b;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }
+.pass-dialog-metrics strong,.pass-dialog-dates strong { display:flex;align-items:center;gap:5px;color:#f8fafc;font-size:1rem;font-weight:800;overflow-wrap:anywhere; }
+.pass-dialog-metrics .pass-dialog-price { color:#34bfe5; }
+.pass-dialog-metrics .pass-dialog-price.is-offsale { color:#94a3b8; }
+.pass-dialog-price svg { width:18px;height:18px;flex:none; }
+.pass-dialog-dates { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
+.pass-dialog-dates small { display:block;margin-top:5px;color:#64748b;font-size:.72rem; }
+.pass-dialog-history { min-width:0;padding:16px;border:1px solid #293149;border-radius:12px;background:#111528; }
+.pass-dialog-history-heading { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.pass-dialog-history-heading h3 { color:#f8fafc;font-size:.97rem;font-weight:800; }
+.pass-dialog-history-heading span,.pass-price-note { color:#64748b;font-size:.72rem; }
+.pass-price-chart { display:grid;place-items:center;min-height:210px;margin-top:14px; }
+.pass-price-chart svg { display:block;max-width:100%; }
+.pass-chart-empty { color:#64748b;font-size:.82rem;text-align:center; }
+.pass-price-note { margin-top:7px; }
+.pass-dialog-link { display:inline-flex;align-items:center;gap:5px;width:max-content;color:#34bfe5;font-size:.82rem;font-weight:800;text-decoration:none; }
+.pass-dialog-link:hover { color:#a5f3fc;text-decoration:underline; }
+.pass-dialog-link svg { width:14px;height:14px; }
+@media (max-width:600px) { .pass-dialog-content { gap:14px;padding:18px; } .pass-dialog-hero { grid-template-columns:84px minmax(0,1fr);gap:12px; } .pass-dialog-hero img { width:84px;height:84px; } .pass-dialog-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 .collectible-card { display:flex;flex-direction:column;min-width:0;padding:10px 10px 14px;background:#111528;border:1px solid #293149;border-radius:16px; }
+.collectible-card-pass { cursor:pointer;transition:border-color .15s; }
+.collectible-card-pass:hover { border-color:#34bfe5; }
+.collectible-card-pass:focus-visible { outline:2px solid #34bfe5;outline-offset:3px; }
 .collectible-art { display:grid;place-items:center;width:100%;aspect-ratio:1/1;overflow:visible;background:transparent;border:0; }
 .collectible-art img { display:block;width:100%;height:100%;object-fit:contain; }
 .collectible-art-empty::after { content:"◇";color:#475569;font-size:3rem; }
