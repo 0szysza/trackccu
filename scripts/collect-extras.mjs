@@ -1,5 +1,5 @@
 // Game events are checked on every build so short events reach the Past archive.
-// Passes and badges are refreshed hourly to keep the five-minute build quick.
+// Passes, developer products and badges are refreshed hourly to keep the five-minute build quick.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -61,7 +61,7 @@ async function thumbnails(kind, ids) {
   for (let index = 0; index < ids.length; index += 100) {
     const batch = ids.slice(index, index + 100);
     const url = new URL(`https://thumbnails.roblox.com/v1/${kind}`);
-    url.searchParams.set(kind === "game-passes" ? "gamePassIds" : kind === "assets" ? "assetIds" : "badgeIds", batch.join(","));
+    url.searchParams.set(kind === "game-passes" ? "gamePassIds" : kind === "developer-products/icons" ? "developerProductIds" : kind === "assets" ? "assetIds" : "badgeIds", batch.join(","));
     url.searchParams.set("size", kind === "assets" ? "768x432" : "150x150");
     url.searchParams.set("format", "Png");
     url.searchParams.set("isCircular", "false");
@@ -133,6 +133,28 @@ async function collectGame(universeId, cached, archivedEvents) {
     thumbnails("game-passes", passes.map(item => item.id)),
     thumbnails("badges/icons", badges.map(item => item.id)),
   ]);
+  let products = cached?.products || [];
+  let productsError = false;
+  try {
+    const rawProducts = await allPages(`https://apis.roblox.com/developer-products/v2/universes/${universeId}/developerproducts?limit=400`, "developerProducts", "nextPageCursor", "cursor");
+    let productIcons = new Map();
+    try { productIcons = await thumbnails("developer-products/icons", rawProducts.map(item => item.DeveloperProductId)); }
+    catch (error) { console.warn(`Developer product icons for ${universeId}: ${String(error)}`); }
+    const cachedIcons = new Map((cached?.products || []).map(item => [String(item.id), item.iconUrl]));
+    products = rawProducts.map(item => ({
+      id: item.DeveloperProductId,
+      name: item.displayName || item.DisplayName || item.Name || "Untitled product",
+      description: item.displayDescription || item.DisplayDescription || item.Description || "",
+      price: Number.isFinite(item.PriceInRobux) ? item.PriceInRobux : null,
+      isForSale: item.IsForSale === true,
+      created: item.Created || null,
+      updated: item.Updated || null,
+      iconUrl: productIcons.get(String(item.DeveloperProductId)) || cachedIcons.get(String(item.DeveloperProductId)) || null,
+    })).sort((a, b) => Number(b.isForSale) - Number(a.isForSale) || Date.parse(b.created || 0) - Date.parse(a.created || 0));
+  } catch (error) {
+    console.warn(`Developer products for ${universeId}: ${String(error)}`);
+    productsError = true;
+  }
   let events = [...archivedEvents, ...(cached?.events || [])];
   let eventsError = false;
   try { events = await collectEvents(universeId, cached?.events || [], archivedEvents); }
@@ -142,6 +164,8 @@ async function collectGame(universeId, cached, archivedEvents) {
     eventsFetchedAt: new Date().toISOString(),
     events,
     eventsError,
+    products,
+    productsError,
     passes: passes.map(item => ({
       id: item.id,
       name: item.displayName || item.name || "Untitled pass",
@@ -165,16 +189,16 @@ async function collectGame(universeId, cached, archivedEvents) {
   };
 }
 
-function trackPassPrices(passes, previousPasses, observedAt) {
-  const previousById = new Map((previousPasses || []).map(pass => [String(pass.id), pass]));
-  return passes.map(pass => {
-    const previous = previousById.get(String(pass.id));
+function trackPrices(items, previousItems, observedAt) {
+  const previousById = new Map((previousItems || []).map(item => [String(item.id), item]));
+  return items.map(item => {
+    const previous = previousById.get(String(item.id));
     const priceHistory = Array.isArray(previous?.priceHistory)
       ? previous.priceHistory.filter(point => Number.isFinite(Date.parse(point?.t)) && (point.price === null || Number.isFinite(point.price)))
       : [];
-    const price = pass.isForSale && Number.isFinite(pass.price) ? pass.price : null;
+    const price = item.isForSale && Number.isFinite(item.price) ? item.price : null;
     if (!priceHistory.length || priceHistory.at(-1).price !== price) priceHistory.push({ t: observedAt, price });
-    return { ...pass, priceHistory, priceLastObservedAt: observedAt };
+    return { ...item, priceHistory, priceLastObservedAt: observedAt };
   });
 }
 
@@ -186,24 +210,26 @@ for (const game of games) {
   const cached = previous.games?.[game.slug];
   const hasBadgeDetails = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount") && Object.hasOwn(badge, "winRatePercentage") && Object.hasOwn(badge, "description"));
   const hasPassDescriptions = cached?.passes?.every(pass => Object.hasOwn(pass, "description"));
+  const hasProducts = Array.isArray(cached?.products) && !cached.productsError;
   try {
     const universeId = game.universeId || ids.get(game.slug);
     if (!universeId) throw new Error("Missing universe ID");
     const archive = eventArchive[game.slug] || [];
-    if (cached && hasBadgeDetails && hasPassDescriptions && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
+    if (cached && hasBadgeDetails && hasPassDescriptions && hasProducts && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
       let events = [...new Map([...archive, ...cached.events].map(item => [item.id, item])).values()];
       let eventsError = false;
       try { events = await collectEvents(universeId, cached.events, archive); }
       catch (error) { console.warn(`Events for ${universeId}: ${String(error)}`); eventsError = true; }
       result.games[game.slug] = { ...cached, events, eventsError, eventsFetchedAt: new Date().toISOString() };
     } else result.games[game.slug] = await collectGame(universeId, cached, archive);
-    result.games[game.slug].passes = trackPassPrices(result.games[game.slug].passes, cached?.passes, result.games[game.slug].fetchedAt);
-    console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
+    result.games[game.slug].passes = trackPrices(result.games[game.slug].passes, cached?.passes, result.games[game.slug].fetchedAt);
+    result.games[game.slug].products = trackPrices(result.games[game.slug].products || [], cached?.products, result.games[game.slug].fetchedAt);
+    console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].products.length} products, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
   } catch (error) {
     console.warn(`${game.slug}: ${String(error)}`);
-    const fallback = cached || { error: true, passes: [], badges: [], events: [] };
+    const fallback = cached || { error: true, passes: [], products: [], badges: [], events: [] };
     const events = [...new Map([...archive, ...(fallback.events || [])].map(item => [item.id, item])).values()];
-    result.games[game.slug] = { ...fallback, events, passes: trackPassPrices(fallback.passes || [], cached?.passes, fallback.fetchedAt || new Date().toISOString()) };
+    result.games[game.slug] = { ...fallback, events, passes: trackPrices(fallback.passes || [], cached?.passes, fallback.fetchedAt || new Date().toISOString()), products: trackPrices(fallback.products || [], cached?.products, fallback.fetchedAt || new Date().toISOString()) };
   }
 }
 await mkdir(path.dirname(output), { recursive: true });

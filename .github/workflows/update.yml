@@ -55,7 +55,7 @@ jobs:
           OUT_DIR: _site
           SITE_URL: ${{ steps.pages.outputs.base_url }}
 
-      - name: Collect game passes and badges
+      - name: Collect game passes, developer products and badges
         run: node scripts/collect-extras.mjs
         env:
           OUT_DIR: _site

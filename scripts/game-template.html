@@ -116,6 +116,7 @@
         <div id="eventPeriod" class="collectibles-tabs event-period" role="group" aria-label="Event period" hidden><button id="currentEvents" type="button" aria-pressed="true">Current</button><button id="pastEvents" type="button" aria-pressed="false">Past</button></div>
         <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
           <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Passes</button>
+          <button id="productsTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Products</button>
           <button id="badgesTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Badges</button>
           <button id="eventsTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Events</button>
         </div>
@@ -151,7 +152,7 @@
         <div class="pass-dialog-facts"><div class="pass-dialog-metric"><span class="pass-dialog-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> Price</span><strong id="passModalPrice" class="pass-dialog-price"></strong></div>
         <div class="pass-dialog-dates"><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg> Created</span><strong id="passModalCreated"></strong><small id="passModalCreatedExact"></small></div><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.36 6.36L3 16"/><path d="M8 16H3v5"/></svg> Updated</span><strong id="passModalUpdated"></strong><small id="passModalUpdatedExact"></small></div></div></div>
         <div class="pass-dialog-history"><div class="pass-dialog-history-heading"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 2 5-6"/></svg> Price history</h3></div><div id="passPriceChart" class="pass-price-chart" aria-label="Price history chart"></div></div>
-        <a id="passModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer">Open pass on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+        <a id="passModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer"><span id="passModalLinkText">Open pass on Roblox</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
       </div>
     </dialog>
   </div>
@@ -357,7 +358,7 @@
   async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
 
   let extras=null, collectiblesTab="passes", priceSortAsc=false, eventPeriod="current";
-  const collectiblesQueries={passes:"",badges:"",events:""};
+  const collectiblesQueries={passes:"",products:"",badges:"",events:""};
   const expandedCollectibles=Object.create(null);
   // Robux 2019 logo: https://commons.wikimedia.org/wiki/File:Robux_2019_Logo_white.svg
   const robuxIcon='<svg viewBox="0 0 91.99 100.06" fill="currentColor" aria-hidden="true"><path d="M82,17.72A19.94,19.94,0,0,1,92,35V65.08A19.92,19.92,0,0,1,82,82.33L56,97.39a19.94,19.94,0,0,1-19.91,0L10,82.33A19.91,19.91,0,0,1,0,65.08V35A19.93,19.93,0,0,1,10,17.72L36,2.67A19.89,19.89,0,0,1,56,2.67ZM39.53,9.5,14.13,24.17a12.92,12.92,0,0,0-6.46,11.2V64.69a12.93,12.93,0,0,0,6.46,11.2l25.4,14.66a12.93,12.93,0,0,0,12.93,0l25.4-14.66a12.93,12.93,0,0,0,6.46-11.2V35.37a12.92,12.92,0,0,0-6.46-11.2L52.46,9.5a12.93,12.93,0,0,0-12.93,0ZM51.3,17.7l20,11.56a10.64,10.64,0,0,1,5.32,9.21V61.6a10.61,10.61,0,0,1-5.32,9.2l-20,11.57a10.61,10.61,0,0,1-10.62,0l-20-11.57a10.6,10.6,0,0,1-5.31-9.2V38.47a10.63,10.63,0,0,1,5.31-9.21l20-11.56a10.61,10.61,0,0,1,10.62,0ZM34.5,61.53h23v-23h-23Z"/></svg>';
@@ -412,15 +413,17 @@
       hit.addEventListener("pointerleave",()=>tooltip.hidden=true);hit.addEventListener("blur",()=>tooltip.hidden=true);
     });
   }
-  function openPass(item){
+  function openPass(item,kind="passes"){
     openPassItem=item;
     const dialog=$("passDialog"),image=$("passModalImage"),description=$("passModalDescription"),price=$("passModalPrice");
-    $("passModalTitle").textContent=item.name||"Untitled pass";$("passModalGame").textContent=latest?.liveName||game.label;$("passModalGame").href=game.url;
+    $("passModalTitle").textContent=item.name||(kind==="products"?"Untitled product":"Untitled pass");$("passModalGame").textContent=latest?.liveName||game.label;$("passModalGame").href=game.url;
     description.textContent=item.description||"";description.hidden=!item.description;
     image.hidden=!item.iconUrl;dialog.querySelector(".pass-dialog-hero").classList.toggle("no-image",!item.iconUrl);if(item.iconUrl)image.src=item.iconUrl;else image.removeAttribute("src");
     price.replaceChildren();price.classList.toggle("is-offsale",!item.isForSale);if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}else price.textContent="Offsale";
     for(const [label,exact,stamp] of [["passModalCreated","passModalCreatedExact",item.created],["passModalUpdated","passModalUpdatedExact",item.updated]]){$(label).textContent=relativeTime(stamp);$(exact).textContent=fullDateTime(stamp);}
-    $("passModalLink").href=`https://www.roblox.com/game-pass/${encodeURIComponent(item.id)}/`;
+    $("passModalLink").href=kind==="products"?game.url:`https://www.roblox.com/game-pass/${encodeURIComponent(item.id)}/`;
+    $("passModalLinkText").textContent=kind==="products"?"Open game on Roblox":"Open pass on Roblox";
+    $("passDialogClose").setAttribute("aria-label",kind==="products"?"Close product details":"Close pass details");
     dialog.showModal();document.body.classList.add("event-modal-open");drawPassPriceChart(item);$("passDialogClose").focus();
   }
   function openBadge(item){
@@ -446,7 +449,7 @@
     }else art.classList.add("collectible-art-empty");
     const nameLine=document.createElement("div");nameLine.className="collectible-name-line";
     const name=document.createElement("h3");name.textContent=item.name||"Untitled";nameLine.append(name);
-    if(kind==="passes"){
+    if(kind==="passes"||kind==="products"){
       const price=document.createElement("span");price.className=item.isForSale?"collectible-price":"collectible-offsale";
       if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}
       else price.textContent="Offsale";
@@ -461,11 +464,11 @@
       won.append(label,count);dates.append(won);
     }
     card.append(art,nameLine,dates);
-    if(kind==="passes"||kind==="badges"){
-      const open=kind==="passes"?openPass:openBadge;
+    if(kind==="passes"||kind==="products"||kind==="badges"){
+      const open=()=>kind==="badges"?openBadge(item):openPass(item,kind);
       card.classList.add("collectible-card-detail");card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Show details for ${item.name||kind}`);
-      card.addEventListener("click",()=>{card.focus();open(item);});
-      card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();open(item);}});
+      card.addEventListener("click",()=>{card.focus();open();});
+      card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();open();}});
     }
     return card;
   }
@@ -516,28 +519,28 @@
   $("badgeDialog").addEventListener("close",()=>document.body.classList.remove("event-modal-open"));
   window.addEventListener("resize",()=>{if(openPassItem&&$("passDialog").open)requestAnimationFrame(()=>drawPassPriceChart(openPassItem));});
   function renderCollectibles(){
-    const passes=collectiblesTab==="passes",events=collectiblesTab==="events";
-    $("collectiblesTitle").textContent=passes?"Passes":events?"Events":"Badges";
-    for(const [tab,id] of [["passes","passesTab"],["badges","badgesTab"],["events","eventsTab"]]){
+    const passes=collectiblesTab==="passes",products=collectiblesTab==="products",priced=passes||products,events=collectiblesTab==="events";
+    $("collectiblesTitle").textContent=passes?"Passes":products?"Developer products":events?"Events":"Badges";
+    for(const [tab,id] of [["passes","passesTab"],["products","productsTab"],["badges","badgesTab"],["events","eventsTab"]]){
       $(id).setAttribute("aria-selected",String(collectiblesTab===tab));$(id).tabIndex=collectiblesTab===tab?0:-1;
     }
     $("collectiblesPanel").setAttribute("aria-labelledby",`${collectiblesTab}Tab`);
-    $("offsaleControl").hidden=!passes;
-    $("priceSortToggle").hidden=!passes;
+    $("offsaleControl").hidden=!priced;
+    $("priceSortToggle").hidden=!priced;
     $("eventPeriod").hidden=!events;
     $("currentEvents").setAttribute("aria-pressed",String(eventPeriod==="current"));
     $("pastEvents").setAttribute("aria-pressed",String(eventPeriod==="past"));
     $("priceSortToggle").setAttribute("aria-pressed",String(priceSortAsc));
     $("priceSortLabel").textContent=priceSortAsc?"Lowest price":"Highest price";
     const search=$("collectiblesSearch");
-    search.placeholder=passes?"Search passes...":events?"Search events...":"Search badges...";
-    search.setAttribute("aria-label",passes?"Search passes":events?"Search events":"Search badges");
+    search.placeholder=passes?"Search passes...":products?"Search products...":events?"Search events...":"Search badges...";
+    search.setAttribute("aria-label",passes?"Search passes":products?"Search products":events?"Search events":"Search badges");
     if(search.value!==collectiblesQueries[collectiblesTab])search.value=collectiblesQueries[collectiblesTab];
-    const list=extras?(passes?extras.passes||[]:events?extras.events||[]:extras.badges||[]):[];
+    const list=extras?(passes?extras.passes||[]:products?extras.products||[]:events?extras.events||[]:extras.badges||[]):[];
     const query=collectiblesQueries[collectiblesTab].trim().toLocaleLowerCase();
     const now=Date.now();
-    const visible=list.filter(item=>(!passes||$("showOffsale").checked||item.isForSale)&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
-    if(passes)visible.sort((a,b)=>{
+    const visible=list.filter(item=>(!priced||$("showOffsale").checked||item.isForSale)&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
+    if(priced)visible.sort((a,b)=>{
       const aPrice=a.isForSale&&Number.isFinite(a.price)?a.price:null;
       const bPrice=b.isForSale&&Number.isFinite(b.price)?b.price:null;
       if(aPrice===null)return bPrice===null?0:1;
@@ -552,9 +555,9 @@
     const more=$("collectiblesMore");more.hidden=visible.length<=limit;more.textContent=expanded?"Show less":"Show more";more.dataset.view=view;
     const message=$("collectiblesMessage");
     message.hidden=Boolean(visible.length);
-    if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?eventPeriod==="past"?"No past events saved yet. Events move here after they end.":"No current or upcoming events found.":passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${collectiblesTab} found.`;
+    if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":products&&extras.productsError&&!list.length?"Couldn't load developer products right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?eventPeriod==="past"?"No past events saved yet. Events move here after they end.":"No current or upcoming events found.":priced&&!$("showOffsale").checked&&list.length?`No ${collectiblesTab} are on sale. Turn on Show offsale to see the rest.`:`No ${collectiblesTab} found.`;
   }
-  const tabOrder=[["passesTab","passes"],["badgesTab","badges"],["eventsTab","events"]];
+  const tabOrder=[["passesTab","passes"],["productsTab","products"],["badgesTab","badges"],["eventsTab","events"]];
   for(const [index,[id,kind]] of tabOrder.entries()){
     $(id).addEventListener("click",()=>{collectiblesTab=kind;renderCollectibles();});
     $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const next=tabOrder[(index+(event.key==="ArrowRight"?1:tabOrder.length-1))%tabOrder.length][0];$(next).click();$(next).focus();}});
@@ -570,8 +573,8 @@
     try{
       const response=await fetch(`${ROOT}data/extras.json`,{cache:"no-store"});
       if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],badges:[],events:[]};
-    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],badges:[],events:[]};}
+      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],products:[],badges:[],events:[]};
+    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],products:[],badges:[],events:[]};}
     renderCollectibles();
   }
   loadExtras();
