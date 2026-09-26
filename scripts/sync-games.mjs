@@ -82,26 +82,29 @@ async function updateSiteJs() {
 
 /* ---------- 2. per-game pages ---------- */
 
-async function writeGamePages() {
+async function writeGamePages(jsHash) {
   const template = await readFile(path.join(here, "game-template.html"), "utf8");
   const gamesDir = path.join(OUT_DIR, "games");
   for (const game of games) {
     const dir = path.join(gamesDir, String(game.placeId));
     await mkdir(dir, { recursive: true });
-    const page = template.replaceAll("__GAME_NAME__", game.name).replaceAll("__CSS_HASH__", cssHash);
+    const page = template.replaceAll("__GAME_NAME__", game.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash);
     await writeFile(path.join(dir, "index.html"), page);
   }
   return gamesDir;
 }
 
 const siteJsTarget = await updateSiteJs();
-const gamesDir = await writeGamePages();
+const jsHash = createHash("sha256").update(await readFile(siteJsTarget)).digest("hex").slice(0, 12);
+const gamesDir = await writeGamePages(jsHash);
 if (OUT_DIR !== REPO_ROOT) {
   for (const name of ["index.html", "games.html", "groups.html", "compare.html"]) {
     const file = path.join(OUT_DIR, name);
     const source = await readFile(file, "utf8");
-    const next = source.replaceAll(/href="site\.css(?:\?v=[^"]*)?"/g, `href="site.css?v=${cssHash}"`);
-    if (next === source && !source.includes(`site.css?v=${cssHash}`)) throw new Error(`Missing stylesheet link in ${name}`);
+    const next = source
+      .replaceAll(/href="site\.css(?:\?v=[^"]*)?"/g, `href="site.css?v=${cssHash}"`)
+      .replaceAll(/src="site\.js(?:\?v=[^"]*)?"/g, `src="site.js?v=${jsHash}"`);
+    if (!next.includes(`site.css?v=${cssHash}`) || !next.includes(`site.js?v=${jsHash}`)) throw new Error(`Missing versioned asset in ${name}`);
     await writeFile(file, next);
   }
 }
@@ -109,6 +112,6 @@ const groupTemplate = await readFile(path.join(here, "group-template.html"), "ut
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash));
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);
