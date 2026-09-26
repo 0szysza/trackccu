@@ -526,7 +526,7 @@
     }
     $("collectiblesPanel").setAttribute("aria-labelledby",`${collectiblesTab}Tab`);
     $("offsaleControl").hidden=!priced;
-    $("priceSortToggle").hidden=!priced;
+    $("priceSortToggle").hidden=!passes;
     $("eventPeriod").hidden=!events;
     $("currentEvents").setAttribute("aria-pressed",String(eventPeriod==="current"));
     $("pastEvents").setAttribute("aria-pressed",String(eventPeriod==="past"));
@@ -540,13 +540,14 @@
     const query=collectiblesQueries[collectiblesTab].trim().toLocaleLowerCase();
     const now=Date.now();
     const visible=list.filter(item=>(!priced||$("showOffsale").checked||item.isForSale)&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
-    if(priced)visible.sort((a,b)=>{
+    if(passes)visible.sort((a,b)=>{
       const aPrice=a.isForSale&&Number.isFinite(a.price)?a.price:null;
       const bPrice=b.isForSale&&Number.isFinite(b.price)?b.price:null;
       if(aPrice===null)return bPrice===null?0:1;
       if(bPrice===null)return -1;
       return priceSortAsc?aPrice-bPrice:bPrice-aPrice;
     });
+    if(products)visible.sort((a,b)=>(Date.parse(b.created)||0)-(Date.parse(a.created)||0));
     if(events)visible.sort((a,b)=>eventPeriod==="past"?Date.parse(b.end)-Date.parse(a.end):Number(Date.parse(a.start)>now)-Number(Date.parse(b.start)>now)||Date.parse(a.start)-Date.parse(b.start));
     const grid=$("collectiblesGrid");grid.classList.toggle("events-grid",events);
     const columns=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length);

@@ -150,7 +150,7 @@ async function collectGame(universeId, cached, archivedEvents) {
       created: item.Created || null,
       updated: item.Updated || null,
       iconUrl: productIcons.get(String(item.DeveloperProductId)) || cachedIcons.get(String(item.DeveloperProductId)) || null,
-    })).sort((a, b) => Number(b.isForSale) - Number(a.isForSale) || Date.parse(b.created || 0) - Date.parse(a.created || 0));
+    })).sort((a, b) => (Date.parse(b.created) || 0) - (Date.parse(a.created) || 0));
   } catch (error) {
     console.warn(`Developer products for ${universeId}: ${String(error)}`);
     productsError = true;
