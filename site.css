@@ -372,7 +372,7 @@ body.chart-fullscreen-open { overflow:hidden; }
 .stat-panel strong { display:block;margin-top:5px;color:#f8fafc;font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums; }
 .stat-panel small { display:block;margin-top:3px;color:#64748b;font-size:.74rem; }
 .stat-kicker,.metric-card span { color:#64748b;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em; }
-.metric-card strong { display:block;margin-top:5px;color:#e2e8f0;font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums; }
+.metric-card strong { display:block;margin-top:5px;color:#e2e8f0;font-size:1.7rem;line-height:1.15;font-weight:800;font-variant-numeric:tabular-nums; }
 .game-detail-metrics { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);gap:12px; }
 .game-vote-panel { display:flex;flex-direction:column;justify-content:center;min-width:0;padding:14px 16px;border:1px solid #262d4a;border-radius:14px;background:#15192d; }
 .game-vote-main { display:flex;align-items:center;justify-content:space-between;min-width:0;gap:18px; }
