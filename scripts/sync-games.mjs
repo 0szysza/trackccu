@@ -96,6 +96,7 @@ async function writeGamePages(jsHash) {
 
 const siteJsTarget = await updateSiteJs();
 const jsHash = createHash("sha256").update(await readFile(siteJsTarget)).digest("hex").slice(0, 12);
+const groupPageHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "group-page.js"))).digest("hex").slice(0, 12);
 const gamesDir = await writeGamePages(jsHash);
 if (OUT_DIR !== REPO_ROOT) {
   for (const name of ["index.html", "games.html", "groups.html", "compare.html"]) {
@@ -112,6 +113,6 @@ const groupTemplate = await readFile(path.join(here, "group-template.html"), "ut
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash));
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__GROUP_PAGE_HASH__", groupPageHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);

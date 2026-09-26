@@ -75,13 +75,14 @@ function history(raw, range, now) {
   const series = {};
   for (const [id, points] of Object.entries(raw.groups)) {
     const buckets = new Map();
-    for (const [t, members, totalVisits, totalFavorites] of points) {
+    for (const [t, members, totalVisits, totalFavorites, totalPlayers] of points) {
       if (since !== null && t < since) continue;
       const key = Math.floor(t / bucket) * bucket;
-      const entry = buckets.get(key) || { members: 0, visits: 0, favorites: 0, count: 0 };
+      const entry = buckets.get(key) || { members: 0, visits: 0, favorites: 0, players: 0, playersCount: 0, count: 0 };
       entry.members += members;
       entry.visits += totalVisits;
       entry.favorites += totalFavorites;
+      if (Number.isFinite(totalPlayers)) { entry.players += totalPlayers; entry.playersCount++; }
       entry.count++;
       buckets.set(key, entry);
     }
@@ -90,6 +91,7 @@ function history(raw, range, now) {
       members: Math.round(value.members / value.count),
       totalVisits: Math.round(value.visits / value.count),
       totalFavorites: Math.round(value.favorites / value.count),
+      totalPlayers: value.playersCount ? Math.round(value.players / value.playersCount) : null,
     }));
   }
   return { ok: true, range, bucketSeconds: bucket, generatedAt: new Date(now * 1000).toISOString(), series };
@@ -124,7 +126,7 @@ const liveGroups = GROUPS.map((seed, index) => {
   const totalFavorites = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.favoritedCount ?? 0), 0);
   const totalPlayers = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.playing ?? game.playing ?? 0), 0);
   const points = (raw.groups[id] ||= []);
-  const sample = [now, info.memberCount, totalVisits, totalFavorites];
+  const sample = [now, info.memberCount, totalVisits, totalFavorites, totalPlayers];
   if (points.length && now - points.at(-1)[0] < 60) points[points.length - 1] = sample;
   else points.push(sample);
   const ownerId = info.owner?.userId ?? created.owner?.id ?? null;
@@ -152,4 +154,3 @@ await Promise.all([
   ...Object.keys(RANGES).map((range) => writeFile(path.join(dataDir, `group-history-${range}.json`), JSON.stringify(history(raw, range, now)))),
 ]);
 console.log(`Stored ${liveGroups.length} groups and ${Object.values(raw.groups).reduce((sum, points) => sum + points.length, 0)} group history points.`);
-

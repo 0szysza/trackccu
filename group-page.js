@@ -13,7 +13,8 @@
   icon.alt = group.label + " icon";
   icon.onerror = () => { icon.onerror = null; icon.src = iconFallback; };
   const HOUR = 3600000, DAY = 86400000;
-  let latest = null, range = "1d", rangePoints = [], visible = [], trendPoints = [], navStart = 0, navEnd = 1, navDrag = null, requestId = 0;
+  let latest = null, range = "1d", metric = "members", rangeRows = [], rangePoints = [], visible = [], trendPoints = [], navStart = 0, navEnd = 1, navDrag = null, requestId = 0;
+  const metricLabels = { members: "Members", totalPlayers: "Total players" };
 
   function appendVerified(element, verified) {
     if (verified !== true) return;
@@ -135,26 +136,26 @@
     const host = $("chartHost"), note = $("chartNote"), tooltip = $("chartTooltip");
     tooltip.classList.add("hidden");
     paintNavigator();
-    if (visible.length < 2) { host.innerHTML = ""; $("chartStats").innerHTML = ""; note.classList.remove("hidden"); return; }
+    if (!visible.length) { host.innerHTML = ""; $("chartStats").innerHTML = ""; note.textContent = metric === "members" ? "Collecting member history…" : "Collecting total players history…"; note.classList.remove("hidden"); return; }
     note.classList.add("hidden");
     const W = Math.max(260, host.clientWidth), H = Math.max(220, host.clientHeight);
     const PL = 70, PR = 32, PT = 18, PB = 34;
-    const first = visible[0].x, last = visible.at(-1).x;
+    const first = visible[0].x, last = visible.at(-1).x, singlePoint = visible.length === 1;
     let low = Infinity, high = -Infinity, sum = 0;
     for (const point of visible) { low = Math.min(low, point.y); high = Math.max(high, point.y); sum += point.y; }
     const margin = (high - low) * .12 || Math.max(1, high * .02);
     const axis = niceAxis(Math.max(0, low - margin), high + margin, Math.min(10, Math.max(4, Math.floor((H - PT - PB) / 90))));
     const minY = axis.min, maxY = axis.max;
-    const x = (time) => PL + (time - first) / (last - first || 1) * (W - PL - PR);
+    const x = (time) => singlePoint ? PL + (W - PL - PR) / 2 : PL + (time - first) / (last - first || 1) * (W - PL - PR);
     const y = (value) => PT + (1 - (value - minY) / (maxY - minY || 1)) * (H - PT - PB);
     let grid = "";
     for (const value of axis.ticks) { const yy = y(value); grid += `<line x1="${PL}" y1="${yy}" x2="${W - PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL - 7}" y="${yy + 4}" text-anchor="end" fill="#64748b" font-size="11">${fmt(value)}</text>`; }
-    const xTicks = Math.min(11, Math.max(3, Math.floor((W - PL - PR) / 155)));
+    const xTicks = singlePoint ? 1 : Math.min(11, Math.max(3, Math.floor((W - PL - PR) / 155)));
     let labels = "";
-    for (let i = 0; i < xTicks; i++) { const time = first + i * (last - first) / (xTicks - 1); labels += `<text x="${x(time)}" y="${H - 10}" text-anchor="middle" fill="#64748b" font-size="11">${range === "1d" ? clockLabel(time) : dayLabel(time)}</text>`; }
+    for (let i = 0; i < xTicks; i++) { const time = singlePoint ? first : first + i * (last - first) / (xTicks - 1); labels += `<text x="${x(time)}" y="${H - 10}" text-anchor="middle" fill="#64748b" font-size="11">${range === "1d" ? clockLabel(time) : dayLabel(time)}</text>`; }
     const line = visible.map((point, i) => `${i ? "L" : "M"}${x(point.x).toFixed(1)} ${y(point.y).toFixed(1)}`).join(" ");
     const area = `${line} L${x(last)} ${H - PB} L${x(first)} ${H - PB} Z`;
-    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="Members history chart"><defs><linearGradient id="groupArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${labels}<path d="${area}" fill="url(#groupArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H - PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
+    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${metricLabels[metric]} history chart"><defs><linearGradient id="groupArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${labels}${singlePoint ? "" : `<path d="${area}" fill="url(#groupArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`}<circle cx="${x(first)}" cy="${y(visible[0].y)}" r="${singlePoint ? 5 : 0}" fill="#34bfe5"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H - PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML = `<span class="chart-stat">High <b>${fmt(high)}</b></span><span class="chart-stat">Low <b>${fmt(low)}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(sum / visible.length))}</b></span>`;
     const svg = host.querySelector("svg"), cross = host.querySelector("#hoverLine"), halo = host.querySelector("#hoverHalo"), dot = host.querySelector("#hoverDot");
     svg.addEventListener("pointermove", (event) => {
@@ -164,7 +165,7 @@
       const xx = x(best.x), yy = y(best.y);
       cross.setAttribute("x1", xx); cross.setAttribute("x2", xx); cross.setAttribute("visibility", "visible");
       for (const marker of [halo, dot]) { marker.setAttribute("cx", xx); marker.setAttribute("cy", yy); marker.setAttribute("visibility", "visible"); }
-      tooltip.innerHTML = `<b>${fmt(best.y)} members</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;
+      tooltip.innerHTML = `<b>${fmt(best.y)} ${metric === "members" ? "members" : "players"}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;
       tooltip.classList.remove("hidden"); tooltip.style.left = Math.min(rect.width - 160, Math.max(8, xx / W * rect.width + 10)) + "px"; tooltip.style.top = "14px";
     });
     svg.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); halo.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); tooltip.classList.add("hidden"); });
@@ -196,6 +197,18 @@
     else navEnd = clamp(navEnd + delta, navStart + minimum, 1);
     selectPoints();
   });
+  function selectMetric(next) {
+    if (!Object.hasOwn(metricLabels, next) || next === metric) return;
+    metric = next;
+    $("groupChartTitle").textContent = metricLabels[metric];
+    document.querySelectorAll("#groupChartMetrics .chart-metric-tab").forEach((button) => {
+      const selected = button.dataset.metric === metric;
+      button.setAttribute("aria-selected", String(selected));
+      button.tabIndex = selected ? 0 : -1;
+    });
+    rangePoints = rangeRows.map((row) => ({ x: row.x, y: row[metric] })).filter((point) => Number.isFinite(point.y));
+    selectPoints();
+  }
   async function loadRange(next, reset = false) {
     if (reset || next !== range) { navStart = 0; navEnd = 1; }
     range = next;
@@ -207,10 +220,11 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const payload = await response.json();
       if (current !== requestId) return;
-      rangePoints = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), y: row.members })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y)).sort((a, b) => a.x - b.x);
-      if (next === "1d") { trendPoints = rangePoints; paintTrend(); }
+      rangeRows = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), members: row.members, totalPlayers: row.totalPlayers })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.members)).sort((a, b) => a.x - b.x);
+      rangePoints = rangeRows.map((row) => ({ x: row.x, y: row[metric] })).filter((point) => Number.isFinite(point.y));
+      if (next === "1d") { trendPoints = rangeRows.map((row) => ({ x: row.x, y: row.members })); paintTrend(); }
       selectPoints();
-    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); rangePoints = []; selectPoints(); } }
+    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); rangeRows = []; rangePoints = []; selectPoints(); } }
     finally { if (current === requestId) $("groupRanges").removeAttribute("aria-busy"); }
   }
   async function loadTrend() {
@@ -219,6 +233,7 @@
     catch (error) { console.error("Group trend request failed:", error); }
   }
   document.querySelectorAll("#groupRanges .range-btn").forEach((button) => button.addEventListener("click", () => loadRange(button.dataset.range, true)));
+  document.querySelectorAll("#groupChartMetrics .chart-metric-tab").forEach((button) => button.addEventListener("click", () => selectMetric(button.dataset.metric)));
   Tracker.setupChartFullscreen($("groupChartPanel"), $("groupFullscreenToggle"));
   if (typeof ResizeObserver === "function") {
     let size = "";
@@ -226,4 +241,3 @@
   }
   Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadRange(range); loadTrend(); });
 })();
-
