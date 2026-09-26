@@ -18,7 +18,7 @@
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
   <section class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
     <div><h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Groups</h1><p class="text-sm text-slate-400 mt-1">Roblox groups behind the games we track. Member counts refresh every 5 minutes.</p></div>
     <dl class="flex items-stretch gap-3">
@@ -33,7 +33,7 @@
     </label>
     <button id="sortToggle" type="button" aria-pressed="false" class="shrink-0 flex items-center gap-2 bg-slate-900 border border-roblox-cardBorder hover:border-slate-500 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white transition" title="Reverse sort order"><svg id="sortIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16m0 0-3.5-3.5M7 20l3.5-3.5M17 20V4m0 0 3.5 3.5M17 4l-3.5 3.5"/></svg><span id="sortLabel">Most members</span></button>
   </section>
-  <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-label="Tracked groups"></section>
+  <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="Tracked groups"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No groups match your search.</p>
 </main>
 <div id="site-footer"></div>
@@ -84,7 +84,7 @@
       return `<article class="game-card games-card group-card tile tile-clickable bg-roblox-cardBg rounded-2xl flex flex-col overflow-hidden" data-href="${href}" role="link" tabindex="0" aria-label="Open ${group.label}'s page" style="--accent:#00f0ff;--rgb:0,240,255">
         <div class="games-card-header group-card-header flex items-start justify-between"><div class="games-card-main flex items-start min-w-0 flex-1"><img src="${data?.iconUrl || iconFallback}" alt="${group.label} icon" class="tile-icon games-card-icon object-cover bg-slate-900 shrink-0" onerror="this.onerror=null;this.src='${iconFallback}'"><div class="games-card-title min-w-0 flex-1"><h2 class="text-lg sm:text-xl font-bold text-white leading-snug break-words">${group.label}${verifiedBadgeHtml(data?.hasVerifiedBadge)}</h2><a href="${group.url}" target="_blank" rel="noopener" data-stop="1" class="tile-link text-xs text-slate-300 inline-flex items-center gap-1 mt-1.5 transition-colors">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
         <div class="games-card-stats bg-slate-900/80 rounded-xl p-4 border border-slate-800"><div class="games-card-stats-head flex justify-between items-start gap-2 text-xs text-slate-400 font-medium uppercase tracking-wider"><span>Members in group</span><span class="games-card-trends flex flex-col items-end gap-1">${trend(points,data?.members,HOUR,"1h",15*60000)}${trend(points,data?.members,DAY,"24h",20*60000)}</span></div><div class="tile-ccu text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums mt-1">${fmt(data?.members)}</div><div class="mt-3"><div class="spark">${spark(points,group.id)}</div><div class="flex justify-between text-[10px] text-slate-500 mt-1"><span>24h ago</span><span>now</span></div></div></div>
-        <div class="games-card-metrics group-card-metrics grid grid-cols-3 gap-2 pt-3 border-t border-slate-800/80 text-xs">${stat("Members",data?.members,membersIcon)}${stat("Total visits",data?.totalVisits,visitsIcon)}${stat("Total favourites",data?.totalFavorites,favoritesIcon)}</div>
+        <div class="games-card-metrics group-card-metrics grid grid-cols-3 gap-3 pt-3 border-t border-slate-800/80 text-xs">${stat("Members",data?.members,membersIcon)}${stat("Total visits",data?.totalVisits,visitsIcon)}${stat("Total favourites",data?.totalFavorites,favoritesIcon)}</div>
       </article>`;
     }).join("");
   }
@@ -103,4 +103,3 @@
 </script>
 </body>
 </html>
-

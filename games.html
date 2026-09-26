@@ -33,7 +33,7 @@
 
 <div id="site-header"></div>
 
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
 
   <section class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
     <div>
@@ -71,7 +71,7 @@
 
   <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
 
-  <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-label="Tracked games"></section>
+  <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="Tracked games"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No games match your search.</p>
 
 </main>
@@ -146,7 +146,7 @@
         </div>
       </div>
 
-      <div class="games-card-metrics grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
+      <div class="games-card-metrics grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-800/80 text-xs">
         ${statCell("peak24-" + s, "24h peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
         ${statCell("peak7-" + s, "7d peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
         ${statCell("visits-" + s, "Visits", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent mr-1" aria-hidden="true" ><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`)}
@@ -376,4 +376,3 @@
 </script>
 </body>
 </html>
-

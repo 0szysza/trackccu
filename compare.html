@@ -33,7 +33,7 @@
 
 <div id="site-header"></div>
 
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
 
   <section class="compare-intro">
     <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compare games</h1>
@@ -41,7 +41,7 @@
   </section>
 
   <!-- Game pickers. Slot colours are fixed (left = cyan, right = pink); only the game changes. -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
     <div class="compare-picker-slot relative">
       <label class="compare-picker-label" for="comparePickA"><span class="compare-slot-dot compare-slot-a"></span> First game</label>
       <div class="compare-picker-field flex items-center gap-2 rounded-xl px-3 py-2.5 transition">
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 compare-cards" id="cards"></div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 compare-cards" id="cards"></div>
 
   <!-- Who's ahead + share of combined players -->
   <section class="compare-summary-panel bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6 space-y-5">
@@ -210,7 +210,7 @@
           <div class="flex justify-between items-center text-xs text-slate-400 font-medium uppercase tracking-wider"><span>Players in game</span><span class="compare-live-label">Live now</span></div>
           <div class="flex items-baseline justify-between gap-3 mt-1"><div class="tile-ccu text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums" id="ccu-${slot}">—</div><span class="compare-share-pill" id="share-${slot}">—% share</span></div>
         </div>
-        <div class="compare-card-metrics grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-800/80 text-xs">
+        <div class="compare-card-metrics grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-800/80 text-xs">
           ${statCell("peak24-" + slot, "24h peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
           ${statCell("peak7-" + slot, "7d peak", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm mr-1" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>`)}
           ${statCell("visits-" + slot, "Visits", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent mr-1" aria-hidden="true" ><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>`)}
@@ -883,4 +883,3 @@
 </script>
 </body>
 </html>
-
