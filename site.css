@@ -374,20 +374,22 @@ body.chart-fullscreen-open { overflow:hidden; }
 .stat-kicker,.metric-card span { color:#64748b;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em; }
 .metric-card strong { display:block;margin-top:5px;color:#e2e8f0;font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums; }
 .game-detail-metrics { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);gap:12px; }
-.game-vote-panel { min-width:0;padding:16px;border:1px solid #262d4a;border-radius:14px;background:#15192d; }
-.game-vote-heading { display:flex;align-items:center;justify-content:space-between;gap:10px;color:#64748b;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }
-.game-vote-heading>span,.game-vote-heading strong { display:inline-flex;align-items:center;gap:5px; }
-.game-vote-heading svg { width:14px;height:14px; }
-.game-vote-heading>span svg { color:#34bfe5; }
-.game-vote-heading strong { color:#22c55e;font-size:1rem;letter-spacing:0; }
-.game-vote-bar { height:6px;overflow:hidden;margin-top:10px;border-radius:10px;background:#44506a; }
-.game-vote-bar span { display:block;height:100%;border-radius:inherit;background:#22c55e; }
-.game-vote-counts { display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;color:#cbd5e1; }
-.game-vote-counts>span { display:inline-flex;align-items:center;gap:5px; }
+.game-vote-panel { display:flex;flex-direction:column;justify-content:center;min-width:0;padding:14px 16px;border:1px solid #262d4a;border-radius:14px;background:#15192d; }
+.game-vote-main { display:flex;align-items:center;justify-content:space-between;min-width:0;gap:18px; }
+.game-vote-score { display:flex;flex-direction:column;align-items:flex-start;min-width:0; }
+.game-vote-label { display:inline-flex;align-items:center;gap:6px;color:#64748b;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }
+.game-vote-label svg { width:14px;height:14px;color:#34bfe5; }
+.game-vote-score>strong { margin-top:3px;color:#e2e8f0;font-size:1.6rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums; }
+.game-vote-counts { display:flex;align-items:center;gap:17px;min-width:0;padding-left:18px;border-left:1px solid #283047; }
+.game-vote-counts>span { display:grid;grid-template-columns:16px auto;grid-template-rows:auto auto;column-gap:6px;align-items:center;white-space:nowrap; }
+.game-vote-counts svg { grid-row:1;grid-column:1;width:16px;height:16px; }
+.game-vote-counts strong { grid-row:1;grid-column:2;color:#e2e8f0;font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums; }
+.game-vote-counts small { grid-row:2;grid-column:2;color:#64748b;font-size:.65rem; }
 .game-vote-counts>span:first-child svg { color:#22c55e; }
 .game-vote-counts>span:last-child svg { color:#f87171; }
-.game-vote-counts strong { font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums; }
-.game-vote-counts svg { width:16px;height:16px; }
+.game-vote-bar { height:6px;overflow:hidden;margin-top:12px;border-radius:10px;background:#ef5b70; }
+.game-vote-bar span { display:block;height:100%;background:#22c55e; }
+@media (max-width:1000px) { .game-vote-main { gap:10px; } .game-vote-counts { gap:9px;padding-left:10px; } .game-vote-counts small { display:none; } }
 @media (max-width:700px) { .game-detail-metrics { grid-template-columns:1fr; } }
 .chart-stat { border:1px solid #283047;background:#0f1324;color:#64748b;border-radius:9px;padding:5px 9px;font-size:11px; }
 .chart-stat b { color:#cbd5e1;margin-left:3px; }

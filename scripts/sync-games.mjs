@@ -88,7 +88,7 @@ async function writeGamePages() {
   for (const game of games) {
     const dir = path.join(gamesDir, String(game.placeId));
     await mkdir(dir, { recursive: true });
-    const page = template.replaceAll("__GAME_NAME__", game.name);
+    const page = template.replaceAll("__GAME_NAME__", game.name).replaceAll("__CSS_HASH__", cssHash);
     await writeFile(path.join(dir, "index.html"), page);
   }
   return gamesDir;
@@ -96,6 +96,15 @@ async function writeGamePages() {
 
 const siteJsTarget = await updateSiteJs();
 const gamesDir = await writeGamePages();
+if (OUT_DIR !== REPO_ROOT) {
+  for (const name of ["index.html", "games.html", "groups.html", "compare.html"]) {
+    const file = path.join(OUT_DIR, name);
+    const source = await readFile(file, "utf8");
+    const next = source.replaceAll(/href="site\.css(?:\?v=[^"]*)?"/g, `href="site.css?v=${cssHash}"`);
+    if (next === source && !source.includes(`site.css?v=${cssHash}`)) throw new Error(`Missing stylesheet link in ${name}`);
+    await writeFile(file, next);
+  }
+}
 const groupTemplate = await readFile(path.join(here, "group-template.html"), "utf8");
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
@@ -103,4 +112,3 @@ for (const group of groups) {
   await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);
-

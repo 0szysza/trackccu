@@ -286,7 +286,7 @@
 <footer class="border-t border-roblox-cardBorder bg-roblox-cardBg/40 py-4 mt-10 text-xs text-slate-500">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex flex-col gap-2">
-      <p class="text-xs text-slate-300 font-medium">Want a new game added here? Let me know!</p>
+      <p class="text-xs text-slate-300 font-medium"><span class="text-cyan-400">Something missing?</span> Send me a Roblox game or group worth tracking.</p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
       <a href="https://discord.com/users/0szysza" target="_blank" rel="noopener"
          class="inline-flex items-center gap-1.5 hover:text-slate-300 transition-colors">
@@ -381,4 +381,3 @@
     setText, iconFor, iconFallback, verifiedBadgeHtml, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();
-
