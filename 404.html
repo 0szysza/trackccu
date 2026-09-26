@@ -1,3 +1,83 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>404 | CCU Tracker</title><meta name="theme-color" content="#34BFE5"><style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0d17;color:#f8fafc;font-family:Inter,system-ui,sans-serif;overflow:hidden}.wrap{width:min(92vw,760px);text-align:center;position:relative;padding:24px}.brand-icon{width:120px;height:120px;display:block;margin:0 auto 24px;object-fit:contain;filter:drop-shadow(0 16px 34px rgba(17,24,39,.42))}.code{font-size:clamp(5rem,18vw,10rem);line-height:.8;font-weight:900;letter-spacing:-.08em;color:#fff}.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;color:#64748b;font-weight:800;margin-top:28px}h1{font-size:clamp(1.5rem,5vw,2.4rem);margin:10px 0 22px}a{display:inline-block;background:#fff;color:#0f172a;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px}.stars{position:fixed;inset:0;background-image:radial-gradient(#334155 1px,transparent 1px);background-size:38px 38px;opacity:.32;pointer-events:none}
-</style></head><body><div class="stars"></div><main class="wrap"><img class="brand-icon" src="favicon.png" alt="CCU Tracker logo"><div class="code">404</div><div class="eyebrow">signal lost</div><h1>This page drifted out of orbit.</h1><a id="home" href="/">Back to CCU Tracker</a></main><script>const p=location.pathname.split('/').filter(Boolean);document.getElementById('home').href=location.hostname.endsWith('github.io')&&p.length?'/'+p[0]+'/':'/';</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d17">
+  <title>Page not found | CCU Tracker</title>
+  <script>
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const siteRoot = location.hostname.endsWith("github.io") && pathParts.length ? `/${pathParts[0]}/` : "/";
+    const base = document.createElement("base");
+    base.href = siteRoot;
+    document.head.append(base);
+  </script>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme:dark; font-family:Inter,system-ui,sans-serif; }
+    * { box-sizing:border-box; }
+    body { display:flex;flex-direction:column;min-height:100vh;margin:0;background:#0b0d17;color:#f8fafc; }
+    a { text-decoration:none; }
+    .site-header { border-bottom:1px solid #20283b;background:#0d101d; }
+    .header-inner { display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(100% - 40px,1216px);min-height:72px;margin:auto; }
+    .brand { display:inline-flex;align-items:center;gap:10px;color:#fff;font-size:1.05rem;font-weight:800;letter-spacing:-.035em;white-space:nowrap; }
+    .brand img { width:38px;height:38px;object-fit:contain; }
+    .site-nav { display:flex;align-items:center;gap:4px; }
+    .site-nav a { padding:8px 12px;border:1px solid transparent;border-radius:8px;color:#9fb0c9;font-size:.82rem;font-weight:700;transition:color .15s,border-color .15s,background .15s; }
+    .site-nav a:hover { border-color:#35415f;background:#171e32;color:#fff; }
+    main { display:grid;place-items:center;flex:1;width:min(100% - 40px,1216px);margin:auto;padding:52px 0 72px; }
+    .error-card { position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,40%);align-items:center;gap:clamp(24px,4vw,60px);width:100%;min-height:420px;padding:clamp(30px,5vw,68px);overflow:hidden;border:1px solid #303c59;border-radius:24px;background:radial-gradient(circle at 78% 30%,rgba(52,191,229,.12),transparent 40%),linear-gradient(120deg,#19213a,#11182a 70%,#101827);box-shadow:inset 0 1px rgba(255,255,255,.035); }
+    .error-card::before { content:"";position:absolute;inset:0 0 0 50%;background-image:linear-gradient(rgba(109,144,183,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(109,144,183,.055) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(90deg,transparent,#000);pointer-events:none; }
+    .copy,.graphic { position:relative;z-index:1; }
+    .eyebrow { display:flex;align-items:center;gap:10px;margin:0 0 17px;color:#69cee8;font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase; }
+    .eyebrow::before { content:"";width:8px;height:8px;border-radius:50%;background:#34bfe5;box-shadow:0 0 0 4px rgba(52,191,229,.13); }
+    h1 { max-width:600px;margin:0;color:#fff;font-size:clamp(2.35rem,4.8vw,4.3rem);line-height:1.07;font-weight:800;letter-spacing:-.05em; }
+    h1 span { color:#34bfe5; }
+    .description { max-width:470px;margin:20px 0 0;color:#a8b8cc;font-size:1rem;line-height:1.65; }
+    .actions { display:flex;flex-wrap:wrap;gap:10px;margin-top:30px; }
+    .action { display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:10px 15px;border:1px solid #354562;border-radius:11px;background:#1a253d;color:#fff;font-size:.82rem;font-weight:800;transition:transform .15s,border-color .15s,background .15s; }
+    .action:hover { transform:translateY(-2px);border-color:#34bfe5;background:#223652; }
+    .action-primary { border-color:#50cce9;background:#34bfe5;color:#09202c; }
+    .action-primary:hover { background:#69d9ee;color:#09202c; }
+    .action svg { width:17px;height:17px; }
+    .graphic { display:grid;place-items:center;min-height:280px; }
+    .orbit { position:relative;display:grid;place-items:center;width:min(100%,330px);aspect-ratio:1;border:1px solid rgba(88,121,158,.25);border-radius:50%;background:radial-gradient(circle,rgba(52,191,229,.11) 0,rgba(52,191,229,.03) 40%,transparent 70%);box-shadow:inset 0 0 50px rgba(52,191,229,.035); }
+    .orbit::before,.orbit::after { content:"";position:absolute;border:1px solid rgba(88,121,158,.22);border-radius:50%; }
+    .orbit::before { inset:12%; }
+    .orbit::after { inset:25%; }
+    .orbit-point { position:absolute;top:14%;right:13%;width:11px;height:11px;border:2px solid #0e1727;border-radius:50%;background:#34bfe5;box-shadow:0 0 0 5px rgba(52,191,229,.11),0 0 22px rgba(52,191,229,.45); }
+    .code { position:relative;z-index:1;color:#fff;font-size:clamp(4.5rem,8vw,7.5rem);font-weight:800;letter-spacing:-.09em;line-height:1;text-shadow:0 12px 40px rgba(0,0,0,.25); }
+    .graphic-label { position:absolute;right:0;bottom:7%;padding:7px 10px;border:1px solid #354562;border-radius:8px;background:#121d31;color:#9eb5ce;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }
+    .graphic-label span { display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#fb7185;vertical-align:2px; }
+    a:focus-visible { outline:2px solid #34bfe5;outline-offset:3px; }
+    @media (max-width:760px) { .error-card { grid-template-columns:1fr;gap:6px;min-height:0; }.graphic { grid-row:1;min-height:180px; }.orbit { width:190px; }.code { font-size:4.7rem; }.graphic-label { right:calc(50% - 140px);bottom:0; }.copy { text-align:center; }.eyebrow,.actions { justify-content:center; }.description { margin-right:auto;margin-left:auto; } }
+    @media (max-width:520px) { .header-inner { width:calc(100% - 28px);min-height:64px; }.brand { font-size:.95rem; }.brand img { width:34px;height:34px; }.site-nav { gap:0; }.site-nav a { padding:7px;font-size:.7rem; } main { width:calc(100% - 24px);padding:24px 0; }.error-card { padding:28px 20px 34px;border-radius:18px; }.graphic { min-height:160px; }.orbit { width:160px; }.code { font-size:3.9rem; }.graphic-label { right:calc(50% - 125px);font-size:.55rem; } h1 { font-size:2.35rem; }.description { font-size:.89rem; } .actions { flex-direction:column; }.action { width:100%; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./"><img src="favicon.png" alt=""><span>CCU Tracker</span></a>
+      <nav class="site-nav" aria-label="Main navigation"><a href="games">Games</a><a href="groups">Groups</a><a href="compare">Compare</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="error-card" aria-labelledby="error-title">
+      <div class="copy">
+        <p class="eyebrow">Page not found</p>
+        <h1 id="error-title">Lost in the <span>stats?</span></h1>
+        <p class="description">We couldn't find this page. Head back to the tracker, or browse the games we're following.</p>
+        <div class="actions">
+          <a class="action action-primary" href="./"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Back to home</a>
+          <a class="action" href="games">Browse games<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="graphic" aria-hidden="true"><div class="orbit"><span class="orbit-point"></span><span class="code">404</span></div><span class="graphic-label"><span></span>No data found</span></div>
+    </section>
+  </main>
+</body>
+</html>
