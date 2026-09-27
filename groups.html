@@ -33,6 +33,11 @@
     </label>
     <button id="sortToggle" type="button" aria-pressed="false" class="shrink-0 flex items-center gap-2 bg-slate-900 border border-roblox-cardBorder hover:border-slate-500 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white transition" title="Reverse sort order"><svg id="sortIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16m0 0-3.5-3.5M7 20l3.5-3.5M17 20V4m0 0 3.5 3.5M17 4l-3.5 3.5"/></svg><span id="sortLabel">Most members</span></button>
   </section>
+  <form id="groupLookupForm" class="game-lookup-form" action="group-lookup.html" method="get">
+    <div class="game-lookup-copy"><strong>Find a group by ID</strong><span>See current stats for any public Roblox group.</span></div>
+    <label class="game-lookup-input"><span class="sr-only">Roblox group ID or URL</span><input id="groupLookupId" name="id" type="text" inputmode="numeric" placeholder="Group ID or Roblox URL" autocomplete="off" required></label>
+    <button type="submit">Open group <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+  </form>
   <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="Tracked groups"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No groups match your search.</p>
 </main>
@@ -43,6 +48,19 @@
   "use strict";
   const { GROUP_CATALOG, $, fmt, iconFallback, verifiedBadgeHtml, ROOT } = Tracker;
   Tracker.mountChrome("groups");
+  $("groupLookupForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const raw = $("groupLookupId").value.trim();
+    const id = /^\d+$/.test(raw) ? raw : raw.match(/roblox\.com\/(?:communities|groups)\/(\d+)/i)?.[1];
+    if (!id || !/^[1-9]\d{0,19}$/.test(id)) {
+      $("groupLookupId").setCustomValidity("Enter a Roblox group ID or group URL.");
+      $("groupLookupId").reportValidity();
+      return;
+    }
+    const tracked = GROUP_CATALOG.some((group) => group.id === id);
+    location.href = tracked ? `${ROOT}groups/${id}/` : `${ROOT}group-lookup.html?id=${encodeURIComponent(id)}`;
+  });
+  $("groupLookupId").addEventListener("input", () => $("groupLookupId").setCustomValidity(""));
   $("groupCount").textContent = String(GROUP_CATALOG.length);
   let latest = new Map(), history = new Map(), sortAsc = false;
   const HOUR = 3600000, DAY = 86400000;

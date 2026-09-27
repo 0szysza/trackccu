@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group lookup | CCU Tracker</title>
+<meta name="theme-color" content="#34BFE5">
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<script src="https://cdn.tailwindcss.com"></script><script src="tailwind-config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
+<div id="site-header"></div>
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
+  <a href="groups" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M6 8 2 12l4 4M2 12h20"/></svg> All groups</a>
+  <div id="loading" class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-8 text-slate-400" role="status">Loading group stats…</div>
+  <div id="error" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-8" role="alert"><h1 class="text-2xl font-bold text-white">Group unavailable</h1><p id="errorText" class="text-slate-400 mt-2"></p></div>
+  <div id="page" class="hidden space-y-3">
+    <section class="group-detail-hero group-lookup-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
+      <img id="groupIcon" src="favicon.png" alt="" class="group-detail-icon object-cover bg-slate-900">
+      <div class="group-detail-content">
+        <div class="group-detail-top">
+          <div class="group-detail-heading"><h1 id="groupName" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight break-words">—</h1><a id="robloxLink" href="#" target="_blank" rel="noopener noreferrer" class="tile-link inline-flex items-center gap-1 text-sm text-slate-400 mt-2">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div>
+          <div class="group-hero-owner"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Owner</span><strong id="ownerName" class="group-owner-name">—</strong></div>
+        </div>
+        <div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg> Members right now</p><strong id="membersNow" class="block text-5xl sm:text-6xl font-black tracking-tight tabular-nums text-roblox-bgs mt-1">—</strong></div>
+      </div>
+    </section>
+
+    <section class="group-detail-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" aria-label="Current group statistics">
+      <div class="stat-panel"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg> Members</span><strong id="membersStat">—</strong></div>
+      <div class="stat-panel"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Total group visits</span><strong id="totalVisits">—</strong></div>
+      <div class="stat-panel"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm" aria-hidden="true"><path d="m12 2 3 6 6.6 1-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6L2.4 9 9 8z"/></svg> Total group favourites</span><strong id="totalFavorites">—</strong></div>
+      <div class="stat-panel"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Total players</span><strong id="totalPlayers">—</strong></div>
+    </section>
+
+    <section class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> About</p><h2 class="text-lg font-bold text-white mt-1">Group description</h2><p id="description" class="text-sm leading-7 text-slate-400 mt-4 whitespace-pre-line">—</p></section>
+    <section class="group-meta-bar lookup-meta bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg> Created</span><strong id="created" class="block text-xl text-white mt-1">—</strong><small id="createdExact" class="block text-xs text-slate-500 mt-1">—</small></div></section>
+    <p id="checkedAt" class="text-xs text-slate-500 text-right"></p>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="config.js"></script><script src="site.js"></script><script src="group-lookup.js"></script>
+</body>
+</html>

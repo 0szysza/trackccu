@@ -28,7 +28,7 @@
     } catch { return null; }
   };
   const getJson = async (url) => {
-    const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+    const response = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { "Accept-Language": "en-US,en;q=0.9" } });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   };

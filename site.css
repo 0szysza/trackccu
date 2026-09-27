@@ -369,6 +369,9 @@ body.chart-fullscreen-open { overflow:hidden; }
 @media (max-width:720px) { .game-lookup-form { flex-wrap:wrap; }.game-lookup-copy { flex:1 1 100%; }.game-lookup-input { min-width:0; } }
 .lookup-hero .game-detail-title { padding-right:20px; }
 .lookup-meta { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.group-meta-bar.lookup-meta { grid-template-columns:1fr; }
+.group-lookup-hero #groupName,.group-lookup-hero .group-owner-name { display:flex;align-items:center;flex-wrap:wrap;gap:.18em; }
+.group-lookup-hero .roblox-verified-badge { margin-left:0;flex:none; }
 .game-detail-metrics.lookup-no-votes { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .lookup-no-votes .game-vote-panel { display:none; }
 @media (max-width:639px) { .lookup-meta { grid-template-columns:1fr; } }
