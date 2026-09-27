@@ -8,6 +8,12 @@
   <script>
     const parts = location.pathname.split("/").filter(Boolean);
     const siteRoot = location.hostname.endsWith("github.io") && parts.length ? `/${parts[0]}/` : "/";
+    const route = parts.slice(location.hostname.endsWith("github.io") ? 1 : 0).join("/");
+    const lookup = route.match(/^(games|groups)\/lookup\/([1-9]\d{0,19})\/?$/);
+    if (lookup) {
+      const page = lookup[1] === "games" ? "lookup.html" : "group-lookup.html";
+      location.replace(`${siteRoot}${page}?id=${lookup[2]}`);
+    }
     const base = document.createElement("base");
     base.href = siteRoot;
     document.head.append(base);

@@ -103,7 +103,7 @@
       return;
     }
     const tracked = Tracker.byPlaceId.get(id);
-    location.href = tracked ? `${ROOT}games/${id}/` : `${ROOT}lookup.html?id=${encodeURIComponent(id)}`;
+    location.href = tracked ? `${ROOT}games/${id}/` : `${ROOT}games/lookup/${id}`;
   });
   $("gameLookupId").addEventListener("input", () => $("gameLookupId").setCustomValidity(""));
 

@@ -5,7 +5,8 @@
 
   // Roblox game URLs contain a place ID. These public endpoints require a
   // CORS-enabled proxy when called from GitHub Pages. No credentials are sent.
-  const input = new URLSearchParams(location.search).get("id")?.trim() || "";
+  const input = location.pathname.match(/\/games\/lookup\/([1-9]\d{0,19})\/?$/)?.[1]
+    || new URLSearchParams(location.search).get("id")?.trim() || "";
   const placeId = /^\d+$/.test(input) ? input : input.match(/roblox\.com\/games\/(\d+)/i)?.[1];
   const fail = (message) => {
     $("loading").hidden = true;
@@ -20,6 +21,8 @@
     location.replace(`${ROOT}games/${placeId}/`);
     return;
   }
+  const canonicalPath = new URL(`games/lookup/${placeId}`, document.baseURI).pathname;
+  if (location.pathname !== canonicalPath) history.replaceState(null, "", canonicalPath);
 
   const safeImage = (url) => {
     try {

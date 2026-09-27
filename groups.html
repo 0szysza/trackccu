@@ -58,7 +58,7 @@
       return;
     }
     const tracked = GROUP_CATALOG.some((group) => group.id === id);
-    location.href = tracked ? `${ROOT}groups/${id}/` : `${ROOT}group-lookup.html?id=${encodeURIComponent(id)}`;
+    location.href = tracked ? `${ROOT}groups/${id}/` : `${ROOT}groups/lookup/${id}`;
   });
   $("groupLookupId").addEventListener("input", () => $("groupLookupId").setCustomValidity(""));
   $("groupCount").textContent = String(GROUP_CATALOG.length);

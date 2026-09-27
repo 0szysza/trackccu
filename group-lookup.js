@@ -3,7 +3,8 @@
   const { $, fmt, relativeTime, fullDateTime, GROUP_CATALOG, ROOT } = Tracker;
   Tracker.mountChrome("groups");
 
-  const input = new URLSearchParams(location.search).get("id")?.trim() || "";
+  const input = location.pathname.match(/\/groups\/lookup\/([1-9]\d{0,19})\/?$/)?.[1]
+    || new URLSearchParams(location.search).get("id")?.trim() || "";
   const groupId = /^\d+$/.test(input) ? input : input.match(/roblox\.com\/(?:communities|groups)\/(\d+)/i)?.[1];
   const fail = (message) => {
     $("loading").hidden = true;
@@ -18,6 +19,8 @@
     location.replace(`${ROOT}groups/${groupId}/`);
     return;
   }
+  const canonicalPath = new URL(`groups/lookup/${groupId}`, document.baseURI).pathname;
+  if (location.pathname !== canonicalPath) history.replaceState(null, "", canonicalPath);
 
   const getJson = async (url) => {
     const response = await fetch(url, { signal: AbortSignal.timeout(12000), cache: "no-store", headers: { "Accept-Language": "en-US,en;q=0.9" } });
