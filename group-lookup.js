@@ -20,7 +20,7 @@
   }
 
   const getJson = async (url) => {
-    const response = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { "Accept-Language": "en-US,en;q=0.9" } });
+    const response = await fetch(url, { signal: AbortSignal.timeout(12000), cache: "no-store", headers: { "Accept-Language": "en-US,en;q=0.9" } });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   };
@@ -127,7 +127,11 @@
       const iconUrl = safeImage(icon?.data?.find(item => String(item.targetId) === groupId)?.imageUrl);
       if (iconUrl) $("groupIcon").src = iconUrl;
       $("groupIcon").alt = `${group.name} icon`;
-      $("checkedAt").textContent = `Checked ${fullDateTime(Date.now())}`;
+      const checkedAt = Date.now();
+      $("checked").textContent = "Just now";
+      $("checkedExact").textContent = fullDateTime(checkedAt);
+      $("checked").title = fullDateTime(checkedAt);
+      setInterval(() => { $("checked").textContent = relativeTime(checkedAt); }, 60000);
       $("loading").hidden = true;
       $("page").classList.remove("hidden");
       loadTotals();

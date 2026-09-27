@@ -368,13 +368,13 @@ body.chart-fullscreen-open { overflow:hidden; }
 .game-lookup-form button svg { width:15px;height:15px; }
 @media (max-width:720px) { .game-lookup-form { flex-wrap:wrap; }.game-lookup-copy { flex:1 1 100%; }.game-lookup-input { min-width:0; } }
 .lookup-hero .game-detail-title { padding-right:20px; }
-.lookup-meta { grid-template-columns:repeat(2,minmax(0,1fr)); }
-.group-meta-bar.lookup-meta { grid-template-columns:1fr; }
+.game-meta-bar.lookup-meta { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.group-meta-bar.lookup-meta { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .group-lookup-hero #groupName,.group-lookup-hero .group-owner-name { display:flex;align-items:center;flex-wrap:wrap;gap:.18em; }
 .group-lookup-hero .roblox-verified-badge { margin-left:0;flex:none; }
 .game-detail-metrics.lookup-no-votes { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .lookup-no-votes .game-vote-panel { display:none; }
-@media (max-width:639px) { .lookup-meta { grid-template-columns:1fr; } }
+@media (max-width:639px) { .game-meta-bar.lookup-meta,.group-meta-bar.lookup-meta { grid-template-columns:1fr; } }
 @media (max-width:700px) { .game-detail-metrics.lookup-no-votes { grid-template-columns:1fr; } }
 .game-detail-hero { position:relative;overflow:hidden; }
 .game-detail-hero::before { content:"";position:absolute;right:-10%;top:-80%;width:55%;height:180%;background:radial-gradient(circle,rgba(52,191,229,.10),transparent 66%);pointer-events:none; }
