@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: write
   pages: write
   id-token: write
@@ -82,5 +83,24 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover interrupted Pages deployments
+        uses: actions/github-script@v8
+        with:
+          retries: 2
+          script: |
+            const recoverPages = require('./.github/scripts/recover-pages.cjs');
+            await recoverPages({ github, context, core });
+
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+
+      - name: Clean up an interrupted deployment
+        if: failure() || cancelled()
+        uses: actions/github-script@v8
+        with:
+          retries: 2
+          script: |
+            const recoverPages = require('./.github/scripts/recover-pages.cjs');
+            await recoverPages({ github, context, core }, { currentOnly: true });
