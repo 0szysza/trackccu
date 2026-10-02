@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <defs><linearGradient id="rebirth-gradient" x1="27" y1="42" x2="231" y2="212" gradientUnits="userSpaceOnUse"><stop stop-color="#5CDDFA"/><stop offset="1" stop-color="#A38FFA"/></linearGradient></defs>
+  <path d="M224 128a96 96 0 1 1-96-96c40 0 74 23 88 57" stroke="url(#rebirth-gradient)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M171 85h53V32" stroke="url(#rebirth-gradient)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

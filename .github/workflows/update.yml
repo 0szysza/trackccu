@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -19,6 +19,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      deploy_sha: ${{ steps.version.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,7 +34,7 @@ jobs:
       - name: Assemble the site
         run: |
           mkdir -p _site
-          cp index.html 404.html games.html groups.html compare.html lookup.html lookup.js group-lookup.html group-lookup.js site.js group-page.js site.css tailwind-config.js _site/
+          cp index.html 404.html games.html groups.html compare.html lookup.html lookup.js group-lookup.html group-lookup.js site.js group-page.js site.css tailwind-config.js rebirth-logo.svg _site/
           cp favicon.ico favicon.png favicon-32.png apple-touch-icon.png _site/
           cp -r assets _site/assets && rm -f _site/assets/README.md
           cp scripts/config.static.js _site/config.js
@@ -65,6 +67,18 @@ jobs:
         with:
           path: _site
 
+      # Pages identifies deployments by commit SHA. Scheduled dispatches keep
+      # the same SHA and may report success while still serving the old artifact.
+      - name: Give this scheduled deployment a new commit SHA
+        if: github.event_name != 'push'
+        id: version
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m 'Refresh Pages data [skip ci]'
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -74,3 +88,5 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        env:
+          GITHUB_SHA: ${{ needs.build.outputs.deploy_sha || github.sha }}

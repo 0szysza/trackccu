@@ -272,12 +272,33 @@
            item.key === active ? "top-nav-link-active text-white" : "text-slate-400"
          }">${item.icon}${item.label}</a>`).join("")}
     </nav>
-    <div id="liveStatus" class="hidden order-2 sm:order-3 ml-auto items-center gap-2 text-xs text-slate-400" title="Stats refresh every 5 minutes">
-      <span class="live-dot" id="liveDot" data-state="ok"></span>
-      <span id="liveText"></span>
+    <div class="site-actions order-2 sm:order-3 ml-auto">
+      <div id="liveStatus" class="hidden items-center gap-2 text-xs text-slate-400" title="Stats refresh every 5 minutes">
+        <span class="live-dot" id="liveDot" data-state="ok"></span>
+        <span id="liveText"></span>
+      </div>
+      <nav class="tool-switcher" aria-label="Switch tool">
+        <details class="tool-menu">
+          <summary><svg class="tool-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span>Tools</span><svg class="tool-menu-icon tool-menu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="tool-menu-list">
+            <a href="${ROOT || "./"}" aria-current="page"><svg class="tool-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span><strong>TrackCCU</strong><small>Current page</small></span></a>
+            <a href="https://0szysza.github.io/rebirth/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>Rebirth Calculator</strong><small>Rebirth goal planner</small></span></a>
+          </div>
+        </details>
+      </nav>
     </div>
   </div>
 </header>`;
+      const toolMenu = header.querySelector(".tool-menu");
+      document.addEventListener("pointerdown", (event) => {
+        if (!toolMenu.contains(event.target)) toolMenu.open = false;
+      });
+      toolMenu.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          toolMenu.open = false;
+          toolMenu.querySelector("summary").focus();
+        }
+      });
     }
 
     const footer = $("site-footer");
