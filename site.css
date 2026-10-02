@@ -236,8 +236,8 @@ body.chart-fullscreen-open { overflow:hidden; }
 .tool-menu-icon { width:17px;height:17px;flex:none; }
 .tool-menu-chevron { width:14px;height:14px;color:#94a3b8;transition:transform .15s; }
 .tool-menu[open] .tool-menu-chevron { transform:rotate(180deg); }
-.tool-menu-list { position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:250px;padding:5px;border:1px solid #303b55;border-radius:10px;background:#15192d;box-shadow:0 12px 28px rgba(0,0,0,.28); }
-.tool-menu-list a { display:flex;align-items:center;gap:10px;padding:10px;border-radius:7px;color:#b3bfd0;text-decoration:none;transition:background .15s,color .15s; }
+.tool-menu-list { position:absolute;right:0;top:calc(100% + 8px);z-index:60;display:grid;gap:6px;width:250px;padding:6px;border:1px solid #303b55;border-radius:10px;background:#15192d;box-shadow:0 12px 28px rgba(0,0,0,.28); }
+.tool-menu-list a { display:flex;align-items:center;gap:10px;min-height:54px;padding:9px 10px;border-radius:7px;color:#b3bfd0;text-decoration:none;transition:background .15s,color .15s; }
 .tool-menu-list a:hover,.tool-menu-list a[aria-current=page] { background:#222b40;color:#f8fafc; }
 .tool-menu-list a>.tool-menu-icon { width:18px;height:18px;color:#34bfe5; }
 .tool-menu-logo { display:block;width:18px;height:18px;flex:none;object-fit:contain; }
