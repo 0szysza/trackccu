@@ -19,8 +19,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      deploy_sha: ${{ steps.version.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,17 +65,15 @@ jobs:
         with:
           path: _site
 
-      # Pages identifies deployments by commit SHA. Scheduled dispatches keep
-      # the same SHA and may report success while still serving the old artifact.
-      - name: Give this scheduled deployment a new commit SHA
+      # Pages identifies deployments by the event's commit SHA. Advance main
+      # after each dispatch so the next one uses a distinct deployment version.
+      - name: Advance SHA for the next scheduled deployment
         if: github.event_name != 'push'
-        id: version
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit --allow-empty -m 'Refresh Pages data [skip ci]'
           git push origin HEAD:main
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: build
@@ -88,5 +84,3 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-        env:
-          GITHUB_SHA: ${{ needs.build.outputs.deploy_sha || github.sha }}
