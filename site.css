@@ -672,15 +672,16 @@ body.event-modal-open { overflow:hidden; }
   #shareLabel-b { text-align:right; }
 
   .game-detail-info { gap:0; }
+  main .game-detail-hero::before { display:none; }
   .game-detail-heading { order:1; min-height:96px; }
   .game-detail-icon { width:96px; height:96px; flex-basis:96px; }
   .game-detail-title { padding:15px 14px 12px; }
   .game-detail-title h1 { font-size:22px; line-height:1.25; overflow-wrap:anywhere; }
-  .game-detail-tag { position:static; order:2; align-self:flex-start; margin:10px 16px 0; min-width:0; }
+  .game-detail-tag { position:absolute; top:auto; right:16px; bottom:21px; margin:0; min-width:48px; min-height:30px; padding:5px 10px; }
   .game-detail-bottom { order:3; gap:12px; margin-top:16px; padding:0 16px 16px; }
-  .game-detail-links { align-items:flex-start; text-align:left; gap:4px; }
+  .game-detail-links { align-items:flex-start; text-align:left; gap:10px; }
   .game-detail-links .owner-line { justify-content:flex-start; flex-wrap:wrap; }
-  .game-detail-links > a { min-height:40px; }
+  .game-detail-links > a { min-height:40px; max-width:calc(100% - 70px); }
   .game-stat-stack > section:first-child { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
   .game-stat-stack .stat-panel { min-width:0; padding:12px 10px; }
   .game-stat-stack .stat-kicker { display:block; min-height:28px; font-size:10px; letter-spacing:.02em; line-height:1.4; }
@@ -694,14 +695,19 @@ body.event-modal-open { overflow:hidden; }
   .game-detail-metrics > .metric-card:last-child { grid-column:2; grid-row:1; }
   main .game-meta-bar, main .group-meta-bar { padding:16px; }
   .game-meta-item strong { font-size:18px; }
-  .group-detail-hero { flex-direction:column; }
-  main .group-detail-icon { width:100%; height:150px; flex-basis:auto; object-fit:contain; border-right:0; border-bottom:1px solid #334155; background:#111528; }
-  .group-detail-content { padding:16px; gap:16px; }
-  .group-detail-top { gap:12px; }
+  main .group-detail-hero { display:grid; grid-template-columns:96px minmax(0,1fr); }
+  main .group-detail-icon { grid-column:1; grid-row:1; width:96px; height:96px; flex-basis:auto; object-fit:cover; border-right:1px solid #334155; border-bottom:1px solid #334155; border-radius:0 0 18px 0; }
+  .group-detail-content, .group-detail-top { display:contents; }
+  .group-detail-heading { grid-column:2; grid-row:1; min-width:0; min-height:96px; padding:15px 14px 12px; }
+  .group-detail-heading h1 { font-size:22px; line-height:1.25; }
+  .group-detail-heading > a { min-height:40px; font-size:12px; }
+  .group-detail-content > div:last-child { grid-column:1/-1; grid-row:2; min-width:0; padding:16px 16px 12px; }
+  .group-hero-owner { grid-column:1/-1; grid-row:3; min-width:0; padding:0 16px 20px; }
   main .group-detail-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
   .group-detail-stats .stat-panel { min-width:0; padding:14px; }
   .group-detail-stats .stat-kicker { min-height:28px; font-size:10px; line-height:1.4; letter-spacing:.03em; }
   .group-detail-stats strong { font-size:clamp(15px,4.7vw,20px); overflow-wrap:anywhere; }
+  .group-detail-stats #totalVisits { font-size:16px; white-space:nowrap; }
 
   main .fullscreen-chart-panel { padding:14px; }
   .chart-controls { display:grid; width:100%; grid-template-columns:minmax(0,1fr) 52px; gap:8px; }
@@ -770,5 +776,5 @@ body.event-modal-open { overflow:hidden; }
   .games-card-title h2, .compare-card-title h2 { font-size:16px; }
   .game-stat-stack .stat-panel { padding:10px 8px; }
   .game-stat-stack .stat-panel strong { font-size:19px; }
+  .group-detail-stats #totalVisits { font-size:13px; }
 }
-
