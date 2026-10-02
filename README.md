@@ -1,7 +1,5 @@
 # CCU Tracker
 
-[![CCU Tracker — games, groups and comparisons](assets/social/cover.png)](https://0szysza.github.io/trackccu/)
-
 Roblox player counts, group members and their history in one place.
 
 **[Open the tracker](https://0szysza.github.io/trackccu/)** · [Games](https://0szysza.github.io/trackccu/games) · [Groups](https://0szysza.github.io/trackccu/groups) · [Compare](https://0szysza.github.io/trackccu/compare)
