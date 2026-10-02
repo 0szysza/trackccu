@@ -282,7 +282,7 @@
           <summary><svg class="tool-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span>Tools</span><svg class="tool-menu-icon tool-menu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
           <div class="tool-menu-list">
             <a href="${ROOT || "./"}" aria-current="page"><img class="tool-menu-logo" src="${ROOT}favicon.png" width="18" height="18" alt=""><span><strong>TrackCCU</strong><small>Current page</small></span></a>
-            <a href="https://0szysza.github.io/rebirth/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>Rebirth Calculator</strong><small>Rebirth goal planner</small></span></a>
+            <a href="https://0szysza.github.io/rebirth/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>BGSI Rebirth Calculator</strong><small>Rebirth goal planner</small></span></a>
           </div>
         </details>
       </nav>
