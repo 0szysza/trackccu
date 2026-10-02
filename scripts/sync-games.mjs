@@ -30,6 +30,8 @@ const REPO_ROOT = path.join(here, "..");
 // checked-out repo; defaults to the repo root for local runs.
 const OUT_DIR = process.env.OUT_DIR || REPO_ROOT;
 
+const escapeHtml = value => String(value).replace(/[&<>"\u0027]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\u0022": "&quot;", "\u0027": "&#39;" }[character]));
+
 const games = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
 const groups = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8"));
 const cssHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "site.css"))).digest("hex").slice(0, 12);
@@ -88,7 +90,7 @@ async function writeGamePages(jsHash) {
   for (const game of games) {
     const dir = path.join(gamesDir, String(game.placeId));
     await mkdir(dir, { recursive: true });
-    const page = template.replaceAll("__GAME_NAME__", game.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash);
+    const page = template.replaceAll("__GAME_NAME__", escapeHtml(game.name)).replaceAll("__GAME_ID__", String(game.placeId)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash);
     await writeFile(path.join(dir, "index.html"), page);
   }
   return gamesDir;
@@ -113,6 +115,6 @@ const groupTemplate = await readFile(path.join(here, "group-template.html"), "ut
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", group.name).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__GROUP_PAGE_HASH__", groupPageHash));
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", escapeHtml(group.name)).replaceAll("__GROUP_ID__", String(group.id)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__GROUP_PAGE_HASH__", groupPageHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);
