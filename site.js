@@ -258,6 +258,7 @@
       header.innerHTML = `
 <header class="border-b border-roblox-cardBorder bg-roblox-cardBg/90 backdrop-blur-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center gap-x-5 gap-y-2">
+    <a class="site-home-link" href="https://0szysza.github.io/" aria-label="Back to home" title="Back to home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7"/></svg></a>
     <a href="${ROOT || "./"}" class="order-1 flex items-center gap-2.5 shrink-0 site-brand" aria-label="CCU Tracker — Home">
       <span class="site-logo" aria-hidden="true"><img src="${ROOT}favicon.png" alt=""></span>
       <div>
