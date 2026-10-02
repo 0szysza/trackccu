@@ -603,3 +603,172 @@ body.event-modal-open { overflow:hidden; }
 #gameRanges .range-btn:hover { color:#cbd5e1; }
 #gameRanges .range-btn[aria-pressed="true"] { color:#f8fafc;background:#263149;box-shadow:inset 0 0 0 1px #334155; }
 #gameRanges[aria-busy="true"] .range-btn { cursor:progress; }
+
+/* ---------- Phone layout (desktop rules above stay unchanged) ---------- */
+@media (max-width: 767px) {
+  body { min-height:100svh; }
+  main.flex-grow { min-width:0; padding-top:20px; padding-bottom:24px; }
+  #site-header header > div {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:10px 12px;
+    padding-top:10px;
+    padding-bottom:10px;
+  }
+  #site-header .site-brand { order:0; grid-column:1; grid-row:1; min-width:0; gap:9px; }
+  #site-header .site-brand > div { min-width:0; }
+  #site-header .site-brand > div > div { font-size:18px; line-height:1.25; }
+  #site-header .site-brand p { font-size:10px; line-height:1.4; }
+  #site-header .site-logo { width:32px; height:32px; flex-basis:32px; }
+  #site-header .site-actions { order:0; grid-column:2; grid-row:1; flex-direction:column-reverse; align-items:flex-end; gap:6px; margin:0; }
+  #site-header #liveStatus { gap:6px; font-size:10px; white-space:nowrap; }
+  #site-header .live-dot { width:6px; height:6px; }
+  #site-header nav[aria-label="Pages"] { order:0; grid-column:1/-1; grid-row:2; width:100%; gap:6px; }
+  #site-header .top-nav-link { flex:1; min-height:44px; padding:8px; font-size:13px; gap:7px; }
+  .tool-menu summary { min-height:40px; padding:0 10px; font-size:12px; }
+  .tool-menu-list { width:min(270px,calc(100vw - 32px)); }
+  .tool-menu-list a { min-height:60px; }
+  #site-footer footer { margin-top:24px; padding-bottom:max(20px,env(safe-area-inset-bottom)); }
+  #site-footer footer a { min-height:44px; }
+
+  /* A 16px input keeps Safari from zooming in when the keyboard opens. */
+  main input:not([type="checkbox"]), main select { min-width:0; font-size:16px; }
+  main input[type="search"], main input[type="text"] { scroll-margin-top:145px; }
+  button, summary, .top-nav-link, .collectible-card-detail { touch-action:manipulation; }
+  #sortToggle, .game-lookup-form button, .collectibles-more { min-height:44px; }
+  main > section > dl { width:100%; }
+  main > section > dl > div { flex:1; min-width:0; }
+  .game-lookup-form { gap:10px; padding:14px; }
+  .game-lookup-copy { min-width:0; }
+  .game-lookup-input { flex-basis:100%; }
+  .game-lookup-input input { min-height:46px; }
+  .game-lookup-form button { width:100%; }
+  main > section:has(#search) > div { flex-basis:100%; min-width:0; }
+  #search { min-height:24px; }
+
+  .home-hero { padding:12px 0 26px; gap:20px; }
+  .home-hero h1 { font-size:34px; line-height:1.08; }
+  .home-hero p { font-size:14px; line-height:1.65; }
+  .home-hero-actions { margin-top:20px; gap:10px; }
+  .home-hero-stats { gap:10px; }
+  .home-game-strip { grid-auto-columns:calc((100% - 12px)/2); scroll-snap-type:x proximity; }
+  .home-game-chip { scroll-snap-align:start; }
+  .feature-panel { padding:16px; }
+
+  .games-card-icon, .compare-card-icon { width:84px; height:84px; min-width:84px; min-height:84px; flex-basis:84px; }
+  .games-card-title, .compare-card-title { padding:14px 8px 0 12px; }
+  .games-card-title h2, .compare-card-title h2 { font-size:18px; line-height:1.3; overflow-wrap:anywhere; }
+  .games-card-header { min-height:100px; }
+  .games-card-badges { padding:14px 12px 0 0; width:66px; }
+  .games-card-stats, .games-card-metrics { margin-left:14px; margin-right:14px; }
+  .compare-card { min-height:0; }
+  .compare-card-clear { width:36px; height:36px; }
+  .compare-card-actions { flex-basis:66px; }
+  .compare-card-title { min-width:0; }
+  .compare-picker-field { min-height:48px; }
+  .compare-picker-slot .picker-dropdown { max-height:50svh; overflow-y:auto; overscroll-behavior:contain; }
+  main .compare-summary-panel { padding:16px; }
+  #shareLabel-a, #shareLabel-b { min-width:0; max-width:48%; overflow-wrap:anywhere; }
+  #shareLabel-b { text-align:right; }
+
+  .game-detail-info { gap:0; }
+  .game-detail-heading { order:1; min-height:96px; }
+  .game-detail-icon { width:96px; height:96px; flex-basis:96px; }
+  .game-detail-title { padding:15px 14px 12px; }
+  .game-detail-title h1 { font-size:22px; line-height:1.25; overflow-wrap:anywhere; }
+  .game-detail-tag { position:static; order:2; align-self:flex-start; margin:10px 16px 0; min-width:0; }
+  .game-detail-bottom { order:3; gap:12px; margin-top:16px; padding:0 16px 16px; }
+  .game-detail-links { align-items:flex-start; text-align:left; gap:4px; }
+  .game-detail-links .owner-line { justify-content:flex-start; flex-wrap:wrap; }
+  .game-detail-links > a { min-height:40px; }
+  .game-stat-stack > section:first-child { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+  .game-stat-stack .stat-panel { min-width:0; padding:12px 10px; }
+  .game-stat-stack .stat-kicker { display:block; min-height:28px; font-size:10px; letter-spacing:.02em; line-height:1.4; }
+  .game-stat-stack .stat-kicker .ui-icon { width:12px; height:12px; margin-right:3px; }
+  .game-stat-stack .stat-panel strong { font-size:22px; }
+  .game-stat-stack .stat-panel small { font-size:10px; line-height:1.5; overflow-wrap:anywhere; }
+  .metric-card { min-width:0; padding:14px; }
+  .metric-card strong { font-size:clamp(16px,5vw,22px); overflow-wrap:anywhere; }
+  .game-detail-metrics, .game-detail-metrics.lookup-no-votes { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .game-detail-metrics .game-vote-panel { grid-column:1/-1; grid-row:2; }
+  .game-detail-metrics > .metric-card:last-child { grid-column:2; grid-row:1; }
+  main .game-meta-bar, main .group-meta-bar { padding:16px; }
+  .game-meta-item strong { font-size:18px; }
+  .group-detail-hero { flex-direction:column; }
+  main .group-detail-icon { width:100%; height:150px; flex-basis:auto; object-fit:contain; border-right:0; border-bottom:1px solid #334155; background:#111528; }
+  .group-detail-content { padding:16px; gap:16px; }
+  .group-detail-top { gap:12px; }
+  main .group-detail-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .group-detail-stats .stat-panel { min-width:0; padding:14px; }
+  .group-detail-stats .stat-kicker { min-height:28px; font-size:10px; line-height:1.4; letter-spacing:.03em; }
+  .group-detail-stats strong { font-size:clamp(15px,4.7vw,20px); overflow-wrap:anywhere; }
+
+  main .fullscreen-chart-panel { padding:14px; }
+  .chart-controls { display:grid; width:100%; grid-template-columns:minmax(0,1fr) 52px; gap:8px; }
+  .chart-controls > #gameRanges, .chart-controls > .compare-ranges { grid-column:1; grid-row:1; display:flex; }
+  #gameRanges .range-btn, .compare-ranges .range-btn { flex:1; min-height:44px; padding:9px; font-size:12px; }
+  .chart-controls > .collectibles-tabs { grid-column:1/-1; grid-row:2; display:flex; }
+  .chart-controls > .collectibles-tabs button { flex:1; min-height:44px; padding:8px; }
+  .chart-fullscreen-toggle { grid-column:2; grid-row:1; width:52px; height:52px; }
+  main .chart-wrap { height:300px; }
+  #chartTooltip { max-width:calc(100% - 16px); white-space:normal; }
+  .chart-stat { padding:6px 8px; font-size:10px; }
+  .chart-navigator-handle { width:20px; }
+  .chart-navigator-handle::after { left:8px; }
+  .fullscreen-chart-panel:fullscreen, .fullscreen-chart-panel.chart-fullscreen-fallback {
+    height:100dvh;
+    padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+  }
+
+  main .collectibles-section { padding:14px; }
+  .collectibles-header { gap:12px; }
+  .collectibles-header-controls { width:100%; justify-content:flex-start; gap:8px; margin-left:0; }
+  .collectibles-header-controls > .collectibles-tabs:not(.event-period) { order:0; flex:1 0 100%; display:flex; }
+  .collectibles-header-controls > .collectibles-tabs:not(.event-period) button { flex:1; min-width:0; min-height:44px; padding:8px 6px; font-size:11px; }
+  .collectibles-header-controls > .collectibles-search-wrap { order:1; flex:1 0 100%; max-width:none; min-width:0; min-height:46px; }
+  .collectibles-header-controls > .offsale-toggle, .collectibles-header-controls > .collectibles-sort-toggle { order:2; flex:1; justify-content:center; min-height:44px; padding:8px; gap:6px; font-size:11px; }
+  .collectibles-header-controls > .event-period { order:2; }
+  .event-period button { min-height:36px; }
+  .collectibles-grid:not(.events-grid) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .collectible-card { padding:9px 9px 12px; border-radius:12px; }
+  .collectible-name-line { flex-direction:column; gap:8px; min-height:68px; margin:10px 0; }
+  .collectible-name-line:not(:has(.collectible-price,.collectible-offsale)) { min-height:36px; }
+  .collectible-name-line h3 { font-size:13px; line-height:1.35; }
+  .collectible-price { font-size:13px; }
+  .collectible-dates { gap:8px; }
+  .collectible-date-row { flex-wrap:wrap; gap:3px 5px; font-size:10px; }
+  .collectible-date-row strong { max-width:100%; overflow-wrap:anywhere; }
+  .collectible-date { white-space:normal; }
+  .collectible-date[data-exact]:hover::after, .collectible-date[data-exact]:focus-visible::after { min-width:0; width:180px; max-width:70vw; }
+
+  .event-dialog, .pass-dialog { width:calc(100vw - 24px); max-height:calc(100dvh - 24px); overscroll-behavior:contain; }
+  .event-dialog-close { width:44px; height:44px; }
+  .pass-dialog-close { top:10px; right:10px; }
+  .pass-dialog-content { padding:16px; }
+  .pass-dialog-hero { grid-template-columns:64px minmax(0,1fr); align-items:start; gap:10px; padding-right:38px; }
+  .pass-dialog-hero img { width:64px; height:64px; }
+  .pass-dialog-hero h2 { font-size:18px; line-height:1.3; }
+  .pass-dialog-game { font-size:11px; }
+  .pass-dialog-facts { grid-template-columns:1fr; }
+  .badge-dialog-facts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .pass-dialog-dates, .badge-dialog-facts .pass-dialog-dates { grid-column:1/-1; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .pass-dialog-metric, .pass-dialog-dates > div { padding:12px; }
+  .pass-dialog-label { font-size:9px; letter-spacing:.04em; }
+  .pass-dialog-dates small { font-size:10px; overflow-wrap:anywhere; }
+  .pass-dialog-history { padding:12px; }
+  .pass-dialog-link, .event-dialog-links a { min-height:44px; }
+}
+
+@media (max-width:359px) {
+  #site-header header > div { gap:8px; }
+  #site-header .site-brand > div > div { font-size:16px; }
+  #site-header .site-brand p { font-size:9px; }
+  #site-header .site-logo { width:28px; height:28px; flex-basis:28px; }
+  #site-header #liveStatus { font-size:9px; }
+  .home-hero h1 { font-size:30px; }
+  .games-card-icon, .compare-card-icon { width:72px; height:72px; min-width:72px; min-height:72px; flex-basis:72px; }
+  .games-card-title h2, .compare-card-title h2 { font-size:16px; }
+  .game-stat-stack .stat-panel { padding:10px 8px; }
+  .game-stat-stack .stat-panel strong { font-size:19px; }
+}
+

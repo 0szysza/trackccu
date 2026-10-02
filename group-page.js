@@ -158,7 +158,7 @@
     host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${metricLabels[metric]} history chart"><defs><linearGradient id="groupArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${labels}${singlePoint ? "" : `<path d="${area}" fill="url(#groupArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`}<circle cx="${x(first)}" cy="${y(visible[0].y)}" r="${singlePoint ? 5 : 0}" fill="#34bfe5"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H - PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML = `<span class="chart-stat">High <b>${fmt(high)}</b></span><span class="chart-stat">Low <b>${fmt(low)}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(sum / visible.length))}</b></span>`;
     const svg = host.querySelector("svg"), cross = host.querySelector("#hoverLine"), halo = host.querySelector("#hoverHalo"), dot = host.querySelector("#hoverDot");
-    svg.addEventListener("pointermove", (event) => {
+    const showPoint = (event) => {
       const rect = svg.getBoundingClientRect(), px = (event.clientX - rect.left) / rect.width * W;
       let best = visible[0];
       for (const point of visible) if (Math.abs(x(point.x) - px) < Math.abs(x(best.x) - px)) best = point;
@@ -167,7 +167,9 @@
       for (const marker of [halo, dot]) { marker.setAttribute("cx", xx); marker.setAttribute("cy", yy); marker.setAttribute("visibility", "visible"); }
       tooltip.innerHTML = `<b>${fmt(best.y)} ${metric === "members" ? "members" : "players"}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;
       tooltip.classList.remove("hidden"); tooltip.style.left = Math.min(rect.width - 160, Math.max(8, xx / W * rect.width + 10)) + "px"; tooltip.style.top = "14px";
-    });
+    };
+    svg.addEventListener("pointermove", showPoint);
+    svg.addEventListener("pointerdown", (event) => { if (event.pointerType === "touch") showPoint(event); });
     svg.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); halo.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); tooltip.classList.add("hidden"); });
   }
 
@@ -241,3 +243,5 @@
   }
   Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadRange(range); loadTrend(); });
 })();
+
+

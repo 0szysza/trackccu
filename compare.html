@@ -783,6 +783,7 @@
   }
 
   wrap.addEventListener("pointermove", onMove);
+  wrap.addEventListener("pointerdown", (event) => { if (event.pointerType === "touch") onMove(event); });
   wrap.addEventListener("pointerdown", onMove);
   wrap.addEventListener("pointerleave", hideHover);
   wrap.addEventListener("pointercancel", hideHover);
@@ -883,3 +884,5 @@
 </script>
 </body>
 </html>
+
+

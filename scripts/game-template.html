@@ -245,7 +245,9 @@
     $("chartStats").innerHTML=`<span class="chart-stat">High <b>${fmt(Math.max(...ys))}</b></span><span class="chart-stat">Low <b>${fmt(Math.min(...ys))}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(ys.reduce((a,b)=>a+b,0)/ys.length))}</b></span>`;
     const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"),halo=host.querySelector("#hoverHalo"),dot=host.querySelector("#hoverDot");
     const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const xx=x(best.x),yy=y(best.y);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");for(const point of [halo,dot]){point.setAttribute("cx",xx);point.setAttribute("cy",yy);point.setAttribute("visibility","visible");}tip.innerHTML=`<b>${fmt(best.y)} ${chartLabels[chartMetric].toLowerCase()}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";};
-    svg.addEventListener("pointermove",move);svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");halo.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden");tip.classList.add("hidden");});
+    svg.addEventListener("pointermove",move);
+    svg.addEventListener("pointerdown",event=>{if(event.pointerType==="touch")move(event);});
+    svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");halo.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden");tip.classList.add("hidden");});
   }
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -588,3 +590,5 @@
   Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
 })();
 </script></body></html>
+
+
