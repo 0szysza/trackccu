@@ -15,10 +15,11 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -77,6 +78,7 @@ jobs:
           git push origin HEAD:main
 
   deploy:
+    timeout-minutes: 10
     needs: build
     runs-on: ubuntu-latest
     environment:
