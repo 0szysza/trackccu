@@ -1,0 +1,7 @@
+{
+  "name": "trackccu-bgsi-alerts",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "dependencies": { "playwright": "1.62.1" }
+}

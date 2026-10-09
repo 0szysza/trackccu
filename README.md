@@ -59,3 +59,8 @@ Game and group history is retained for up to **90 days**. **All** means the avai
 Passes, developer products and badges are refreshed approximately hourly. Price history begins with observed prices. Events combine Roblox data with the maintained archive. Missing fields are shown as unavailable rather than fabricated.
 
 Untracked lookups use public Roblox-compatible proxy endpoints. They show current details and do not automatically add an item to the recorded catalog.
+
+## BGSI Discord notifications
+
+Bubble Gum Simulator INFINITY has a separate five-minute change monitor for game updates, new public events, new game passes and new developer products. Each category posts PNG cards styled like TrackCCU to its configured Discord channel with `@everyone`. The first run records existing items without announcing them. [Configuration and delivery behavior](scripts/bgsi-alerts/README.md).
+
