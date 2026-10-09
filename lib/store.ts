@@ -25,16 +25,10 @@ export interface RangeConfig {
 export const RANGES: Record<string, RangeConfig> = {
   "1d": { key: "1d", label: "1D", seconds: 86400, bucketSeconds: 300 },
   "7d": { key: "7d", label: "7D", seconds: 604800, bucketSeconds: 1800 },
-  all: { key: "all", label: "All", seconds: null, bucketSeconds: null },
+  all: { key: "all", label: "All", seconds: null, bucketSeconds: 3600 },
 };
 
 export const DEFAULT_RANGE = "1d";
-
-/** Bucket sizes used for the all-time range, smallest first. */
-const BUCKET_LADDER = [300, 900, 1800, 3600, 10800, 21600, 43200, 86400];
-
-/** Aim for roughly this many points per line so long ranges stay readable. */
-const TARGET_POINTS = 420;
 
 /** Refresh the cached per-game metadata used as an offline fallback. */
 export async function saveGameMetadata(stats: LiveGameStats[]): Promise<void> {
@@ -189,22 +183,10 @@ export async function getHistory(
   const range = RANGES[rangeKey] ?? RANGES[DEFAULT_RANGE];
 
   let since: Date | null = null;
-  let bucketSeconds: number;
+  const bucketSeconds = range.bucketSeconds ?? 300;
 
   if (range.seconds !== null) {
     since = new Date(Date.now() - range.seconds * 1000);
-    bucketSeconds = range.bucketSeconds ?? 300;
-  } else {
-    // All-time: pick a bucket that keeps the series around TARGET_POINTS long.
-    const [oldest] = await db
-      .select({ first: sql<string | null>`min(${ccuSnapshots.recordedAt})` })
-      .from(ccuSnapshots);
-
-    const firstAt = oldest?.first ? new Date(oldest.first).getTime() : Date.now();
-    const spanSeconds = Math.max(1, (Date.now() - firstAt) / 1000);
-    bucketSeconds =
-      BUCKET_LADDER.find((size) => spanSeconds / size <= TARGET_POINTS) ??
-      BUCKET_LADDER[BUCKET_LADDER.length - 1];
   }
 
   const bucket = sql<string>`to_timestamp(floor(extract(epoch from ${ccuSnapshots.recordedAt}) / ${bucketSeconds}) * ${bucketSeconds})`;

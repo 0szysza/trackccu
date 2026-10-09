@@ -11,8 +11,7 @@ const GROUPS = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8")
 const GAMES = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
 const DAY = 86400;
 const RETENTION_DAYS = 90;
-const LADDER = [300, 900, 1800, 3600, 10800, 21600, 43200, 86400];
-const RANGES = { "1d": [DAY, 300], "7d": [7 * DAY, 1800], all: [null, null] };
+const RANGES = { "1d": [DAY, 300], "7d": [7 * DAY, 1800], all: [null, 3600] };
 
 async function getJson(url) {
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -64,14 +63,8 @@ async function previousRaw() {
 }
 
 function history(raw, range, now) {
-  const [seconds, fixedBucket] = RANGES[range];
+  const [seconds, bucket] = RANGES[range];
   const since = seconds === null ? null : now - seconds;
-  let bucket = fixedBucket;
-  if (!bucket) {
-    let first = now;
-    for (const points of Object.values(raw.groups)) if (points.length) first = Math.min(first, points[0][0]);
-    bucket = LADDER.find((size) => (now - first) / size <= 420) ?? LADDER.at(-1);
-  }
   const series = {};
   for (const [id, points] of Object.entries(raw.groups)) {
     const buckets = new Map();

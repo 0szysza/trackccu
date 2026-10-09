@@ -54,7 +54,7 @@ CCU means **concurrent users**: the number of players currently in a game.
 
 The collection/deployment workflow is triggered approximately every five minutes by an external repository dispatch, and also runs after pushes or a manual dispatch. Roblox data, runner queues and publication time can delay a visible update; the header shows the latest published reading.
 
-Game and group history is retained for up to **90 days**. **All** means the available recorded history, not a game’s entire lifetime. New entries start accumulating history when tracking begins. Longer ranges may aggregate readings.
+Game and group history is retained for up to **90 days**. **All** means the available recorded history, not a game’s entire lifetime. New entries start accumulating history when tracking begins. Readings are aggregated into five-minute intervals for **1D**, 30-minute intervals for **7D**, and fixed one-hour intervals for **All**, regardless of how much history is available.
 
 Passes, developer products and badges are refreshed approximately hourly. Price history begins with observed prices. Events combine Roblox data with the maintained archive. Missing fields are shown as unavailable rather than fabricated.
 

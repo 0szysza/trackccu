@@ -109,25 +109,17 @@ async function loadPrevious() {
 
 /* ---------- history maths ---------- */
 
-const BUCKET_LADDER = [300, 900, 1800, 3600, 10800, 21600, 43200, 86400];
-const TARGET_POINTS = 420;
 const RANGES = {
   "1d": { seconds: 86400, bucket: 300 },
   "7d": { seconds: 604800, bucket: 1800 },
-  all: { seconds: null, bucket: null },
+  all: { seconds: null, bucket: 3600 },
 };
 
 function buildHistory(raw, rangeKey, nowSec) {
   const range = RANGES[rangeKey];
   const since = range.seconds === null ? null : nowSec - range.seconds;
 
-  let bucket = range.bucket;
-  if (bucket === null) {
-    let first = nowSec;
-    for (const points of Object.values(raw.games)) if (points.length) first = Math.min(first, points[0][0]);
-    const span = Math.max(1, nowSec - first);
-    bucket = BUCKET_LADDER.find((size) => span / size <= TARGET_POINTS) ?? BUCKET_LADDER[BUCKET_LADDER.length - 1];
-  }
+  const bucket = range.bucket;
 
   const series = {};
   for (const [slug, points] of Object.entries(raw.games)) {
