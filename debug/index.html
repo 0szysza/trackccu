@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pl" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#34bfe5">
+  <meta name="robots" content="noindex,nofollow">
+  <title>BGSI Debug | CCU Tracker</title>
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>window.SITE_ROOT = '../';</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../tailwind-config.js"></script>
+  <link rel="stylesheet" href="../site.css">
+  <link rel="stylesheet" href="debug.css">
+</head>
+<body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased">
+  <div id="site-header"></div>
+  <main class="debug-main">
+    <a class="back-link" href="../games/85896571713843/">← BGSI</a>
+    <section class="debug-hero">
+      <div>
+        <div class="debug-kicker"><span></span>DISCORD · BGSI</div>
+        <h1>Testy wiadomości</h1>
+        <p>Wybierz rodzaj wiadomości i wyślij obrazek na przypisany kanał Discorda.</p>
+      </div>
+      <div class="debug-mode">DEBUG</div>
+    </section>
+    <section class="debug-controls" aria-label="Ustawienia testu">
+      <label class="ping-option" for="pingEveryone">
+        <input id="pingEveryone" type="checkbox">
+        <span class="ping-switch" aria-hidden="true"></span>
+        <span><strong>Ping @everyone</strong><small id="pingDescription">Wyłączony dla testów</small></span>
+      </label>
+      <button id="sendAll" class="primary-button" type="button" disabled>Wyślij 4 testy</button>
+    </section>
+    <div id="overallStatus" class="overall-status" role="status" aria-live="polite">Wczytywanie konfiguracji kanałów…</div>
+    <section class="debug-grid" aria-label="Rodzaje wiadomości testowych">
+      <article class="debug-card" data-category="updates">
+        <header><div><span class="card-kicker">UPDATES</span><h2>Aktualizacja gry</h2></div><span class="channel-tag"># updates</span></header>
+        <a class="image-preview" href="../assets/debug/bgsi-updates.png" target="_blank" rel="noopener" aria-label="Powiększ podgląd aktualizacji"><img src="../assets/debug/bgsi-updates.png" alt="Podgląd obrazka aktualizacji BGSI" loading="eager"></a>
+        <div class="card-actions"><button type="button" data-send="updates" disabled>Wyślij test aktualizacji</button><p class="card-result" data-result="updates" aria-live="polite">Gotowe do testu</p></div>
+      </article>
+      <article class="debug-card" data-category="events">
+        <header><div><span class="card-kicker">EVENTS</span><h2>Nowy event</h2></div><span class="channel-tag"># events</span></header>
+        <a class="image-preview" href="../assets/debug/bgsi-events.png" target="_blank" rel="noopener" aria-label="Powiększ podgląd eventu"><img src="../assets/debug/bgsi-events.png" alt="Podgląd obrazka eventu BGSI" loading="eager"></a>
+        <div class="card-actions"><button type="button" data-send="events" disabled>Wyślij test eventu</button><p class="card-result" data-result="events" aria-live="polite">Gotowe do testu</p></div>
+      </article>
+      <article class="debug-card" data-category="passes">
+        <header><div><span class="card-kicker">PASSES</span><h2>Nowy gamepass</h2></div><span class="channel-tag"># passes</span></header>
+        <a class="image-preview" href="../assets/debug/bgsi-passes.png" target="_blank" rel="noopener" aria-label="Powiększ podgląd gamepassa"><img src="../assets/debug/bgsi-passes.png" alt="Podgląd obrazka gamepassa BGSI" loading="lazy"></a>
+        <div class="card-actions"><button type="button" data-send="passes" disabled>Wyślij test gamepassa</button><p class="card-result" data-result="passes" aria-live="polite">Gotowe do testu</p></div>
+      </article>
+      <article class="debug-card" data-category="products">
+        <header><div><span class="card-kicker">DEV PRODUCTS</span><h2>Nowy developer product</h2></div><span class="channel-tag"># dev products</span></header>
+        <a class="image-preview" href="../assets/debug/bgsi-products.png" target="_blank" rel="noopener" aria-label="Powiększ podgląd produktu"><img src="../assets/debug/bgsi-products.png" alt="Podgląd obrazka developer productu BGSI" loading="lazy"></a>
+        <div class="card-actions"><button type="button" data-send="products" disabled>Wyślij test produktu</button><p class="card-result" data-result="products" aria-live="polite">Gotowe do testu</p></div>
+      </article>
+    </section>
+    <p class="debug-note">Testy korzystają z pokazanych obrazków z przykładowymi danymi BGSI. Każda wysłana wiadomość będzie oznaczona jako TEST.</p>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../config.js"></script>
+  <script src="../site.js"></script>
+  <script>Tracker.mountChrome(''); Tracker.loadLive();</script>
+  <script type="module" src="debug.js"></script>
+</body>
+</html>

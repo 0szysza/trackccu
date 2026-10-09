@@ -38,6 +38,12 @@ jobs:
           cp favicon.ico favicon.png favicon-32.png apple-touch-icon.png _site/
           cp -r assets _site/assets && rm -f _site/assets/README.md
           cp scripts/config.static.js _site/config.js
+          mkdir -p _site/debug
+          cp debug/index.html debug/debug.css debug/debug.js debug/messages.js _site/debug/
+          cp .github/bgsi-webhooks.json _site/debug/webhooks.json
+
+      - name: Verify debug message controls
+        run: node --test debug/messages.test.mjs
 
       - name: Generate game and group pages
         run: node scripts/sync-games.mjs
@@ -106,3 +112,4 @@ jobs:
           script: |
             const recoverPages = require('./.github/scripts/recover-pages.cjs');
             await recoverPages({ github, context, core }, { currentOnly: true });
+
