@@ -120,7 +120,7 @@ export function planNotifications(previous, snapshot, now = new Date().toISOStri
 export function notificationUrl(job) {
   if (job.category === 'passes') return `https://www.roblox.com/game-pass/${encodeURIComponent(job.item.id)}`;
   if (job.category === 'events') return `https://www.roblox.com/events/${encodeURIComponent(job.item.id)}`;
-  return GAME.siteUrl;
+  return `https://www.roblox.com/games/${GAME.placeId}`;
 }
 
 export function webhookPayload(jobs, filenames) {

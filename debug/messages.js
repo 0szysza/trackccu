@@ -15,7 +15,7 @@ export function validateRoutes(routes) {
 export function debugPayload(category, ping = false) {
   if (!CATEGORIES.includes(category)) throw new Error('Nieznany typ wiadomości testowej.');
   const filename = `bgsi-test-${category}.png`;
-  return { username: 'BGSI · CCU Tracker', content: `${ping ? '@everyone ' : ''}**BGSI · TEST · ${TITLES[category]}**\n<https://0szysza.github.io/trackccu/games/85896571713843/>`, allowed_mentions: { parse: ping ? ['everyone'] : [] }, attachments: [{ id: 0, filename }] };
+  return { username: 'BGSI · CCU Tracker', content: `${ping ? '@everyone ' : ''}**BGSI · TEST · ${TITLES[category]}**\n<https://www.roblox.com/games/85896571713843/>`, allowed_mentions: { parse: ping ? ['everyone'] : [] }, attachments: [{ id: 0, filename }] };
 }
 
 export async function loadPreview(category, { fetchImpl = fetch, baseUrl = '../assets/debug/' } = {}) {
