@@ -513,44 +513,7 @@
     "creator": "Rumble Studios"
   },
   "lastUpdateAt": "2026-10-10T18:06:15.311Z",
-  "queue": [
-    {
-      "key": "c85cabe38a09d18232453062",
-      "category": "updates",
-      "item": {
-        "slug": "bgsi",
-        "universeId": "6504986360",
-        "placeId": "85896571713843",
-        "name": "[SOON] Bubble Gum Simulator INFINITY",
-        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
-        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🥚 New Ultra Fall Egg!\n🍁 New Autumn Infinity Elixir & Shop Items!\n🎁 New Leaderboard Rewards!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-        "updatedAt": "2026-10-10T18:06:15.311Z",
-        "createdAt": "2024-09-02T20:33:13.033Z",
-        "playing": 7999,
-        "visits": 610442565,
-        "favorites": 291943,
-        "creator": "Rumble Studios",
-        "previousUpdatedAt": "2026-10-10T17:06:11.747Z",
-        "previousName": "[SOON] Bubble Gum Simulator INFINITY"
-      },
-      "detectedAt": "2026-10-10T18:10:25.688Z",
-      "status": "sending",
-      "game": {
-        "slug": "bgsi",
-        "universeId": "6504986360",
-        "placeId": "85896571713843",
-        "name": "[SOON] Bubble Gum Simulator INFINITY",
-        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
-        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🥚 New Ultra Fall Egg!\n🍁 New Autumn Infinity Elixir & Shop Items!\n🎁 New Leaderboard Rewards!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-        "updatedAt": "2026-10-10T18:06:15.311Z",
-        "createdAt": "2024-09-02T20:33:13.033Z",
-        "playing": 7999,
-        "visits": 610442565,
-        "favorites": 291943,
-        "creator": "Rumble Studios"
-      }
-    }
-  ],
+  "queue": [],
   "delivered": [
     "7aa8125606aa7db9838c704b",
     "a4220fb5646d9071532b43bb",
@@ -559,7 +522,8 @@
     "e39505ffc0bd49538be8df18",
     "6b61e0569b3c4fd5f307103b",
     "2f55749fe9c1dd60c3344f0a",
-    "75c9672342f6a1e3dad91e3f"
+    "75c9672342f6a1e3dad91e3f",
+    "c85cabe38a09d18232453062"
   ],
   "checkedAt": "2026-10-10T18:10:24.952Z"
 }
