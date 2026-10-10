@@ -505,15 +505,52 @@
     "name": "[🎃] Bubble Gum Simulator INFINITY",
     "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
     "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 Halloween is here in Bubble Gum Simulator Infinity!\n\n🎃 Trick or Treat around the Nightmare Town!\n🥚 3 New Halloween Themed Eggs!\n🔮 7+ Hatchable Secret Pets!\n🎁 Spooky Shop & Halloween Chest!\n💎 Halloween Rebirths, a bit more difficult than Autumn!\n🏆 Halloween Rebirth Leaderboard! Get Items Hourly & Daily!\n⚙️ Massive QOL Updates!\n⭐ New Bundle, Level Up Pack, & Exclusive Pets!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-    "updatedAt": "2026-10-10T18:10:50.67Z",
+    "updatedAt": "2026-10-10T18:12:14.032Z",
     "createdAt": "2024-09-02T20:33:13.033Z",
-    "playing": 8267,
-    "visits": 610452893,
-    "favorites": 291943,
+    "playing": 8974,
+    "visits": 610453918,
+    "favorites": 291944,
     "creator": "Rumble Studios"
   },
-  "lastUpdateAt": "2026-10-10T18:10:50.67Z",
-  "queue": [],
+  "lastUpdateAt": "2026-10-10T18:12:14.032Z",
+  "queue": [
+    {
+      "key": "f9dd89041ba57352e7bb6e2b",
+      "category": "updates",
+      "item": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 Halloween is here in Bubble Gum Simulator Infinity!\n\n🎃 Trick or Treat around the Nightmare Town!\n🥚 3 New Halloween Themed Eggs!\n🔮 7+ Hatchable Secret Pets!\n🎁 Spooky Shop & Halloween Chest!\n💎 Halloween Rebirths, a bit more difficult than Autumn!\n🏆 Halloween Rebirth Leaderboard! Get Items Hourly & Daily!\n⚙️ Massive QOL Updates!\n⭐ New Bundle, Level Up Pack, & Exclusive Pets!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-10-10T18:12:14.032Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8974,
+        "visits": 610453918,
+        "favorites": 291944,
+        "creator": "Rumble Studios",
+        "previousUpdatedAt": "2026-10-10T18:10:50.67Z",
+        "previousName": "[🎃] Bubble Gum Simulator INFINITY"
+      },
+      "detectedAt": "2026-10-10T18:20:26.938Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 Halloween is here in Bubble Gum Simulator Infinity!\n\n🎃 Trick or Treat around the Nightmare Town!\n🥚 3 New Halloween Themed Eggs!\n🔮 7+ Hatchable Secret Pets!\n🎁 Spooky Shop & Halloween Chest!\n💎 Halloween Rebirths, a bit more difficult than Autumn!\n🏆 Halloween Rebirth Leaderboard! Get Items Hourly & Daily!\n⚙️ Massive QOL Updates!\n⭐ New Bundle, Level Up Pack, & Exclusive Pets!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-10-10T18:12:14.032Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8974,
+        "visits": 610453918,
+        "favorites": 291944,
+        "creator": "Rumble Studios"
+      }
+    }
+  ],
   "delivered": [
     "7aa8125606aa7db9838c704b",
     "a4220fb5646d9071532b43bb",
@@ -526,5 +563,5 @@
     "c85cabe38a09d18232453062",
     "19e4253e601bb7c4fdd8d9ab"
   ],
-  "checkedAt": "2026-10-10T18:15:27.259Z"
+  "checkedAt": "2026-10-10T18:20:26.063Z"
 }
