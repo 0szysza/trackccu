@@ -24,9 +24,9 @@ test('Ping control enables both the visible everyone mention and allowed mention
 });
 test('Incomplete and unrelated webhook routes are rejected before sending', () => {
   assert.equal(validateRoutes(routes), routes);
-  assert.throws(() => validateRoutes({ updates: webhook }), /Brakuje/);
-  assert.throws(() => validateRoutes({ ...routes, products: 'https://example.com/endpoint' }), /Nieprawidłowa/);
-  assert.throws(() => debugPayload('unknown'), /Nieznany/);
+  assert.throws(() => validateRoutes({ updates: webhook }), /Missing/);
+  assert.throws(() => validateRoutes({ ...routes, products: 'https://example.com/endpoint' }), /Invalid/);
+  assert.throws(() => debugPayload('unknown'), /Unknown/);
 });
 test('Preview loading rejects missing files and non-PNG error pages', async () => {
   assert.equal((await loadPreview('passes', { fetchImpl: async () => new Response(png) })).type, 'image/png');
@@ -48,8 +48,8 @@ test('Browser test send uploads the selected PNG, targets the given webhook and 
 });
 test('Unconfirmed sends are not automatically repeated and rate limits show retry time', async () => {
   let calls = 0;
-  await assert.rejects(sendDebugMessage({ category: 'updates', webhook, image: png, fetchImpl: async () => { calls++; throw new Error('network'); } }), /Sprawdź kanał/);
+  await assert.rejects(sendDebugMessage({ category: 'updates', webhook, image: png, fetchImpl: async () => { calls++; throw new Error('network'); } }), /Check the channel/);
   assert.equal(calls, 1);
   await assert.rejects(sendDebugMessage({ category: 'passes', webhook, image: png, fetchImpl: async () => response({ retry_after: 3.3 }, 429) }), /4 s/);
-  await assert.rejects(sendDebugMessage({ category: 'products', webhook, image: png, fetchImpl: async () => response({ id: 'message', channel_id: 'channel', attachments: [] }) }), /potwierdzenia obrazka/);
+  await assert.rejects(sendDebugMessage({ category: 'products', webhook, image: png, fetchImpl: async () => response({ id: 'message', channel_id: 'channel', attachments: [] }) }), /Image delivery was not confirmed/);
 });
