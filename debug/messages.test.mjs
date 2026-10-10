@@ -7,10 +7,10 @@ const routes = Object.fromEntries(CATEGORIES.map(category => [category, webhook]
 const png = new Blob([Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10, 0])], { type: 'image/png' });
 const response = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
 
-test('Each test type has its own PNG attachment and an explicit TEST label', () => {
+test('Each test type sends its own PNG attachment with empty text when ping is off', () => {
   for (const category of CATEGORIES) {
     const payload = debugPayload(category);
-    assert.ok(payload.content.includes('TEST'));
+    assert.equal(payload.content, '');
     assert.equal(payload.attachments[0].filename, `bgsi-test-${category}.png`);
     assert.equal(payload.embeds, undefined);
     assert.deepEqual(payload.allowed_mentions.parse, []);
@@ -19,7 +19,7 @@ test('Each test type has its own PNG attachment and an explicit TEST label', () 
 });
 test('Ping control enables both the visible everyone mention and allowed mentions', () => {
   const payload = debugPayload('updates', true);
-  assert.ok(payload.content.startsWith('@everyone '));
+  assert.equal(payload.content, '@everyone');
   assert.deepEqual(payload.allowed_mentions.parse, ['everyone']);
 });
 test('Incomplete and unrelated webhook routes are rejected before sending', () => {

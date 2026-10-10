@@ -117,16 +117,8 @@ export function planNotifications(previous, snapshot, now = new Date().toISOStri
   return { state, added, changed: JSON.stringify(state) !== JSON.stringify(previous) };
 }
 
-export function notificationUrl(job) {
-  if (job.category === 'passes') return `https://www.roblox.com/game-pass/${encodeURIComponent(job.item.id)}`;
-  if (job.category === 'events') return `https://www.roblox.com/events/${encodeURIComponent(job.item.id)}`;
-  return `https://www.roblox.com/games/${GAME.placeId}`;
-}
-
 export function webhookPayload(jobs, filenames) {
   const category = jobs[0].category;
   if (jobs.some(job => job.category !== category)) throw new Error('Mixed notification categories');
-  const links = [...new Set(jobs.map(notificationUrl))].map(url => `<${url}>`).join('\n');
-  const count = jobs.length > 1 ? ` · ${jobs.length} changes` : '';
-  return { username: 'BGSI · CCU Tracker', content: `@everyone **BGSI · ${LABELS[category]}${count}**\n${links}`.slice(0, 2000), allowed_mentions: { parse: ['everyone'] }, attachments: filenames.map((filename, id) => ({ id, filename })) };
+  return { username: 'BGSI · CCU Tracker', content: '@everyone', allowed_mentions: { parse: ['everyone'] }, attachments: filenames.map((filename, id) => ({ id, filename })) };
 }

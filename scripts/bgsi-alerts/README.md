@@ -15,7 +15,7 @@ The workflow uses the existing `ping` repository dispatch and a five-minute sche
 
 The game `updated` timestamp is a publication/change signal, not a guarantee of a major content update. Price changes to existing items do not cause alerts. New event announcements are sent when discovered; starting an already announced event does not cause another ping.
 
-Each notification is a real PNG attachment, rendered with Chromium from HTML and the repository's `site.css`. Colors, typography, cards and controls follow TrackCCU. There are no authored Discord embeds. `@everyone` appears in message content, with `allowed_mentions.parse` set to `everyone`; links are enclosed in angle brackets to avoid link previews. The response is checked for PNG attachments and an active everyone mention.
+Each notification is a real PNG attachment, rendered with Chromium from HTML and the repository's `site.css`. Colors, typography and cards follow TrackCCU. The message content is exactly `@everyone`, with `allowed_mentions.parse` set to `everyone`. All item details are carried by the PNG attachments. Debug tests also send only the ping when enabled; when the debug ping is disabled, they send images with empty message content. The response is checked for PNG attachments and an active everyone mention.
 
 The four destinations are configured in `.github/bgsi-webhooks.json`. Corresponding environment variables / Actions secrets (`BGSI_UPDATES_WEBHOOK`, `BGSI_EVENTS_WEBHOOK`, `BGSI_PASSES_WEBHOOK`, `BGSI_PRODUCTS_WEBHOOK`) override those values. Destination URLs are never included in generated images or logs.
 

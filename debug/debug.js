@@ -1,4 +1,4 @@
-import { CATEGORIES, validateRoutes, loadPreview, sendDebugMessage } from './messages.js?v=20261010-clean';
+import { CATEGORIES, validateRoutes, loadPreview, sendDebugMessage } from './messages.js?v=20261010-ping-only';
 
 const buttons = [...document.querySelectorAll('[data-send]')];
 const allButton = document.getElementById('sendAll');

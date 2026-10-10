@@ -84,13 +84,16 @@ test('Roblox strings are escaped in HTML cards and cannot become scripts', () =>
   assert.ok(html.includes('&lt;img src=x onerror=evil()&gt;'));
   assert.ok(!html.includes('<script>'));
 });
-test('Discord payload uses PNG attachments and everyone mentions without embeds', () => {
-  const jobs = queued().queue.filter(job => job.category === 'passes');
-  const payload = webhookPayload(jobs, ['bgsi-passes.png']);
-  assert.deepEqual(payload.allowed_mentions, { parse: ['everyone'] });
-  assert.ok(payload.content.startsWith('@everyone '));
-  assert.equal('embeds' in payload, false);
-  assert.deepEqual(payload.attachments, [{ id: 0, filename: 'bgsi-passes.png' }]);
+test('All notification categories and multi-image batches contain only the everyone ping', () => {
+  for (const category of CATEGORIES) {
+    const jobs = Array.from({ length: 5 }, (_, index) => ({ category, item: { id: String(index) } }));
+    const files = jobs.map((_, index) => `bgsi-${category}-${index}.png`);
+    const payload = webhookPayload(jobs, files);
+    assert.equal(payload.content, '@everyone');
+    assert.deepEqual(payload.allowed_mentions, { parse: ['everyone'] });
+    assert.equal('embeds' in payload, false);
+    assert.deepEqual(payload.attachments, files.map((filename, id) => ({ id, filename })));
+  }
 });
 test('Multipart webhook upload receives a confirmed image and real everyone mention', async () => {
   let seen;
