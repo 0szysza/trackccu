@@ -397,6 +397,17 @@
     update();
   }
 
+  // Installable web app: register a scoped, navigation-only offline fallback.
+  // The service worker never caches /data JSON or API responses.
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", () => {
+      const scriptUrl = new URL(ROOT + "sw.js", document.baseURI);
+      const appScope = new URL(ROOT, document.baseURI);
+      navigator.serviceWorker.register(scriptUrl.href, { scope: appScope.pathname })
+        .catch(error => console.warn("TrackCCU service worker unavailable:", error));
+    }, { once: true });
+  }
+
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
     $, fmt, zeroTrendHtml, compact, niceAxis, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
