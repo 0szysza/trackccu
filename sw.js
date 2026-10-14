@@ -5,7 +5,10 @@ const OFFLINE_URL = new URL("offline.html", self.registration.scope).href;
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(OFFLINE_CACHE)
-      .then(cache => cache.add(new Request(OFFLINE_URL, { cache: "reload" })))
+      .then(cache => cache.addAll([
+        new Request(OFFLINE_URL, { cache: "reload" }),
+        new Request(new URL("apple-touch-icon.png", self.registration.scope).href, { cache: "reload" })
+      ]))
       .then(() => self.skipWaiting())
   );
 });
