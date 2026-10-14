@@ -397,6 +397,18 @@
     update();
   }
 
+  // Installable web app: register a scoped, navigation-only offline fallback.
+  // The service worker never caches /data JSON or API responses.
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", () => {
+      // Use the shared script URL, not the current page URL, to resolve the root.
+      const appRoot = new URL(".", document.querySelector('script[src*="site.js"]')?.src || new URL(ROOT, document.baseURI).href);
+      const scriptUrl = new URL("sw.js", appRoot);
+      navigator.serviceWorker.register(scriptUrl.href, { scope: appRoot.pathname })
+        .catch(error => console.warn("TrackCCU service worker unavailable:", error));
+    }, { once: true });
+  }
+
   window.Tracker = {
     REFRESH_MS, CONFIG, CATALOG, GROUP_CATALOG, bySlug, byPlaceId, groupById, groupIdForGame, ROOT, ACCENT, ACCENT_RGB,
     $, fmt, zeroTrendHtml, compact, niceAxis, dayLabel, clockLabel, chartDateTime, dateLabel, relativeTime, fullDateTime,
