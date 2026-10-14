@@ -1,0 +1,40 @@
+{
+  "name": "TrackCCU — Roblox CCU Tracker",
+  "short_name": "TrackCCU",
+  "description": "Follow live Roblox game players, game history, group stats and comparisons.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0d17",
+  "theme_color": "#0b0d17",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Games",
+      "short_name": "Games",
+      "url": "./games",
+      "description": "Browse tracked games"
+    },
+    {
+      "name": "Compare",
+      "short_name": "Compare",
+      "url": "./compare",
+      "description": "Compare Roblox games"
+    }
+  ]
+}
