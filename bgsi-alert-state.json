@@ -619,7 +619,7 @@
         "updated": "2026-10-15T19:00:41.64Z"
       },
       "detectedAt": "2026-10-15T19:00:47.362Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
