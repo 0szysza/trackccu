@@ -170,6 +170,25 @@ body.chart-fullscreen-open { overflow:hidden; }
 .compare-slot-dot { display:inline-block;width:8px;height:8px;border-radius:50%; }
 .compare-slot-a { background:#00f0ff; }
 .compare-slot-b { background:#ff007f; }
+.compare-dev .compare-slot-b { background:#a878df; }
+.compare-dev .compare-slot-c { background:#ff007f; }
+.compare-dev .compare-picker-slot-b .icon-accent { color:#a878df; }
+.compare-dev .compare-picker-slot-b .compare-picker-field:focus-within { border-color:#a878df;box-shadow:0 0 0 2px rgba(168,120,223,.12); }
+.compare-dev .compare-picker-slot-c .icon-accent { color:#ff007f; }
+.compare-dev .compare-picker-slot-c .compare-picker-field:focus-within { border-color:#ff007f;box-shadow:0 0 0 2px rgba(255,0,127,.12); }
+.compare-dev #card-c .icon-accent,.compare-dev #card-c .compare-live-label { color:var(--accent); }
+.compare-dev [id^="shareLabel-"] { flex:1;min-width:0;max-width:33.333%;overflow-wrap:anywhere; }
+.compare-dev #shareLabel-b { text-align:center; }
+.compare-dev #shareLabel-c { text-align:right; }
+@media (min-width:1024px) {
+  .compare-dev #comparePickers,.compare-dev .compare-cards { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .compare-dev .compare-card-icon { width:76px;height:76px;flex-basis:76px; }
+  .compare-dev .compare-card-title { padding:14px 8px 0 12px; }
+  .compare-dev .compare-card-title h2 { font-size:17px; }
+  .compare-dev .compare-card-actions { flex-basis:58px;padding:12px 12px 0 0; }
+  .compare-dev .compare-card-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .compare-dev .compare-card-stats > .flex.items-baseline { flex-wrap:wrap;gap:6px; }
+}
 .compare-picker-field { background:#15192d;border:1px solid #262d4a;color:#94a3b8; }
 .compare-picker-field:focus-within { border-color:#34bfe5;box-shadow:0 0 0 2px rgba(52,191,229,.12); }
 .compare-picker-slot-b .icon-accent { color:#ff007f; }
@@ -785,3 +804,4 @@ body.event-modal-open { overflow:hidden; }
   .game-stat-stack .stat-panel strong { font-size:19px; }
   .group-detail-stats #totalVisits { font-size:13px; }
 }
+
