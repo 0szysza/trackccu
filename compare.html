@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CCU Tracker | Compare</title>
+<script>
+  // The deployed dev entry uses this same page, with paths rooted at the site.
+  if (/\/compare\/dev(?:\/(?:index\.html)?)?$/.test(location.pathname)) {
+    document.documentElement.classList.add("compare-dev");
+    window.SITE_ROOT = location.pathname.replace(/\/compare\/dev(?:\/(?:index\.html)?)?$/, "/");
+    const base = document.querySelector("base") || document.createElement("base");
+    base.href = window.SITE_ROOT;
+    if (!base.isConnected) document.head.append(base);
+    const robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex, nofollow";
+    document.head.append(robots);
+  }
+</script>
 <meta name="theme-color" content="#34BFE5">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,7 +73,7 @@
   </section>
 
   <!-- Game pickers. Slot colours are fixed (left = cyan, right = pink); only the game changes. -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" id="comparePickers">
     <div class="compare-picker-slot relative">
       <label class="compare-picker-label" for="comparePickA"><span class="compare-slot-dot compare-slot-a"></span> First game</label>
       <div class="compare-picker-field flex items-center gap-2 rounded-xl px-3 py-2.5 transition">
@@ -169,15 +183,45 @@
   const { CATALOG, CONFIG, bySlug, $, fmt, compact, niceAxis, dayLabel, clockLabel, setText, iconFor } = Tracker;
   Tracker.mountChrome("compare");
 
-  // Slot colours are fixed (a = cyan, b = pink); only which game sits in a
-  // slot changes. Nothing is remembered between visits: both slots start
-  // empty every time the page loads.
-  const SLOTS = ["a", "b"];
+  // Slot colours stay fixed. The third slot is available only at /compare/dev.
+  const dev = document.documentElement.classList.contains("compare-dev");
+  const SLOTS = dev ? ["a", "b", "c"] : ["a", "b"];
   const SLOT = {
     a: { color: "#00f0ff", rgb: "0, 240, 255" },
-    b: { color: "#ff007f", rgb: "255, 0, 127" },
+    b: dev ? { color: "#a878df", rgb: "168, 120, 223" } : { color: "#ff007f", rgb: "255, 0, 127" },
+    c: { color: "#ff007f", rgb: "255, 0, 127" },
   };
-  const selection = { a: null, b: null };
+  const selection = Object.fromEntries(SLOTS.map((slot) => [slot, null]));
+  const gameCount = dev ? "three" : "two";
+
+  if (dev) {
+    document.querySelector(".compare-intro p").textContent = "Choose three games to compare their players, recent peaks and history.";
+    const picker = document.querySelector(".compare-picker-slot-b").cloneNode(true);
+    picker.classList.replace("compare-picker-slot-b", "compare-picker-slot-c");
+    const input = picker.querySelector("input");
+    input.id = "comparePickC";
+    input.dataset.slot = "c";
+    input.setAttribute("aria-label", "Search for the third game");
+    picker.querySelector("label").htmlFor = input.id;
+    picker.querySelector("label").innerHTML = '<span class="compare-slot-dot compare-slot-c"></span> Third game';
+    picker.querySelector(".picker-dropdown").dataset.slot = "c";
+    $("comparePickers").append(picker);
+
+    const label = $("shareLabel-b").cloneNode(true);
+    label.id = "shareLabel-c";
+    $("shareLabel-b").after(label);
+    const bar = $("shareBar-b").cloneNode(true);
+    bar.id = "shareBar-c";
+    $("shareBar-b").after(bar);
+    const marker = $("shareBar-a").parentElement.nextElementSibling;
+    marker.style.left = `${100 / 3}%`;
+    const secondMarker = marker.cloneNode(true);
+    secondMarker.style.left = `${200 / 3}%`;
+    marker.after(secondMarker);
+    const scale = marker.parentElement.nextElementSibling;
+    scale.innerHTML = '<span class="absolute -translate-x-1/2 text-[10px] font-semibold text-slate-500" style="left:33.333%">33.3%</span><span class="absolute -translate-x-1/2 text-[10px] font-semibold text-slate-500" style="left:66.667%">66.7%</span>';
+  }
+  SLOTS.forEach((slot) => { $("shareLabel-" + slot).style.color = SLOT[slot].color; });
 
   const picked = () => SLOTS
     .filter((slot) => selection[slot])
@@ -271,11 +315,11 @@
 
   function matchingGames(slot) {
     const input = document.querySelector(`.picker-input[data-slot="${slot}"]`);
-    const other = selection[slot === "a" ? "b" : "a"];
+    const others = SLOTS.filter((key) => key !== slot).map((key) => selection[key]);
     const query = input.value.trim().toLowerCase();
 
     return CATALOG
-      .filter((game) => game.slug !== other)
+      .filter((game) => !others.includes(game.slug))
       .filter((game) => !query ||
         game.label.toLowerCase().includes(query) ||
         game.short.toLowerCase().includes(query) ||
@@ -313,6 +357,7 @@
     closeDropdowns();
 
     if (slug !== null && !bySlug.has(slug)) return;
+    if (slug !== null && SLOTS.some((key) => key !== slot && selection[key] === slug)) return;
     if (selection[slot] === slug) return;
 
     selection[slot] = slug;
@@ -359,44 +404,36 @@
 
   /* ---------- live numbers + who's ahead ---------- */
 
-  function paintBanner(active) {
+  function paintBanner(active, complete) {
     const leaderText = $("leader-text");
     const diffCount = $("diff-count");
+    diffCount.style.color = "";
 
-    if (active.length < 2) {
-      leaderText.textContent = active.length === 1 ? "Pick a second game to compare" : "Pick two games to compare";
+    for (const slot of SLOTS) {
+      const row = active.find((item) => item.slot === slot);
+      const bar = $("shareBar-" + slot);
+      bar.className = "h-full transition-all duration-700 ease-out";
+      bar.style.width = (complete ? row?.share || 0 : 100 / SLOTS.length) + "%";
+      bar.style.background = complete ? SLOT[slot].color : slot === "a" ? "#334155" : "#1e293b";
+      $("shareLabel-" + slot).textContent = row ? `${bySlug.get(row.slug).short}${complete ? ` — ${Math.round(row.share)}%` : ""}` : "—";
+    }
+
+    if (!complete) {
+      leaderText.textContent = picked().length >= 2 ? "Waiting for live data…" : active.length === 1 ? "Pick another game to compare" : `Pick ${gameCount} games to compare`;
       diffCount.textContent = "—";
       diffCount.className = "text-lg font-black text-slate-500 tabular-nums";
-      $("shareBar-a").style.width = "50%";
-      $("shareBar-b").style.width = "50%";
-      $("shareBar-a").style.background = "";
-      $("shareBar-b").style.background = "";
-      $("shareBar-a").className = "h-full bg-slate-700 transition-all duration-700 ease-out";
-      $("shareBar-b").className = "h-full bg-slate-800 transition-all duration-700 ease-out";
-      $("shareLabel-a").textContent = active[0] && active[0].slot === "a" ? bySlug.get(active[0].slug).short : "—";
-      $("shareLabel-b").textContent = active[0] && active[0].slot === "b" ? bySlug.get(active[0].slug).short : "—";
       return;
     }
 
-    const [a, b] = active;
-    $("shareBar-a").className = "h-full transition-all duration-700 ease-out";
-    $("shareBar-b").className = "h-full transition-all duration-700 ease-out";
-    $("shareBar-a").style.background = SLOT.a.color;
-    $("shareBar-b").style.background = SLOT.b.color;
-    $("shareBar-a").style.width = a.share + "%";
-    $("shareBar-b").style.width = b.share + "%";
-    $("shareLabel-a").textContent = `${bySlug.get(a.slug).short} — ${Math.round(a.share)}%`;
-    $("shareLabel-b").textContent = `${bySlug.get(b.slug).short} — ${Math.round(b.share)}%`;
-
-    const diff = Math.abs(a.playing - b.playing);
+    const [lead, runnerUp] = [...active].sort((a, b) => b.playing - a.playing);
+    const diff = lead.playing - runnerUp.playing;
     if (diff === 0) {
-      leaderText.textContent = "Dead even right now";
+      leaderText.textContent = active.every((row) => row.playing === lead.playing) ? "Dead even right now" : "Tied for the lead";
       diffCount.textContent = "0";
       diffCount.className = "text-lg font-black text-slate-300 tabular-nums";
       return;
     }
 
-    const lead = a.playing > b.playing ? a : b;
     const color = SLOT[lead.slot].color;
     leaderText.innerHTML = `<span class="font-extrabold" style="color:${color}">${bySlug.get(lead.slug).label}</span> is ahead`;
     diffCount.textContent = "+" + fmt(diff);
@@ -404,19 +441,23 @@
     diffCount.style.color = color;
   }
 
-  // Share % is relative to just the two selected games (the API's own
+  // Share % is relative to the selected games (the API's own
   // sharePercent covers every tracked game).
   function applyLive() {
     const payload = Tracker.live.payload;
     const bySlugLive = new Map(((payload && payload.games) || []).map((g) => [g.slug, g]));
     const rows = picked().map((p) => ({ ...p, live: bySlugLive.get(p.slug) }));
-    const withData = rows.filter((r) => r.live);
+    const withData = rows.filter((r) => Number.isFinite(r.live?.playing));
+    const complete = rows.length >= 2 && withData.length === rows.length;
+    for (const row of rows.filter((item) => !Number.isFinite(item.live?.playing))) {
+      for (const field of ["ccu", "peak24", "peak7", "visits", "favs"]) $(field + "-" + row.slot).textContent = "—";
+    }
     const pairTotal = withData.reduce((sum, r) => sum + r.live.playing, 0);
     const active = [];
 
     for (const row of withData) {
       const { slot, live: game } = row;
-      const share = pairTotal > 0 ? Math.round((game.playing / pairTotal) * 1000) / 10 : 50;
+      const share = pairTotal > 0 ? (game.playing / pairTotal) * 100 : 100 / withData.length;
       active.push({ slot, slug: row.slug, playing: game.playing, share });
 
       setText($("ccu-" + slot), fmt(game.playing));
@@ -424,22 +465,23 @@
       $("peak7-" + slot).textContent = fmt(game.peak7d);
       $("visits-" + slot).textContent = fmt(game.visits);
       $("favs-" + slot).textContent = fmt(game.favorites);
-      $("share-" + slot).textContent = withData.length === 2 ? Math.round(share) + "% share" : "—% share";
+      $("share-" + slot).textContent = complete ? Math.round(share) + "% share" : "—% share";
 
       // The icon and name follow whatever the game currently uses on Roblox.
       if (game.iconUrl) $("icon-" + slot).src = game.iconUrl;
       if (game.liveName) $("name-" + slot).textContent = game.liveName;
     }
 
-    paintBanner(active);
+    if (!complete) rows.forEach((row) => { $("share-" + row.slot).textContent = "—% share"; });
+    paintBanner(active, complete);
   }
 
   /* ---------- chart ---------- */
   // Two views of the same history:
   //   Players — each game's player count as a line over an area glow, with
   //             the latest value tagged at the right edge.
-  //   Share   — the two games stacked to 100%, with the same fixed grey 50%
-  //             line as the bar above, so you can see when the lead changed.
+  //   Share   — the selected games stacked to 100%, with fixed equal-share
+  //             reference lines matching the bar above.
   // Drawn as SVG at the container's real pixel size (redrawn on resize), so
   // text is never stretched.
 
@@ -466,7 +508,7 @@
       const active = button.dataset.mode === mode;
       button.setAttribute("aria-pressed", String(active));
     }
-    $("chartTitle").textContent = mode === "players" ? "Concurrent players" : "Share of the two games' players";
+    $("chartTitle").textContent = mode === "players" ? "Concurrent players" : "Share of the selected games' players";
   }
 
   function nearest(points, t) {
@@ -483,16 +525,21 @@
     points: ((payload.series && payload.series[p.slug]) || []).map((row) => ({ x: Date.parse(row.t), y: row.playing, peak: row.peak })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y)).sort((a, b) => a.x - b.x),
   }));
 
-  // For the share view: pair each point of A with B's point in the same time slot.
-  function sharePairs(a, b, bucketMs) {
-    if (!a.points.length || !b.points.length) return [];
+  // Align every selected game within the same history bucket tolerance.
+  function sharePairs(series, bucketMs) {
+    if (series.length < 2 || series.some((item) => !item.points.length)) return [];
     const pairs = [];
-    for (const pa of a.points) {
-      const pb = nearest(b.points, pa.x);
-      if (Math.abs(pb.x - pa.x) > bucketMs * 1.5) continue;
-      const total = pa.y + pb.y;
+    for (const point of series[0].points) {
+      const aligned = series.map((item) => nearest(item.points, point.x));
+      if (aligned.some((item) => Math.abs(item.x - point.x) > bucketMs * 1.5)) continue;
+      const counts = aligned.map((item) => item.y);
+      const total = counts.reduce((sum, count) => sum + count, 0);
       if (total <= 0) continue;
-      pairs.push({ x: pa.x, a: pa.y, b: pb.y, share: (pa.y / total) * 100 });
+      const shares = counts.map((count) => count / total * 100);
+      const bounds = [0];
+      shares.forEach((share) => bounds.push(bounds[bounds.length - 1] + share));
+      bounds[bounds.length - 1] = 100;
+      pairs.push({ x: point.x, counts, shares, bounds });
     }
     return pairs;
   }
@@ -526,7 +573,7 @@
     for (const point of points) {
       minX = Math.min(minX, point.x);
       maxX = Math.max(maxX, point.x);
-      const value = mode === "share" ? point.share : point.y;
+      const value = mode === "share" ? 100 : point.y;
       low = Math.min(low, value);
       high = Math.max(high, value);
     }
@@ -536,10 +583,13 @@
     panel.style.width = `${w - pad.left - pad.right}px`;
     panel.style.marginLeft = `${pad.left}px`;
     panel.style.marginRight = "0";
+    if (mode === "share") low = 0;
     const span = high - low || 1;
     const x = (stamp) => (stamp - minX) / (maxX - minX) * 1000;
     const y = (value) => 62 - (value - low) / span * 50;
-    const previewSeries = mode === "share" ? [{ color: "#e2e8f0", points: pairs, key: "share" }] : series.map((item) => ({ color: item.color, points: item.points, key: "y" }));
+    const previewSeries = mode === "share"
+      ? series.slice(0, -1).map((item, i) => ({ color: series.length === 2 ? "#e2e8f0" : item.color, points: pairs.map((point) => ({ x: point.x, y: point.bounds[i + 1] })), key: "y" }))
+      : series.map((item) => ({ color: item.color, points: item.points, key: "y" }));
     $("compareNavigatorPlot").innerHTML = previewSeries.map((item) => {
       if (!item.points.length) return "";
       const line = item.points.map((point, index) => `${index ? "L" : "M"}${x(point.x).toFixed(1)} ${y(point[item.key]).toFixed(1)}`).join(" ");
@@ -589,18 +639,18 @@
     const plotW = w - pad.left - pad.right;
     const plotH = h - pad.top - pad.bottom;
     const bucketMs = (payload?.bucketSeconds || 300) * 1000;
-    const fullPairs = mode === "share" && fullSeries.length === 2 ? sharePairs(fullSeries[0], fullSeries[1], bucketMs) : null;
+    const fullPairs = mode === "share" ? sharePairs(fullSeries, bucketMs) : null;
     renderNavigator(fullSeries, fullPairs, w, pad);
     const from = navBounds ? navBounds.minX + navStart * (navBounds.maxX - navBounds.minX) : -Infinity;
     const to = navBounds ? navBounds.minX + navEnd * (navBounds.maxX - navBounds.minX) : Infinity;
     const series = fullSeries.map((item) => ({ ...item, points: visiblePoints(item.points, from, to) }));
     paintStats(series);
 
-    if (games.length === 0) return setNote("Pick two games above to compare them here.");
-    if (mode === "share" && games.length < 2) return setNote("Pick a second game to see how the players split between the two.");
+    if (games.length === 0) return setNote(`Pick ${gameCount} games above to compare them here.`);
+    if (mode === "share" && games.length < 2) return setNote("Pick another game to see how the players split.");
     if (!payload) return setNote("Loading history…");
 
-    const pairs = mode === "share" ? sharePairs(series[0], series[1], bucketMs) : null;
+    const pairs = mode === "share" ? sharePairs(series, bucketMs) : null;
     const hasData = mode === "share" ? pairs.length > 0 : series.some((s) => s.points.length > 0);
     if (!hasData) return setNote("No history stored for this range yet.");
     setNote(null);
@@ -612,7 +662,7 @@
 
     let ticks, yBottom = 0, yTop, fmtTick;
     if (mode === "share") {
-      yTop = 100; ticks = [0, 25, 50, 75, 100]; fmtTick = (v) => v + "%";
+      yTop = 100; ticks = dev ? [0, 100 / 3, 200 / 3, 100] : [0, 25, 50, 75, 100]; fmtTick = (v) => Number(v.toFixed(1)) + "%";
     } else {
       const values = series.flatMap((s) => s.points.map((p) => p.y));
       const low = Math.min(...values), high = Math.max(...values);
@@ -631,7 +681,7 @@
     // gridlines + y labels (left)
     for (const value of ticks) {
       const y = yOf(value);
-      const isHalf = mode === "share" && value === 50;
+      const isHalf = mode === "share" && (dev ? value > 0 && value < 100 : value === 50);
       svgEl("line", {
         x1: pad.left, x2: w - pad.right, y1: y.toFixed(1), y2: y.toFixed(1),
         stroke: isHalf ? "rgba(148,163,184,0.7)" : "rgba(148,163,184,0.12)",
@@ -679,22 +729,20 @@
         chips.push({ y: yOf(last.y), text: fmt(last.y), color: s.color });
       });
     } else {
-      const [sa, sb] = series;
-      const base = yOf(0);
-      const top = yOf(100);
-      const first = pairs[0], last = pairs[pairs.length - 1];
-      const boundary = line(pairs, "share");
-
-      svgEl("path", { d: `${boundary} L${xOf(last.x).toFixed(1)} ${base.toFixed(1)} L${xOf(first.x).toFixed(1)} ${base.toFixed(1)} Z`, fill: sa.color, "fill-opacity": 0.3 }, svg);
-      svgEl("path", { d: `${boundary} L${xOf(last.x).toFixed(1)} ${top.toFixed(1)} L${xOf(first.x).toFixed(1)} ${top.toFixed(1)} Z`, fill: sb.color, "fill-opacity": 0.3 }, svg);
-      svgEl("path", { d: boundary, fill: "none", stroke: "#f1f5f9", "stroke-width": 1.8, "stroke-linejoin": "round" }, svg);
-
-      // the fixed 50% line sits on top so the boundary visibly crosses it
-      svgEl("line", { x1: pad.left, x2: w - pad.right, y1: yOf(50).toFixed(1), y2: yOf(50).toFixed(1), stroke: "rgba(148,163,184,0.7)", "stroke-width": 2, "stroke-dasharray": "6 5" }, svg);
-
-      svgEl("circle", { cx: xOf(last.x).toFixed(1), cy: yOf(last.share).toFixed(1), r: 3.5, fill: "#f1f5f9", stroke: "#15192d", "stroke-width": 2 }, svg);
-      chips.push({ y: yOf(last.share / 2), text: Math.round(last.share) + "%", color: sa.color });
-      chips.push({ y: yOf((100 + last.share) / 2), text: Math.round(100 - last.share) + "%", color: sb.color });
+      const last = pairs[pairs.length - 1];
+      series.forEach((item, i) => {
+        const upper = line(pairs.map((point) => ({ x: point.x, y: point.bounds[i + 1] })), "y");
+        const lower = pairs.slice().reverse().map((point) => `L${xOf(point.x).toFixed(1)} ${yOf(point.bounds[i]).toFixed(1)}`).join(" ");
+        svgEl("path", { d: `${upper} ${lower} Z`, fill: item.color, "fill-opacity": 0.3 }, svg);
+        if (i < series.length - 1) {
+          svgEl("path", { d: upper, fill: "none", stroke: "#f1f5f9", "stroke-width": 1.8, "stroke-linejoin": "round" }, svg);
+          svgEl("circle", { cx: xOf(last.x).toFixed(1), cy: yOf(last.bounds[i + 1]).toFixed(1), r: 3.5, fill: "#f1f5f9", stroke: "#15192d", "stroke-width": 2 }, svg);
+        }
+        chips.push({ y: yOf((last.bounds[i] + last.bounds[i + 1]) / 2), text: Math.round(last.shares[i]) + "%", color: item.color });
+      });
+      for (const value of dev ? [100 / 3, 200 / 3] : [50]) {
+        svgEl("line", { x1: pad.left, x2: w - pad.right, y1: yOf(value).toFixed(1), y2: yOf(value).toFixed(1), stroke: "rgba(148,163,184,0.7)", "stroke-width": 2, "stroke-dasharray": "6 5" }, svg);
+      }
     }
 
     // Right-edge value tags (wide screens only), nudged apart if they'd overlap.
@@ -716,9 +764,10 @@
 
     // hover crosshair
     const cross = svgEl("line", { y1: pad.top, y2: pad.top + plotH, stroke: "rgba(226,232,240,0.4)", "stroke-width": 1, visibility: "hidden" }, svg);
-    const halos = (mode === "share" ? [0] : series.map((_, i) => i)).map((i) =>
+    const hoverSeries = mode === "share" ? series.slice(0, -1) : series;
+    const halos = hoverSeries.map((_, i) =>
       svgEl("circle", { r: 9, fill: mode === "share" ? "#f1f5f9" : series[i].color, opacity: 0.24, visibility: "hidden" }, svg));
-    const dots = (mode === "share" ? [0] : series.map((_, i) => i)).map((i) =>
+    const dots = hoverSeries.map((_, i) =>
       svgEl("circle", { r: 5, fill: mode === "share" ? "#f1f5f9" : series[i].color, stroke: "#15192d", "stroke-width": 2, visibility: "hidden" }, svg));
 
     host.appendChild(svg);
@@ -765,23 +814,23 @@
       });
       body = rows.map(({ s, p }) =>
         `<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background:${s.color}"></span>${s.game.short}: <b class="tabular-nums">${fmt(p.y)}</b></div>`).join("");
-      if (rows.length === 2 && rows[0].p.y !== rows[1].p.y) {
-        const lead = rows[0].p.y > rows[1].p.y ? rows[0] : rows[1];
-        body += `<div class="mt-1 pt-1 border-t border-slate-800 text-slate-400">${lead.s.game.short} leads by <b class="tabular-nums text-slate-200">${fmt(Math.abs(rows[0].p.y - rows[1].p.y))}</b></div>`;
+      const ranked = [...rows].sort((a, b) => b.p.y - a.p.y);
+      if (ranked.length >= 2 && ranked[0].p.y !== ranked[1].p.y) {
+        body += `<div class="mt-1 pt-1 border-t border-slate-800 text-slate-400">${ranked[0].s.game.short} leads by <b class="tabular-nums text-slate-200">${fmt(ranked[0].p.y - ranked[1].p.y)}</b></div>`;
       }
     } else {
       const p = nearest(chart.pairs, t);
       anchorX = p.x;
-      chart.halos[0].setAttribute("cx", chart.xOf(p.x).toFixed(1));
-      chart.halos[0].setAttribute("cy", chart.yOf(p.share).toFixed(1));
-      chart.halos[0].setAttribute("visibility", "visible");
-      chart.dots[0].setAttribute("cx", chart.xOf(p.x).toFixed(1));
-      chart.dots[0].setAttribute("cy", chart.yOf(p.share).toFixed(1));
-      chart.dots[0].setAttribute("visibility", "visible");
-      const [sa, sb] = chart.series;
+      chart.dots.forEach((dot, i) => {
+        for (const marker of [dot, chart.halos[i]]) {
+          marker.setAttribute("cx", chart.xOf(p.x).toFixed(1));
+          marker.setAttribute("cy", chart.yOf(p.bounds[i + 1]).toFixed(1));
+          marker.setAttribute("visibility", "visible");
+        }
+      });
       const row = (s, share, count) =>
         `<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full inline-block" style="background:${s.color}"></span>${s.game.short}: <b class="tabular-nums">${share.toFixed(1)}%</b> <span class="text-slate-500">(${fmt(count)})</span></div>`;
-      body = row(sa, p.share, p.a) + row(sb, 100 - p.share, p.b);
+      body = chart.series.map((item, i) => row(item, p.shares[i], p.counts[i])).join("");
     }
 
     const px = chart.xOf(anchorX);
@@ -876,6 +925,7 @@
     Tracker.setupChartFullscreen($("compareChartPanel"),$("compareFullscreenToggle"));
     SLOTS.forEach(paintCard);
     setupPickers();
+    applyLive();
     paintToggles();
     drawChart();
     Tracker.onLive(applyLive);
@@ -902,5 +952,6 @@
 </script>
 </body>
 </html>
+
 
 
