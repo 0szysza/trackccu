@@ -639,7 +639,7 @@
         "previousName": "[🎃UPD] Bubble Gum Simulator INFINITY"
       },
       "detectedAt": "2026-10-28T21:30:36.818Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
