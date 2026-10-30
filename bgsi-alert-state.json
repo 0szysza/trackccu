@@ -640,7 +640,7 @@
         "updated": "2026-10-30T16:48:09.4Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
@@ -669,7 +669,7 @@
         "updated": "2026-10-30T16:48:19.302Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
@@ -698,7 +698,7 @@
         "updated": "2026-10-30T16:48:43.686Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
@@ -727,7 +727,7 @@
         "updated": "2026-10-30T16:48:52.397Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
@@ -756,7 +756,7 @@
         "updated": "2026-10-30T16:48:32.028Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
@@ -785,7 +785,7 @@
         "updated": "2026-10-30T16:49:02.595Z"
       },
       "detectedAt": "2026-10-30T16:50:27.967Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
