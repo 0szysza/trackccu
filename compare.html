@@ -5,18 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CCU Tracker | Compare</title>
 <script>
-  // Keep old three-game links working on the public comparison page.
-  if (/\/compare\/dev(?:\/(?:index\.html)?)?$/.test(location.pathname)) {
-    window.SITE_ROOT = location.pathname.replace(/\/compare\/dev(?:\/(?:index\.html)?)?$/, "/");
-    const base = document.querySelector("base") || document.createElement("base");
-    base.href = window.SITE_ROOT;
-    if (!base.isConnected) document.head.append(base);
-    const url = new URL(location.href);
-    url.pathname = window.SITE_ROOT + "compare";
-    url.searchParams.set("games", "3");
+  // Remove the obsolete comparison-mode parameter from existing links.
+  const url = new URL(location.href);
+  if (url.searchParams.has("games")) {
+    url.searchParams.delete("games");
     history.replaceState(null, "", url);
   }
-  document.documentElement.classList.toggle("compare-three", new URLSearchParams(location.search).get("games") === "3");
 </script>
 <meta name="theme-color" content="#34BFE5">
 <link rel="manifest" href="manifest.webmanifest">
@@ -40,7 +34,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="site.css?v=20261103-compare-modes">
+<link rel="stylesheet" href="site.css?v=20261103-compare-heading">
 <link rel="canonical" href="https://0szysza.github.io/trackccu/compare">
 <meta name="description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta property="og:type" content="website">
@@ -68,12 +62,14 @@
 <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
 
   <section class="compare-intro">
-    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compare games</h1>
-    <p class="text-sm text-slate-400 mt-1" id="compareDescription">Choose two games to compare their players, recent peaks and history.</p>
-    <div class="compare-count-toggle" id="gameCounts" role="group" aria-label="Number of games to compare">
-      <button type="button" data-count="2" aria-pressed="true">2 games</button>
-      <button type="button" data-count="3" aria-pressed="false">3 games</button>
+    <div class="compare-intro-heading">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compare games</h1>
+      <div class="compare-count-toggle" id="gameCounts" role="group" aria-label="Number of games to compare">
+        <button type="button" data-count="2" aria-pressed="true">2 games</button>
+        <button type="button" data-count="3" aria-pressed="false">3 games</button>
+      </div>
     </div>
+    <p class="text-sm text-slate-400 mt-1" id="compareDescription">Choose two games to compare their players, recent peaks and history.</p>
   </section>
 
   <!-- Game pickers; a third slot is shown in three-game mode. -->
@@ -187,7 +183,7 @@
   Tracker.mountChrome("compare");
 
   const ALL_SLOTS = ["a", "b", "c"];
-  let threeGames = document.documentElement.classList.contains("compare-three");
+  let threeGames = false;
   let SLOTS = threeGames ? ALL_SLOTS : ALL_SLOTS.slice(0, 2);
   const SLOT = {
     a: { color: "#00f0ff", rgb: "0, 240, 255" },
@@ -280,7 +276,7 @@
 
   $("cards").innerHTML = ALL_SLOTS.map(cardHtml).join("");
 
-  function setGameCount(count, updateUrl = true) {
+  function setGameCount(count) {
     threeGames = count === 3;
     SLOTS = threeGames ? ALL_SLOTS : ALL_SLOTS.slice(0, 2);
     gameCount = threeGames ? "three" : "two";
@@ -325,12 +321,6 @@
     navStart = 0; navEnd = 1;
     applyLive();
     drawChart();
-    if (updateUrl) {
-      const url = new URL(location.href);
-      if (threeGames) url.searchParams.set("games", "3");
-      else url.searchParams.delete("games");
-      history.replaceState(null, "", url);
-    }
   }
 
   function paintCard(slot) {
@@ -973,7 +963,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     Tracker.setupChartFullscreen($("compareChartPanel"),$("compareFullscreenToggle"));
     setupPickers();
-    setGameCount(threeGames ? 3 : 2, false);
+    setGameCount(2);
     $("gameCounts").addEventListener("click", (event) => {
       const button = event.target.closest("button[data-count]");
       if (button) setGameCount(Number(button.dataset.count));
