@@ -284,6 +284,7 @@
           <div class="tool-menu-list">
             <a href="${ROOT || "./"}" aria-current="page"><img class="tool-menu-logo" src="${ROOT}favicon.png" width="18" height="18" alt=""><span><strong>TrackCCU</strong><small>Track any Roblox Game CCU!</small></span></a>
             <a href="https://0szysza.github.io/stat/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>BGSI Stat Calculator</strong><small>Track your BGSI stats!</small></span></a>
+            <a href="https://0szysza.github.io/hatchlist/"><img class="tool-menu-logo" src="https://0szysza.github.io/hatchlist/favicon.svg" width="18" height="18" alt=""><span><strong>Hatchlist</strong><small>Your BGSI pet wishlist.</small></span></a>
           </div>
         </details>
       </nav>
@@ -415,3 +416,4 @@
     setText, iconFor, iconFallback, verifiedBadgeHtml, gameChipHtml, loadLive, onLive, loadGroups, onGroups, groupsLive, every, mountChrome, setupChartFullscreen, live,
   };
 })();
+
