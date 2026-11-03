@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CCU Tracker | Compare</title>
 <script>
-  // The deployed dev entry uses this same page, with paths rooted at the site.
+  // Keep old three-game links working on the public comparison page.
   if (/\/compare\/dev(?:\/(?:index\.html)?)?$/.test(location.pathname)) {
-    document.documentElement.classList.add("compare-dev");
     window.SITE_ROOT = location.pathname.replace(/\/compare\/dev(?:\/(?:index\.html)?)?$/, "/");
     const base = document.querySelector("base") || document.createElement("base");
     base.href = window.SITE_ROOT;
     if (!base.isConnected) document.head.append(base);
-    const robots = document.createElement("meta");
-    robots.name = "robots";
-    robots.content = "noindex, nofollow";
-    document.head.append(robots);
+    const url = new URL(location.href);
+    url.pathname = window.SITE_ROOT + "compare";
+    url.searchParams.set("games", "3");
+    history.replaceState(null, "", url);
   }
+  document.documentElement.classList.toggle("compare-three", new URLSearchParams(location.search).get("games") === "3");
 </script>
 <meta name="theme-color" content="#34BFE5">
 <link rel="manifest" href="manifest.webmanifest">
@@ -40,14 +40,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css?v=20261103-compare-modes">
 <link rel="canonical" href="https://0szysza.github.io/trackccu/compare">
-<meta name="description" content="Compare two Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
+<meta name="description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CCU Tracker">
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Compare games | CCU Tracker">
-<meta property="og:description" content="Compare two Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
+<meta property="og:description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta property="og:url" content="https://0szysza.github.io/trackccu/compare">
 <meta property="og:image" content="https://0szysza.github.io/trackccu/assets/social/compare.png?v=20261002-1">
 <meta property="og:image:secure_url" content="https://0szysza.github.io/trackccu/assets/social/compare.png?v=20261002-1">
@@ -57,7 +57,7 @@
 <meta property="og:image:alt" content="CCU Tracker: compare player counts and player share between two games.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Compare games | CCU Tracker">
-<meta name="twitter:description" content="Compare two Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
+<meta name="twitter:description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta name="twitter:image" content="https://0szysza.github.io/trackccu/assets/social/compare.png?v=20261002-1">
 <meta name="twitter:image:alt" content="CCU Tracker: compare player counts and player share between two games.">
 </head>
@@ -69,10 +69,14 @@
 
   <section class="compare-intro">
     <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compare games</h1>
-    <p class="text-sm text-slate-400 mt-1">Choose two games to compare their players, recent peaks and history.</p>
+    <p class="text-sm text-slate-400 mt-1" id="compareDescription">Choose two games to compare their players, recent peaks and history.</p>
+    <div class="compare-count-toggle" id="gameCounts" role="group" aria-label="Number of games to compare">
+      <button type="button" data-count="2" aria-pressed="true">2 games</button>
+      <button type="button" data-count="3" aria-pressed="false">3 games</button>
+    </div>
   </section>
 
-  <!-- Game pickers. Slot colours are fixed (left = cyan, right = pink); only the game changes. -->
+  <!-- Game pickers; a third slot is shown in three-game mode. -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" id="comparePickers">
     <div class="compare-picker-slot relative">
       <label class="compare-picker-label" for="comparePickA"><span class="compare-slot-dot compare-slot-a"></span> First game</label>
@@ -115,9 +119,8 @@
         <span class="text-roblox-bgs" id="shareLabel-a">—</span>
         <span class="text-roblox-bgsi" id="shareLabel-b">—</span>
       </div>
-      <!-- Each side's width is its share of the two games' combined players.
-           The grey bar never moves: it stands at 50%, so whoever's colour
-           crosses it is ahead. -->
+      <!-- Each segment shows its share of the selected games’ combined players.
+           Reference markers divide the bar into equal shares. -->
       <div class="relative">
         <div class="w-full h-3 rounded-full overflow-hidden bg-slate-950 border border-slate-800 flex">
           <div id="shareBar-a" class="h-full bg-slate-700 transition-all duration-700 ease-out" style="width:50%"></div>
@@ -183,21 +186,22 @@
   const { CATALOG, CONFIG, bySlug, $, fmt, compact, niceAxis, dayLabel, clockLabel, setText, iconFor } = Tracker;
   Tracker.mountChrome("compare");
 
-  // Slot colours stay fixed. The third slot is available only at /compare/dev.
-  const dev = document.documentElement.classList.contains("compare-dev");
-  const SLOTS = dev ? ["a", "b", "c"] : ["a", "b"];
+  const ALL_SLOTS = ["a", "b", "c"];
+  let threeGames = document.documentElement.classList.contains("compare-three");
+  let SLOTS = threeGames ? ALL_SLOTS : ALL_SLOTS.slice(0, 2);
   const SLOT = {
     a: { color: "#00f0ff", rgb: "0, 240, 255" },
-    b: dev ? { color: "#a878df", rgb: "168, 120, 223" } : { color: "#ff007f", rgb: "255, 0, 127" },
+    b: threeGames ? { color: "#a878df", rgb: "168, 120, 223" } : { color: "#ff007f", rgb: "255, 0, 127" },
     c: { color: "#ff007f", rgb: "255, 0, 127" },
   };
-  const selection = Object.fromEntries(SLOTS.map((slot) => [slot, null]));
-  const gameCount = dev ? "three" : "two";
+  const selection = Object.fromEntries(ALL_SLOTS.map((slot) => [slot, null]));
+  let gameCount = threeGames ? "three" : "two";
 
-  if (dev) {
-    document.querySelector(".compare-intro p").textContent = "Choose three games to compare their players, recent peaks and history.";
+  // Build the third slot once so switching modes preserves selected games.
+  {
     const picker = document.querySelector(".compare-picker-slot-b").cloneNode(true);
     picker.classList.replace("compare-picker-slot-b", "compare-picker-slot-c");
+    picker.id = "comparePickerC";
     const input = picker.querySelector("input");
     input.id = "comparePickC";
     input.dataset.slot = "c";
@@ -213,15 +217,7 @@
     const bar = $("shareBar-b").cloneNode(true);
     bar.id = "shareBar-c";
     $("shareBar-b").after(bar);
-    const marker = $("shareBar-a").parentElement.nextElementSibling;
-    marker.style.left = `${100 / 3}%`;
-    const secondMarker = marker.cloneNode(true);
-    secondMarker.style.left = `${200 / 3}%`;
-    marker.after(secondMarker);
-    const scale = marker.parentElement.nextElementSibling;
-    scale.innerHTML = '<span class="absolute -translate-x-1/2 text-[10px] font-semibold text-slate-500" style="left:33.333%">33.3%</span><span class="absolute -translate-x-1/2 text-[10px] font-semibold text-slate-500" style="left:66.667%">66.7%</span>';
   }
-  SLOTS.forEach((slot) => { $("shareLabel-" + slot).style.color = SLOT[slot].color; });
 
   const picked = () => SLOTS
     .filter((slot) => selection[slot])
@@ -282,7 +278,60 @@
     </div>`;
   }
 
-  $("cards").innerHTML = SLOTS.map(cardHtml).join("");
+  $("cards").innerHTML = ALL_SLOTS.map(cardHtml).join("");
+
+  function setGameCount(count, updateUrl = true) {
+    threeGames = count === 3;
+    SLOTS = threeGames ? ALL_SLOTS : ALL_SLOTS.slice(0, 2);
+    gameCount = threeGames ? "three" : "two";
+    document.documentElement.classList.toggle("compare-three", threeGames);
+    SLOT.b = threeGames
+      ? { color: "#a878df", rgb: "168, 120, 223" }
+      : { color: "#ff007f", rgb: "255, 0, 127" };
+
+    // A hidden third selection may have been picked in another slot in 2-game mode.
+    if (threeGames && [selection.a, selection.b].includes(selection.c)) selection.c = null;
+    for (const id of ["comparePickerC", "card-c", "shareLabel-c", "shareBar-c"]) {
+      const element = $(id);
+      element.dataset.compareThird = "";
+      element.hidden = !threeGames;
+    }
+    for (const slot of ALL_SLOTS) {
+      $("card-" + slot).style.setProperty("--accent", SLOT[slot].color);
+      $("card-" + slot).style.setProperty("--rgb", SLOT[slot].rgb);
+      $("shareLabel-" + slot).style.color = SLOT[slot].color;
+      paintCard(slot);
+    }
+    $("compareDescription").textContent = `Choose ${gameCount} games to compare their players, recent peaks and history.`;
+    for (const button of $("gameCounts").querySelectorAll("button")) {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.count) === count));
+    }
+
+    const marker = $("shareBar-a").parentElement.nextElementSibling;
+    marker.style.left = threeGames ? `${100 / 3}%` : "50%";
+    let secondMarker = $("shareMarkerSecond");
+    if (!secondMarker) {
+      secondMarker = marker.cloneNode(true);
+      secondMarker.id = "shareMarkerSecond";
+      marker.after(secondMarker);
+    }
+    secondMarker.style.left = `${200 / 3}%`;
+    secondMarker.hidden = !threeGames;
+    const scale = marker.parentElement.nextElementSibling;
+    scale.innerHTML = (threeGames ? [[100 / 3, "33.3%"], [200 / 3, "66.7%"]] : [[50, "50%"]])
+      .map(([position, label]) => `<span class="absolute -translate-x-1/2 text-[10px] font-semibold text-slate-500" style="left:${position}%">${label}</span>`).join("");
+
+    closeDropdowns();
+    navStart = 0; navEnd = 1;
+    applyLive();
+    drawChart();
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (threeGames) url.searchParams.set("games", "3");
+      else url.searchParams.delete("games");
+      history.replaceState(null, "", url);
+    }
+  }
 
   function paintCard(slot) {
     const slug = selection[slot];
@@ -393,7 +442,7 @@
       });
     });
 
-    SLOTS.forEach((slot) => $("clear-" + slot).addEventListener("click", () => setGame(slot, null)));
+    ALL_SLOTS.forEach((slot) => $("clear-" + slot).addEventListener("click", () => setGame(slot, null)));
 
     document.addEventListener("click", (event) => {
       if (!event.target.closest(".picker-input") && !event.target.closest(".picker-dropdown")) {
@@ -662,7 +711,7 @@
 
     let ticks, yBottom = 0, yTop, fmtTick;
     if (mode === "share") {
-      yTop = 100; ticks = dev ? [0, 100 / 3, 200 / 3, 100] : [0, 25, 50, 75, 100]; fmtTick = (v) => Number(v.toFixed(1)) + "%";
+      yTop = 100; ticks = threeGames ? [0, 100 / 3, 200 / 3, 100] : [0, 25, 50, 75, 100]; fmtTick = (v) => Number(v.toFixed(1)) + "%";
     } else {
       const values = series.flatMap((s) => s.points.map((p) => p.y));
       const low = Math.min(...values), high = Math.max(...values);
@@ -681,7 +730,7 @@
     // gridlines + y labels (left)
     for (const value of ticks) {
       const y = yOf(value);
-      const isHalf = mode === "share" && (dev ? value > 0 && value < 100 : value === 50);
+      const isHalf = mode === "share" && (threeGames ? value > 0 && value < 100 : value === 50);
       svgEl("line", {
         x1: pad.left, x2: w - pad.right, y1: y.toFixed(1), y2: y.toFixed(1),
         stroke: isHalf ? "rgba(148,163,184,0.7)" : "rgba(148,163,184,0.12)",
@@ -740,7 +789,7 @@
         }
         chips.push({ y: yOf((last.bounds[i] + last.bounds[i + 1]) / 2), text: Math.round(last.shares[i]) + "%", color: item.color });
       });
-      for (const value of dev ? [100 / 3, 200 / 3] : [50]) {
+      for (const value of threeGames ? [100 / 3, 200 / 3] : [50]) {
         svgEl("line", { x1: pad.left, x2: w - pad.right, y1: yOf(value).toFixed(1), y2: yOf(value).toFixed(1), stroke: "rgba(148,163,184,0.7)", "stroke-width": 2, "stroke-dasharray": "6 5" }, svg);
       }
     }
@@ -923,11 +972,12 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     Tracker.setupChartFullscreen($("compareChartPanel"),$("compareFullscreenToggle"));
-    SLOTS.forEach(paintCard);
     setupPickers();
-    applyLive();
-    paintToggles();
-    drawChart();
+    setGameCount(threeGames ? 3 : 2, false);
+    $("gameCounts").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-count]");
+      if (button) setGameCount(Number(button.dataset.count));
+    });
     Tracker.onLive(applyLive);
     Tracker.every(() => { Tracker.loadLive(); loadHistory(); });
 
@@ -952,6 +1002,7 @@
 </script>
 </body>
 </html>
+
 
 
 

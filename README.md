@@ -34,10 +34,11 @@ Roblox player counts, group members and their history in one place.
 
 ### Compare
 
-- Pick two tracked games with searchable selectors, and replace or remove either selection.
+- Choose **2 games** or **3 games** with the comparison toggle. Switch modes without losing the selected games.
+- Pick tracked games with searchable selectors, and replace or remove any selection.
 - Compare current players, 24-hour/7-day peaks, visits and favorites side by side.
-- Plot both games’ player histories on one chart.
-- Switch between **Players** and **Share**. Share means each game’s percentage of the two selected games’ combined players.
+- Plot the selected games’ player histories on one chart.
+- Switch between **Players** and **Share**. Share means each game’s percentage of the selected games’ combined players.
 - Use **1D**, **7D** or **All**, inspect points, adjust the time navigator, review period summaries and open fullscreen.
 
 ### Across the site
@@ -63,4 +64,5 @@ Untracked lookups use public Roblox-compatible proxy endpoints. They show curren
 ## BGSI Discord notifications
 
 Bubble Gum Simulator INFINITY has a separate five-minute change monitor for game updates, new public events, new game passes and new developer products. Each category posts PNG cards styled like TrackCCU to its configured Discord channel with `@everyone`. The first run records existing items without announcing them. [Configuration and delivery behavior](scripts/bgsi-alerts/README.md).
+
 
