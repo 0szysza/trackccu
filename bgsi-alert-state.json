@@ -619,15 +619,52 @@
     "name": "[🎃] Bubble Gum Simulator INFINITY",
     "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
     "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-    "updatedAt": "2026-11-05T10:01:02.783Z",
+    "updatedAt": "2026-11-05T21:14:25.325Z",
     "createdAt": "2024-09-02T20:33:13.033Z",
-    "playing": 7807,
-    "visits": 622883335,
-    "favorites": 295766,
+    "playing": 7443,
+    "visits": 623058481,
+    "favorites": 295805,
     "creator": "Rumble Studios"
   },
-  "lastUpdateAt": "2026-11-05T10:01:02.783Z",
-  "queue": [],
+  "lastUpdateAt": "2026-11-05T21:14:25.325Z",
+  "queue": [
+    {
+      "key": "9c8b6999a67cd4ddbfde2c85",
+      "category": "updates",
+      "item": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 7443,
+        "visits": 623058481,
+        "favorites": 295805,
+        "creator": "Rumble Studios",
+        "previousUpdatedAt": "2026-11-05T10:01:02.783Z",
+        "previousName": "[🎃] Bubble Gum Simulator INFINITY"
+      },
+      "detectedAt": "2026-11-05T21:20:30.781Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 7443,
+        "visits": 623058481,
+        "favorites": 295805,
+        "creator": "Rumble Studios"
+      }
+    }
+  ],
   "delivered": [
     "7aa8125606aa7db9838c704b",
     "a4220fb5646d9071532b43bb",
@@ -737,5 +774,5 @@
     "628b5d12b4e9b16485335c71",
     "d205ceaaba6c390ae3c500c6"
   ],
-  "checkedAt": "2026-11-05T21:15:27.950Z"
+  "checkedAt": "2026-11-05T21:20:30.201Z"
 }
