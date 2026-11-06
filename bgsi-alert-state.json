@@ -609,7 +609,13 @@
       "81200410",
       "81200422",
       "81200399",
-      "81200434"
+      "81200434",
+      "81898422",
+      "81898445",
+      "81898455",
+      "81898416",
+      "81898426",
+      "81898463"
     ]
   },
   "game": {
@@ -627,7 +633,182 @@
     "creator": "Rumble Studios"
   },
   "lastUpdateAt": "2026-11-05T21:14:25.325Z",
-  "queue": [],
+  "queue": [
+    {
+      "key": "f99e024e3888bfa7a735562b",
+      "category": "products",
+      "item": {
+        "id": "81898422",
+        "name": "Mythic Snow Paladin",
+        "description": "",
+        "price": 349,
+        "isForSale": true,
+        "created": "2026-11-06T18:06:16.642Z",
+        "updated": "2026-11-06T18:06:16.642Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    },
+    {
+      "key": "98002b9d27518329697e6f08",
+      "category": "products",
+      "item": {
+        "id": "81898445",
+        "name": "Frost Diamond",
+        "description": "",
+        "price": 499,
+        "isForSale": true,
+        "created": "2026-11-06T18:06:47.042Z",
+        "updated": "2026-11-06T18:06:47.042Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    },
+    {
+      "key": "905eda3aa3aa21a19c763744",
+      "category": "products",
+      "item": {
+        "id": "81898455",
+        "name": "Mythic Frost Diamond",
+        "description": "",
+        "price": 899,
+        "isForSale": true,
+        "created": "2026-11-06T18:06:55.445Z",
+        "updated": "2026-11-06T18:06:55.445Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    },
+    {
+      "key": "249fc884ab4906215a5fbdee",
+      "category": "products",
+      "item": {
+        "id": "81898416",
+        "name": "Snow Paladin",
+        "description": "",
+        "price": 179,
+        "isForSale": true,
+        "created": "2026-11-06T18:06:08.223Z",
+        "updated": "2026-11-06T18:06:08.223Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    },
+    {
+      "key": "072e2c24e04615a09aa92160",
+      "category": "products",
+      "item": {
+        "id": "81898426",
+        "name": "XL Snow Paladin",
+        "description": "",
+        "price": 799,
+        "isForSale": true,
+        "created": "2026-11-06T18:06:25.743Z",
+        "updated": "2026-11-06T18:06:25.743Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    },
+    {
+      "key": "3ba286b156efe2f39b3663fc",
+      "category": "products",
+      "item": {
+        "id": "81898463",
+        "name": "XL Frost Diamond",
+        "description": "",
+        "price": 1199,
+        "isForSale": true,
+        "created": "2026-11-06T18:07:04.787Z",
+        "updated": "2026-11-06T18:07:04.787Z"
+      },
+      "detectedAt": "2026-11-06T18:10:33.384Z",
+      "status": "pending",
+      "game": {
+        "slug": "bgsi",
+        "universeId": "6504986360",
+        "placeId": "85896571713843",
+        "name": "[🎃] Bubble Gum Simulator INFINITY",
+        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
+        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n🎃 The Final Halloween Part is here!\n\n🥚 The Super Halloween Egg! 3 Secrets, 2 Celestials, 3 Infinity Pets!\n🎁 New Halloween Rebirth Shop Pet!\n🏆 Special Infinity Pet only available Halloween Day and November 1st!\n🎃 Special Halloween Day Bundle! 50 Of EVERY FRAGMENT!\n⭐ New Sweet Season Pass! Secrets return to the Infinite Track + Special Buffed Season Perks!\n💎 Final Rebirth Upgrades!\n⚙️ Even more QOL Updates!\n\n🎃 Use code Halloween2026 for 10 of each Fragment!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
+        "updatedAt": "2026-11-05T21:14:25.325Z",
+        "createdAt": "2024-09-02T20:33:13.033Z",
+        "playing": 8333,
+        "visits": 623365826,
+        "favorites": 295869,
+        "creator": "Rumble Studios"
+      }
+    }
+  ],
   "delivered": [
     "7aa8125606aa7db9838c704b",
     "a4220fb5646d9071532b43bb",
@@ -738,5 +919,5 @@
     "d205ceaaba6c390ae3c500c6",
     "9c8b6999a67cd4ddbfde2c85"
   ],
-  "checkedAt": "2026-11-06T18:05:23.805Z"
+  "checkedAt": "2026-11-06T18:10:32.788Z"
 }
