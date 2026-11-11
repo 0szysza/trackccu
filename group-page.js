@@ -51,7 +51,7 @@
     latest = data;
     $("groupName").textContent = data.name || group.label;
     appendVerified($("groupName"), data.hasVerifiedBadge);
-    document.title = `${data.name || group.label} | CCU Tracker`;
+    document.title = `${data.name || group.label} - TrackCCU`;
     if (data.iconUrl) icon.src = data.iconUrl;
     $("membersNow").textContent = fmt(data.members);
     $("membersStat").textContent = fmt(data.members);

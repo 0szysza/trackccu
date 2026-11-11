@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CCU Tracker | Compare</title>
 <script>
   // Remove the obsolete comparison-mode parameter from existing links.
   const url = new URL(location.href);
@@ -12,7 +11,6 @@
     history.replaceState(null, "", url);
   }
 </script>
-<meta name="theme-color" content="#34BFE5">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,12 +33,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="site.css?v=20261103-compare-button-only">
-<link rel="canonical" href="https://0szysza.github.io/trackccu/compare">
+<title>Compare - TrackCCU</title>
+<meta name="theme-color" content="#5CDDFA">
 <meta name="description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
+<link rel="canonical" href="https://0szysza.github.io/trackccu/compare">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="CCU Tracker">
+<meta property="og:site_name" content="TrackCCU">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="Compare games | CCU Tracker">
+<meta property="og:title" content="Compare - TrackCCU">
 <meta property="og:description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta property="og:url" content="https://0szysza.github.io/trackccu/compare">
 <meta property="og:image" content="https://0szysza.github.io/trackccu/assets/social/compare.png?v=20261002-1">
@@ -48,12 +48,12 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="CCU Tracker: compare player counts and player share between two games.">
+<meta property="og:image:alt" content="TrackCCU: compare player counts and player share between two games.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Compare games | CCU Tracker">
+<meta name="twitter:title" content="Compare - TrackCCU">
 <meta name="twitter:description" content="Compare two or three Roblox games side by side. Explore player counts, recent peaks, historical charts and each game’s share of their combined players.">
 <meta name="twitter:image" content="https://0szysza.github.io/trackccu/assets/social/compare.png?v=20261002-1">
-<meta name="twitter:image:alt" content="CCU Tracker: compare player counts and player share between two games.">
+<meta name="twitter:image:alt" content="TrackCCU: compare player counts and player share between two games.">
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 
@@ -174,7 +174,7 @@
 <div id="site-footer"></div>
 
 <script src="config.js"></script>
-<script src="site.js"></script>
+<script src="site.js?v=20261111-branding"></script>
 <script>
 (() => {
   "use strict";

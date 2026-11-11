@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CCU Tracker</title>
-<meta name="theme-color" content="#34BFE5">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,12 +19,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css?v=20261103-compare-modes">
-<link rel="canonical" href="https://0szysza.github.io/trackccu/">
+<title>TrackCCU</title>
+<meta name="theme-color" content="#5CDDFA">
 <meta name="description" content="Track Roblox games and groups. View live players, member counts, historical charts, game extras and side-by-side comparisons.">
+<link rel="canonical" href="https://0szysza.github.io/trackccu/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="CCU Tracker">
+<meta property="og:site_name" content="TrackCCU">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="CCU Tracker">
+<meta property="og:title" content="TrackCCU">
 <meta property="og:description" content="Track Roblox games and groups. View live players, member counts, historical charts, game extras and side-by-side comparisons.">
 <meta property="og:url" content="https://0szysza.github.io/trackccu/">
 <meta property="og:image" content="https://0szysza.github.io/trackccu/assets/social/cover.png?v=20261002-1">
@@ -34,12 +34,12 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="CCU Tracker: Roblox games, groups and comparisons.">
+<meta property="og:image:alt" content="TrackCCU: Roblox games, groups and comparisons.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CCU Tracker">
+<meta name="twitter:title" content="TrackCCU">
 <meta name="twitter:description" content="Track Roblox games and groups. View live players, member counts, historical charts, game extras and side-by-side comparisons.">
 <meta name="twitter:image" content="https://0szysza.github.io/trackccu/assets/social/cover.png?v=20261002-1">
-<meta name="twitter:image:alt" content="CCU Tracker: Roblox games, groups and comparisons.">
+<meta name="twitter:image:alt" content="TrackCCU: Roblox games, groups and comparisons.">
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
@@ -48,7 +48,7 @@
   <section class="home-hero">
     <div class="home-hero-copy">
       <h1>Roblox CCU, <span>live and over time.</span></h1>
-      <p>CCU Tracker follows Roblox games and their groups every 5 minutes. Check live players and group members, explore their history, or compare two or three games side by side.</p>
+      <p>TrackCCU follows Roblox games and their groups every 5 minutes. Check live players and group members, explore their history, or compare two or three games side by side.</p>
       <div class="home-hero-actions">
         <a href="games" class="home-action-btn home-action-games"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-icon" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg><span>Browse games</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
         <a href="groups" class="home-action-btn home-action-groups"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-icon" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Browse groups</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-action-arrow" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
@@ -99,7 +99,7 @@
 </main>
 <div id="site-footer"></div>
 <script src="config.js"></script>
-<script src="site.js"></script>
+<script src="site.js?v=20261111-branding"></script>
 <script>
 (() => {
   const { CATALOG, GROUP_CATALOG, $, fmt, iconFallback, verifiedBadgeHtml, gameChipHtml } = Tracker;

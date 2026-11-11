@@ -1,5 +1,5 @@
 /* Offline fallback only: never cache live CCU, history or other responses. */
-const OFFLINE_CACHE = "trackccu-offline-v1";
+const OFFLINE_CACHE = "trackccu-offline-v2";
 const OFFLINE_URL = new URL("offline.html", self.registration.scope).href;
 
 self.addEventListener("install", event => {

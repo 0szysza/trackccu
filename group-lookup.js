@@ -103,7 +103,7 @@
         fail("No public Roblox group was found for this ID.");
         return;
       }
-      document.title = `${group.name} | CCU Tracker`;
+      document.title = `${group.name} - TrackCCU`;
       $("groupName").textContent = group.name || "Roblox group";
       if (group.hasVerifiedBadge === true) $("groupName").append(badge());
       $("membersNow").textContent = fmt(group.memberCount);

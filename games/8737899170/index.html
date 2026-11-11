@@ -3,19 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pet Simulator 99 | CCU Tracker</title>
-<meta name="description" content="Track any Roblox Game CCU and Stats!">
-<meta name="theme-color" content="#34BFE5">
-<meta property="og:type" content="website">
-<meta property="og:title" content="CCU Tracker - Pet Simulator 99">
-<meta property="og:description" content="Track any Roblox Game CCU and Stats!">
-<meta property="og:image" content="../../favicon.png">
-<meta name="twitter:card" content="summary_large_image">
 <script>window.SITE_ROOT = "../../";</script>
 <link rel="icon" href="../../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png"><link rel="apple-touch-icon" href="../../apple-touch-icon.png">
 <script src="https://cdn.tailwindcss.com"></script><script src="../../tailwind-config.js"></script>
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../site.css">
+<title>Pet Simulator 99 - TrackCCU</title>
+<meta name="theme-color" content="#5CDDFA">
+<meta name="description" content="Track any Roblox Game CCU and Stats!">
+<link rel="canonical" href="https://0szysza.github.io/trackccu/games/8737899170/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrackCCU">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Pet Simulator 99 - TrackCCU">
+<meta property="og:description" content="Track any Roblox Game CCU and Stats!">
+<meta property="og:url" content="https://0szysza.github.io/trackccu/games/8737899170/">
+<meta property="og:image" content="https://0szysza.github.io/trackccu/assets/social/games.png?v=20261002-1">
+<meta property="og:image:secure_url" content="https://0szysza.github.io/trackccu/assets/social/games.png?v=20261002-1">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TrackCCU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pet Simulator 99 - TrackCCU">
+<meta name="twitter:description" content="Track any Roblox Game CCU and Stats!">
+<meta name="twitter:image" content="https://0szysza.github.io/trackccu/assets/social/games.png?v=20261002-1">
+<meta name="twitter:image:alt" content="TrackCCU">
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
@@ -137,7 +150,7 @@
   </div>
 </main>
 <div id="site-footer"></div>
-<script src="../../config.js"></script><script src="../../site.js"></script>
+<script src="../../config.js"></script><script src="../../site.js?v=20261111-branding"></script>
 <script>
 (() => {
   "use strict";
@@ -147,7 +160,7 @@
   const gameId=location.pathname.replace(/\/+$/,"").split("/").pop();
   const game=byPlaceId.get(gameId);
   if(!game){ $("notFound").classList.remove("hidden"); return; }
-  $("page").classList.remove("hidden"); document.title=`${game.label} | CCU Tracker`;
+  $("page").classList.remove("hidden"); document.title=`${game.label} - TrackCCU`;
   $("tag").textContent=game.short; $("name").textContent=game.label; $("link").href=game.url;
   const icon=$("icon"); icon.src=iconFor(game.slug); icon.alt=game.label+" icon"; icon.dataset.fallback="0";
   icon.addEventListener("error",()=>{ if(icon.dataset.fallback==="0"){icon.dataset.fallback="1";icon.src=`${ROOT}assets/${game.slug}-icon.png`;}else icon.src=iconFallback; });

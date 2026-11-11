@@ -259,10 +259,10 @@
 <header class="border-b border-roblox-cardBorder bg-roblox-cardBg/90 backdrop-blur-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center gap-x-5 gap-y-2">
     <a class="site-home-link" href="https://0szysza.github.io/" aria-label="Back to home" title="Back to home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7"/></svg></a>
-    <a href="${ROOT || "./"}" class="order-1 flex items-center gap-2.5 shrink-0 site-brand" aria-label="CCU Tracker — Home">
+    <a href="${ROOT || "./"}" class="order-1 flex items-center gap-2.5 shrink-0 site-brand" aria-label="TrackCCU — Home">
       <span class="site-logo" aria-hidden="true"><img src="${ROOT}favicon.png" alt=""></span>
       <div>
-        <div class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">CCU Tracker</div>
+        <div class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">TrackCCU</div>
         <p class="text-[11px] text-slate-400">Track any Roblox Game CCU!</p>
       </div>
     </a>
@@ -283,7 +283,7 @@
           <summary><svg class="tool-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span>Tools</span><svg class="tool-menu-icon tool-menu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
           <div class="tool-menu-list">
             <a href="${ROOT || "./"}" aria-current="page"><img class="tool-menu-logo" src="${ROOT}favicon.png" width="18" height="18" alt=""><span><strong>TrackCCU</strong><small>Track any Roblox Game CCU!</small></span></a>
-            <a href="https://0szysza.github.io/stat/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>BGSI Stat Calculator</strong><small>Track your BGSI stats!</small></span></a>
+            <a href="https://0szysza.github.io/stat/"><img class="tool-menu-logo" src="${ROOT}rebirth-logo.svg" width="18" height="18" alt=""><span><strong>Stat Calculator</strong><small>Track your BGSI stats!</small></span></a>
             <a href="https://0szysza.github.io/hatchlist/"><img class="tool-menu-logo" src="https://0szysza.github.io/hatchlist/favicon.svg" width="18" height="18" alt=""><span><strong>Hatchlist</strong><small>Your BGSI pet wishlist.</small></span></a>
           </div>
         </details>

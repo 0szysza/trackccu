@@ -61,7 +61,7 @@
       const rootId = String(game.rootPlaceId);
       if (byPlaceId.has(rootId)) { location.replace(`${ROOT}games/${rootId}/`); return; }
 
-      document.title = `${game.name} | CCU Tracker`;
+      document.title = `${game.name} - TrackCCU`;
       $("name").textContent = game.name || "Roblox game";
       $("playing").textContent = fmt(game.playing);
       $("visits").textContent = fmt(game.visits);
