@@ -644,44 +644,7 @@
     "creator": "Rumble Studios"
   },
   "lastUpdateAt": "2026-11-13T17:35:20.449Z",
-  "queue": [
-    {
-      "key": "f73979ff6c29069b0f4b7b0e",
-      "category": "updates",
-      "item": {
-        "slug": "bgsi",
-        "universeId": "6504986360",
-        "placeId": "85896571713843",
-        "name": "[❄️PT2] Bubble Gum Simulator INFINITY",
-        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
-        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n❄️ Winter Part 2 is here!\n\n🥚 5 New Secret+ Pets in the Wintery Egg!\n⛄ New Limited Time Frozen Fuse Machine! Use pets from the Wintery Egg to fuse into better pets!\n🏆 Daily Perk Revamp! Various Daily Perk Days have been updated! XL Luck, Infinity Luck, & Secret Luck are just some of the new daily buffs!\n🎁 D.I.Y Admin Abuse Egg! Spawns on Saturday, and spawns occasionally over the week!\n💎 Super Gum/Flavor! 1 New Flavor & 1 New Gum! One costs the Max Coins, the other Max Gems!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-        "updatedAt": "2026-11-13T17:35:20.449Z",
-        "createdAt": "2024-09-02T20:33:13.033Z",
-        "playing": 7685,
-        "visits": 626094453,
-        "favorites": 296767,
-        "creator": "Rumble Studios",
-        "previousUpdatedAt": "2026-11-13T17:33:03.029Z",
-        "previousName": "[❄️] Bubble Gum Simulator INFINITY"
-      },
-      "detectedAt": "2026-11-13T17:40:29.887Z",
-      "status": "sending",
-      "game": {
-        "slug": "bgsi",
-        "universeId": "6504986360",
-        "placeId": "85896571713843",
-        "name": "[❄️PT2] Bubble Gum Simulator INFINITY",
-        "siteUrl": "https://0szysza.github.io/trackccu/games/85896571713843/",
-        "description": "Welcome to Bubble Gum Simulator INFINITY! 🫧\n\n❄️ Winter Part 2 is here!\n\n🥚 5 New Secret+ Pets in the Wintery Egg!\n⛄ New Limited Time Frozen Fuse Machine! Use pets from the Wintery Egg to fuse into better pets!\n🏆 Daily Perk Revamp! Various Daily Perk Days have been updated! XL Luck, Infinity Luck, & Secret Luck are just some of the new daily buffs!\n🎁 D.I.Y Admin Abuse Egg! Spawns on Saturday, and spawns occasionally over the week!\n💎 Super Gum/Flavor! 1 New Flavor & 1 New Gum! One costs the Max Coins, the other Max Gems!\n\n⭐ Updates every Friday at 2PM EST!\n\n☁️ Blow Bubble Gum to increase its size and jump into the clouds. Discover islands and secrets in the sky!\n\n🥚 Hatch rare pets and build a powerful pet team!\n\nA game by Rumble Studios.",
-        "updatedAt": "2026-11-13T17:35:20.449Z",
-        "createdAt": "2024-09-02T20:33:13.033Z",
-        "playing": 7685,
-        "visits": 626094453,
-        "favorites": 296767,
-        "creator": "Rumble Studios"
-      }
-    }
-  ],
+  "queue": [],
   "delivered": [
     "7aa8125606aa7db9838c704b",
     "a4220fb5646d9071532b43bb",
@@ -820,7 +783,8 @@
     "aad4c75b73b86a982f142dd7",
     "6a553203d7bdf18775380734",
     "cb86700721e70fb103d24ceb",
-    "2a1205473ad13287becab99e"
+    "2a1205473ad13287becab99e",
+    "f73979ff6c29069b0f4b7b0e"
   ],
   "checkedAt": "2026-11-13T17:40:29.550Z"
 }
