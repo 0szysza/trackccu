@@ -13,6 +13,7 @@
   icon.alt = group.label + " icon";
   icon.onerror = () => { icon.onerror = null; icon.src = iconFallback; };
   const HOUR = 3600000, DAY = 86400000;
+  let requestedRange = "1d", loadedRange = null;
   let latest = null, range = "1d", metric = "members", rangeRows = [], rangePoints = [], visible = [], trendPoints = [], navStart = 0, navEnd = 1, navDrag = null, requestId = 0;
   const metricLabels = { members: "Members", totalPlayers: "Total players" };
 
@@ -218,6 +219,7 @@
     selectPoints();
   }
   async function loadRange(next, reset = false) {
+    requestedRange = next;
     if (reset || next !== range) { navStart = 0; navEnd = 1; }
     range = next;
     const current = ++requestId;
@@ -226,11 +228,12 @@
     try {
       const payload = await Tracker.requestJson(Tracker.CONFIG.groupsHistory(next));
       if (current !== requestId) return;
+      loadedRange = next;
       rangeRows = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), members: row.members, totalPlayers: row.totalPlayers })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.members)).sort((a, b) => a.x - b.x);
       rangePoints = rangeRows.map((row) => ({ x: row.x, y: row[metric] })).filter((point) => Number.isFinite(point.y));
       if (next === "1d") { trendPoints = rangeRows.map((row) => ({ x: row.x, y: row.members })); paintTrend(); }
       selectPoints(); Tracker.setPanelState($("groupChartPanel"));
-    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); Tracker.setPanelState($("groupChartPanel"), "Could not load this period. The last loaded chart has been kept."); } }
+    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); if (loadedRange) { range=loadedRange; document.querySelectorAll("#groupRanges .range-btn").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.range===range))); } Tracker.setPanelState($("groupChartPanel"), loadedRange ? "Could not load the requested period. Showing the previously loaded period." : "Could not load chart history."); } }
     finally { if (current === requestId) $("groupRanges").removeAttribute("aria-busy"); }
   }
   async function loadTrend() {
@@ -251,7 +254,7 @@
     let size = "";
     new ResizeObserver(() => { const wrap = $("chartWrap"), next = `${wrap.clientWidth}x${wrap.clientHeight}`; if (next === size) return; size = next; requestAnimationFrame(drawChart); }).observe($("chartWrap"));
   }
-  Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadRange(range); loadTrend(); });
+  Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadRange(requestedRange); loadTrend(); });
 })();
 
 

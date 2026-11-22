@@ -51,6 +51,7 @@
     <label class="game-lookup-input"><span class="sr-only">Roblox group ID or URL</span><input id="groupLookupId" name="id" type="text" inputmode="numeric" placeholder="Group ID or Roblox URL" autocomplete="off" required></label>
     <button type="submit">Open group <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
   </form>
+  <div id="historyStatus"></div>
   <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="Tracked groups"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No groups match your search.</p>
 </main>
@@ -123,10 +124,10 @@
   $("sortToggle").addEventListener("click", () => { sortAsc = !sortAsc; $("sortToggle").setAttribute("aria-pressed", String(sortAsc)); $("sortIcon").style.transform = sortAsc ? "scaleY(-1)" : ""; $("sortLabel").textContent = sortAsc ? "Fewest members" : "Most members"; render(); });
   $("tiles").addEventListener("click", (event) => { const tile = event.target.closest("[data-href]"); if (tile && !event.target.closest('[data-stop="1"]')) location.href = tile.dataset.href; });
   $("tiles").addEventListener("keydown", (event) => { const tile = event.target.closest("[data-href]"); if (tile && (event.key === "Enter" || event.key === " ") && !event.target.closest('[data-stop="1"]')) { event.preventDefault(); location.href = tile.dataset.href; } });
-  Tracker.onGroups((payload) => { latest = new Map((payload.groups || []).map((group) => [String(group.id), group])); $("totalMembers").textContent = payload.complete === false ? "—" : fmt([...latest.values()].reduce((sum, group) => sum + (group.members || 0), 0)); render(); });
+  Tracker.onGroups((payload) => { latest = new Map((payload.groups || []).map((group) => [String(group.id), group])); $("totalMembers").textContent = [...latest.values()].every(group => !group.stale && Number.isFinite(group.members)) ? fmt([...latest.values()].reduce((sum, group) => sum + group.members, 0)) : "—"; render(); });
   async function loadHistory() {
-    try { const payload = await Tracker.requestJson(Tracker.CONFIG.groupsHistory("1d")); history = new Map(GROUP_CATALOG.map((group) => [group.id, (payload.series?.[group.id] || []).map((row) => ({ x: Date.parse(row.t), y: row.members }))])); render(); }
-    catch (error) { console.error("Group history request failed:", error); }
+    try { const payload = await Tracker.requestJson(Tracker.CONFIG.groupsHistory("1d")); Tracker.setPanelState($("historyStatus")); history = new Map(GROUP_CATALOG.map((group) => [group.id, (payload.series?.[group.id] || []).map((row) => ({ x: Date.parse(row.t), y: row.members }))])); render(); }
+    catch (error) { console.error("Group history request failed:", error); Tracker.setPanelState($("historyStatus"), "Could not refresh chart history. Last loaded charts have been kept."); }
   }
   render();
   Tracker.every(() => { Tracker.loadLive(); Tracker.loadGroups(); loadHistory(); });

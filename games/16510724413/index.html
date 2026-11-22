@@ -167,7 +167,7 @@
   </div>
 </main>
 <div id="site-footer"></div>
-<script src="../../config.js"></script><script src="../../chart-tools.js?v=7d4f5dc25c4b"></script><script src="../../site.js?v=9517593743c7"></script>
+<script src="../../config.js"></script><script src="../../chart-tools.js?v=7d4f5dc25c4b"></script><script src="../../site.js?v=edc70d05256a"></script>
 <script>
 (() => {
   "use strict";
@@ -183,6 +183,8 @@
   icon.addEventListener("error",()=>{ if(icon.dataset.fallback==="0"){icon.dataset.fallback="1";icon.src=`${ROOT}assets/${game.slug}-icon.png`;}else icon.src=iconFallback; });
   const thumb=$("thumbnail"); thumb.src=`${ROOT}assets/${game.slug}-thumbnail.png`; thumb.onerror=()=>{thumb.onerror=null;thumb.src=iconFallback;};
 
+  let requestedRange="1d", loadedRange=null;
+  document.querySelector(".game-detail-info").dataset.slug=game.slug;
   let latest=null, chartRange="1d", chartMetric="playing", chartPoints=[], rangePoints=[], rangeRows=[], allPoints=[], trendPoints=[], chartRequest=0;
   const chartLabels={playing:"Players",favorites:"Favorites",visits:"Visits"};
   let navStart=0, navEnd=1, navDrag=null;
@@ -361,6 +363,7 @@
   });
 
   async function loadRange(range,resetSelection=false){
+    requestedRange=range;
     if(resetSelection||chartRange!==range){navStart=0;navEnd=1;}
     chartRange=range; const request=++chartRequest;
     const controls=$("gameRanges"); controls.setAttribute("aria-busy","true");
@@ -368,10 +371,14 @@
     try{
       const payload=await Tracker.requestJson(Tracker.CONFIG.history(range));
       if(request!==chartRequest)return;
+      loadedRange=range;
       rangeRows=(payload.series?.[game.slug]||[]).map(row=>({x:Date.parse(row.t),playing:row.playing,peak:row.peak,peakAt:row.peakAt,favorites:row.favorites,visits:row.visits})).filter(point=>Number.isFinite(point.x)&&Number.isFinite(point.playing)).sort((a,b)=>a.x-b.x);
       if(range==="1d"){trendPoints=rangeRows.map(row=>({x:row.x,y:row.playing}));paintTrend();}
       Tracker.setPanelState($("gameChartPanel")); setMetricPoints();
-    }catch(error){if(request===chartRequest)Tracker.setPanelState($("gameChartPanel"),"Could not load this period. The last loaded chart has been kept.");}
+    }catch(error){if(request===chartRequest){
+      if(loadedRange){chartRange=loadedRange;document.querySelectorAll("#gameRanges .range-btn").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.range===loadedRange)));}
+      Tracker.setPanelState($("gameChartPanel"),loadedRange?"Could not load the requested period. Showing the previously loaded period.":"Could not load chart history.");
+    }}
     finally{if(request===chartRequest)controls.removeAttribute("aria-busy");}
   }
   async function loadAll(){
@@ -615,6 +622,6 @@
     new ResizeObserver(()=>{const wrap=$("chartWrap"),next=`${wrap.clientWidth}x${wrap.clientHeight}`;if(next===size)return;size=next;requestAnimationFrame(drawChart);}).observe($("chartWrap"));
   }
   document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.addEventListener("click",()=>loadRange(b.dataset.range,true)));
-  Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();loadExtras();});
+  Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(requestedRange);loadAll();loadExtras();});
 })();
 </script></body></html>

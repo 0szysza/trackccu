@@ -85,6 +85,7 @@
 
   <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
 
+  <div id="historyStatus"></div>
   <section id="tiles" class="grid grid-cols-1 lg:grid-cols-2 gap-3" aria-label="Tracked games"></section>
   <p id="emptyState" class="hidden text-center text-sm text-slate-500 py-10">No games match your search.</p>
 
@@ -386,12 +387,14 @@
   async function loadHistory() {
     try {
       const payload = await Tracker.requestJson(Tracker.CONFIG.history("1d"));
+      Tracker.setPanelState($("historyStatus"));
       history = new Map(CATALOG.map((game) => [
         game.slug,
         ((payload.series && payload.series[game.slug]) || []).map((row) => ({ x: new Date(row.t).getTime(), y: row.playing })),
       ]));
     } catch (error) {
       console.error("History request failed:", error);
+      Tracker.setPanelState($("historyStatus"), "Could not refresh chart history. Last loaded charts have been kept.");
     }
     paintSparks();
   }

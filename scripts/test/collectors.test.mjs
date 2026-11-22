@@ -10,6 +10,8 @@ import { collectExtras, trackPrices } from '../collect-extras.mjs';
 import { aggregate, summarise, updateLedger, previousJson, requestJson, validateRaw } from '../data-store.mjs';
 import { encodeBackup, decodeBackup, restoreBackup, saveCheckpoint, markBackup, persistState } from '../checkpoint.mjs';
 import { deliverDigest } from '../digest.mjs';
+// Each test worker owns isolated fixtures; never inherit production paths or URLs.
+for (const name of ['OUT_DIR','STATE_DATA_DIR','SITE_URL','ALLOW_DATA_BOOTSTRAP','CHECKPOINT_DIR']) delete process.env[name];
 const now = 1800000000;
 const seeds = [{ slug: 'one', name: 'One', placeId: '1', universeId: '11', short: 'ONE' }, { slug: 'two', name: 'Two', placeId: '2', universeId: '22', short: 'TWO' }];
 const json = value => new Response(JSON.stringify(value), { headers: { 'content-type': 'application/json' } });

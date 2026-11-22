@@ -15,3 +15,5 @@ await cp('.github/bgsi-webhooks.json', path.join(out, 'debug/webhooks.json'));
 execFileSync(process.execPath, ['scripts/sync-games.mjs'], { stdio: 'inherit', env: { ...process.env, OUT_DIR: out } });
 const { versionAssets } = await import('./version-assets.mjs');
 await versionAssets(out);
+const { verifyBuild } = await import('./verify-build.mjs');
+await verifyBuild(out);

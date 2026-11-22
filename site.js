@@ -186,6 +186,7 @@
       if (!response.ok) throw new Error("HTTP " + response.status);
       const payload = await response.json();
       if (payload?.ok === false || !payload || typeof payload !== "object") throw new Error("Data is unavailable");
+      if (/\/(?:group-)?history-(?:1d|7d|all)\.json$/.test(url.pathname) && (!payload.series || typeof payload.series !== "object" || Array.isArray(payload.series))) throw new Error("Invalid history data");
       return payload;
     })();
     requests.set(key, entry);
@@ -386,7 +387,7 @@
     let warning = document.getElementById("trackerWarning");
     if (!warning && main) { warning = document.createElement("p"); warning.id = "trackerWarning"; warning.className = "data-state"; warning.setAttribute("role", "status"); main.prepend(warning); }
     if (warning) {
-      const message = failed ? "Could not refresh the data. The last loaded readings have been kept."
+      const message = failed ? (age === null ? "Could not load the data. Try again when the connection is available." : "Could not refresh the data. The last loaded readings have been kept.")
         : incomplete ? source.payload.warning || "Some readings are incomplete. Last known values are marked as stale."
         : stale ? "These readings are older than expected. Updates will be retried automatically." : "";
       warning.hidden = !message;

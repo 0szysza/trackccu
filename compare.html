@@ -966,7 +966,7 @@
       if (key === range) drawChart();
     } catch (error) {
       console.error("History request failed:", error);
-      Tracker.setPanelState($("compareChartPanel"), "Could not update history. The last loaded chart has been kept.");
+      Tracker.setPanelState($("compareChartPanel"), cache[key] ? "Could not update history. The last loaded chart has been kept." : "Could not load history for this period.");
       if (!cache[key] && key === range && picked().length) setNote("Couldn't load the history. It will retry automatically.");
     }
   }
