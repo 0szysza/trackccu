@@ -1,0 +1,7 @@
+node_modules/
+_site/
+_checkpoint/
+_backups/
+_bgsi-alert-images/
+playwright-report/
+test-results/

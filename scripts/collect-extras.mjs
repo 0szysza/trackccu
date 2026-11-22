@@ -2,40 +2,39 @@
 // Passes, developer products and badges are refreshed hourly to keep the five-minute build quick.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { previousJson, validateExtras, requestJson, writeJson } from "./data-store.mjs";
 
-const OUT_DIR = process.env.OUT_DIR || "_site";
-const SITE_URL = (process.env.SITE_URL || "").replace(/\/+$/, "");
+export function trackPrices(items, previousItems, observedAt) {
+  const previousById = new Map((previousItems || []).map(item => [String(item.id), item]));
+  items = items.filter(item => !item.unavailable);
+  const currentIds = new Set(items.map(item => String(item.id)));
+  const current = items.map(item => {
+    const previous = previousById.get(String(item.id));
+    const priceHistory = Array.isArray(previous?.priceHistory)
+      ? previous.priceHistory.filter(point => Number.isFinite(Date.parse(point?.t)) && (point.price === null || Number.isFinite(point.price))).map(point => ({ ...point }))
+      : [];
+    const price = item.isForSale && Number.isFinite(item.price) ? item.price : null;
+    if (!priceHistory.length || priceHistory.at(-1).price !== price) priceHistory.push({ t: observedAt, price });
+    return { ...item, unavailable: false, lastSeenAt: observedAt, priceHistory, priceLastObservedAt: observedAt };
+  });
+  const absent = (previousItems || []).filter(item => !currentIds.has(String(item.id))).map(item => ({ ...item, unavailable: true }));
+  return [...current, ...absent];
+}
+
+export async function collectExtras({ outDir = process.env.OUT_DIR || '_site', siteUrl = process.env.SITE_URL || '', stateDir = process.env.STATE_DATA_DIR, fetchImpl = fetch, catalog, archives, bootstrap } = {}) {
+const OUT_DIR = outDir, SITE_URL = siteUrl;
 const REFRESH_MS = 60 * 60 * 1000;
-const games = JSON.parse(await readFile(new URL("./games.json", import.meta.url), "utf8"));
-const eventArchive = JSON.parse(await readFile(new URL("./events-archive.json", import.meta.url), "utf8"));
-const output = path.join(OUT_DIR, "data", "extras.json");
+const games = catalog || JSON.parse(await readFile(new URL('./games.json', import.meta.url), 'utf8'));
+const eventArchive = archives || JSON.parse(await readFile(new URL('./events-archive.json', import.meta.url), 'utf8'));
+const output = path.join(OUT_DIR, 'data', 'extras.json');
 
-async function getJson(url, noCache = false) {
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(15000),
-      headers: { accept: "application/json", ...(noCache ? { "cache-control": "no-cache" } : {}) },
-    });
-    if (response.ok) return response.json();
-    if (response.status !== 429 || attempt === 3) throw new Error(`HTTP ${response.status} for ${url}`);
-    await new Promise(resolve => setTimeout(resolve, 500 * 2 ** attempt));
-  }
+async function getJson(url) {
+  return requestJson(url, { fetchImpl });
 }
 
 async function previousData() {
-  // Past events disappear from Roblox's public universe list. The deployed
-  // extras file is their history, so a transient fetch failure must stop this
-  // build instead of replacing the archive with only current events.
-  if (SITE_URL) {
-    const data = await getJson(`${SITE_URL}/data/extras.json?t=${Date.now()}`);
-    if (!data?.games || typeof data.games !== "object") throw new Error("Invalid previous extras archive");
-    return data;
-  }
-  try { return JSON.parse(await readFile(output, "utf8")); }
-  catch (error) {
-    if (error.code === "ENOENT") return { games: {} };
-    throw error;
-  }
+  return previousJson("extras.json", { outDir: OUT_DIR, siteUrl: SITE_URL, stateDir, fetchImpl, bootstrap, validate: validateExtras, empty: { games: {} } });
 }
 
 async function allPages(firstUrl, listKey, tokenKey, param) {
@@ -189,32 +188,19 @@ async function collectGame(universeId, cached, archivedEvents) {
   };
 }
 
-function trackPrices(items, previousItems, observedAt) {
-  const previousById = new Map((previousItems || []).map(item => [String(item.id), item]));
-  return items.map(item => {
-    const previous = previousById.get(String(item.id));
-    const priceHistory = Array.isArray(previous?.priceHistory)
-      ? previous.priceHistory.filter(point => Number.isFinite(Date.parse(point?.t)) && (point.price === null || Number.isFinite(point.price)))
-      : [];
-    const price = item.isForSale && Number.isFinite(item.price) ? item.price : null;
-    if (!priceHistory.length || priceHistory.at(-1).price !== price) priceHistory.push({ t: observedAt, price });
-    return { ...item, priceHistory, priceLastObservedAt: observedAt };
-  });
-}
-
 const previous = await previousData();
 const live = JSON.parse(await readFile(path.join(OUT_DIR, "data", "live.json"), "utf8"));
 const ids = new Map((live.games || []).map(game => [game.slug, game.universeId]));
 const result = { ok: true, generatedAt: new Date().toISOString(), games: {} };
 for (const game of games) {
   const cached = previous.games?.[game.slug];
+  const archive = eventArchive[game.slug] || [];
   const hasBadgeDetails = cached?.badges?.every(badge => Object.hasOwn(badge, "awardedCount") && Object.hasOwn(badge, "winRatePercentage") && Object.hasOwn(badge, "description"));
   const hasPassDescriptions = cached?.passes?.every(pass => Object.hasOwn(pass, "description"));
   const hasProducts = Array.isArray(cached?.products) && !cached.productsError;
   try {
     const universeId = game.universeId || ids.get(game.slug);
     if (!universeId) throw new Error("Missing universe ID");
-    const archive = eventArchive[game.slug] || [];
     if (cached && hasBadgeDetails && hasPassDescriptions && hasProducts && Array.isArray(cached.events) && Date.now() - Date.parse(cached.fetchedAt) < REFRESH_MS) {
       let events = [...new Map([...archive, ...cached.events].map(item => [item.id, item])).values()];
       let eventsError = false;
@@ -222,16 +208,20 @@ for (const game of games) {
       catch (error) { console.warn(`Events for ${universeId}: ${String(error)}`); eventsError = true; }
       result.games[game.slug] = { ...cached, events, eventsError, eventsFetchedAt: new Date().toISOString() };
     } else result.games[game.slug] = await collectGame(universeId, cached, archive);
+    result.games[game.slug].error = false;
     result.games[game.slug].passes = trackPrices(result.games[game.slug].passes, cached?.passes, result.games[game.slug].fetchedAt);
-    result.games[game.slug].products = trackPrices(result.games[game.slug].products || [], cached?.products, result.games[game.slug].fetchedAt);
+    if (!result.games[game.slug].productsError) result.games[game.slug].products = trackPrices(result.games[game.slug].products || [], cached?.products, result.games[game.slug].fetchedAt);
     console.log(`${game.slug}: ${result.games[game.slug].passes.length} passes, ${result.games[game.slug].products.length} products, ${result.games[game.slug].badges.length} badges, ${result.games[game.slug].events.length} events`);
   } catch (error) {
     console.warn(`${game.slug}: ${String(error)}`);
     const fallback = cached || { error: true, passes: [], products: [], badges: [], events: [] };
     const events = [...new Map([...archive, ...(fallback.events || [])].map(item => [item.id, item])).values()];
-    result.games[game.slug] = { ...fallback, events, passes: trackPrices(fallback.passes || [], cached?.passes, fallback.fetchedAt || new Date().toISOString()), products: trackPrices(fallback.products || [], cached?.products, fallback.fetchedAt || new Date().toISOString()) };
+    result.games[game.slug] = { ...fallback, error: true, errorMessage: "Could not refresh this collection. Showing the last saved data.", events };
   }
 }
-await mkdir(path.dirname(output), { recursive: true });
-await writeFile(output, JSON.stringify(result));
+await writeJson(path.dirname(output), "extras.json", result);
 console.log(`Wrote ${output}`);
+
+return result;
+}
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) collectExtras().catch(error => { console.error(error.message); process.exitCode = 1; });

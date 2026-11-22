@@ -1,89 +1,130 @@
 name: Update data and deploy
-
 on:
   repository_dispatch:
     types: [ping]
+  schedule:
+    - cron: '1-56/5 * * * *'
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
-
+    inputs:
+      bootstrap:
+        description: 'Initialize empty data only for a NEW tracker (never for recovery)'
+        type: boolean
+        default: false
 permissions:
   actions: read
   contents: write
   pages: write
   id-token: write
-
 concurrency:
-  group: pages
-  cancel-in-progress: true
-
+  group: ${{ github.event_name == 'pull_request' && format('check-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: false
 jobs:
   build:
-    timeout-minutes: 10
+    timeout-minutes: 15
     runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.cadence.outputs.collect }}
+    env:
+      OUT_DIR: _site
+      STATE_DATA_DIR: _checkpoint/data
+      CHECKPOINT_DIR: _checkpoint
+      ALLOW_DATA_BOOTSTRAP: ${{ inputs.bootstrap == true && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-
+          node-version: 24
+          cache: npm
       - id: pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
-
-      - name: Assemble the site
-        run: |
-          mkdir -p _site
-          cp index.html 404.html games.html groups.html compare.html lookup.html lookup.js group-lookup.html group-lookup.js site.js group-page.js site.css tailwind-config.js rebirth-logo.svg _site/
-          cp favicon.ico favicon.png favicon-32.png apple-touch-icon.png manifest.webmanifest sw.js offline.html _site/
-          cp -r assets _site/assets && rm -f _site/assets/README.md
-          cp scripts/config.static.js _site/config.js
-          mkdir -p _site/debug
-          cp debug/index.html debug/debug.css debug/debug.js debug/messages.js _site/debug/
-          cp .github/bgsi-webhooks.json _site/debug/webhooks.json
-
-      - name: Verify debug message controls
-        run: node --test debug/messages.test.mjs
-
-      - name: Generate game and group pages
-        run: node scripts/sync-games.mjs
-        env:
-          OUT_DIR: _site
-
-      - name: Collect data
+      - name: Ensure independent data branch
+        if: github.event_name != 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await require('./.github/scripts/ensure-data-branch.cjs')({ github, context });
+      - name: Checkout saved tracker data
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: tracker-data
+          path: _checkpoint
+      - name: Verify checkpoint integrity
+        if: github.event_name != 'pull_request'
+        run: node scripts/checkpoint.mjs verify
+      - name: Skip duplicate scheduled triggers
+        id: cadence
+        if: github.event_name != 'pull_request'
+        run: node scripts/cadence.mjs
+      - name: Collect game data
+        id: games
+        if: steps.cadence.outputs.collect == 'true'
         run: node scripts/collect.mjs
         env:
-          OUT_DIR: _site
           SITE_URL: ${{ steps.pages.outputs.base_url }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
       - name: Collect group data
+        if: steps.cadence.outputs.collect == 'true'
         run: node scripts/collect-groups.mjs
         env:
-          OUT_DIR: _site
           SITE_URL: ${{ steps.pages.outputs.base_url }}
-
-      - name: Collect game passes, developer products and badges
+      - name: Refresh offers and events
+        if: steps.cadence.outputs.collect == 'true'
         run: node scripts/collect-extras.mjs
         env:
-          OUT_DIR: _site
           SITE_URL: ${{ steps.pages.outputs.base_url }}
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: Save checkpoint before deployment
+        id: checkpoint
+        if: steps.cadence.outputs.collect == 'true'
+        run: node scripts/checkpoint.mjs save
+      - name: Save daily recovery copy
+        id: backup
+        if: steps.checkpoint.outputs.backup_required == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tracker-checkpoint-${{ steps.checkpoint.outputs.backup_day }}
+          path: ${{ steps.checkpoint.outputs.backup_path }}
+          retention-days: 14
+          if-no-files-found: error
+      - name: Confirm daily backup
+        if: steps.backup.outcome == 'success'
+        run: node scripts/checkpoint.mjs mark-backup '${{ steps.checkpoint.outputs.backup_day }}'
+      - name: Hourly digest with durable delivery state
+        if: steps.cadence.outputs.collect == 'true'
+        continue-on-error: true
+        run: node scripts/digest.mjs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - if: github.event_name == 'pull_request' || steps.cadence.outputs.collect == 'true'
+        run: npm ci --ignore-scripts
+      - name: Verify application and collectors
+        if: github.event_name == 'pull_request' || steps.cadence.outputs.collect == 'true'
+        run: npm run check
+      - name: Build static site
+        if: github.event_name == 'pull_request' || steps.cadence.outputs.collect == 'true'
+        run: npm run build
+      - if: steps.cadence.outputs.collect == 'true'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-
-      # Pages identifies deployments by the event's commit SHA. Advance main
-      # after each dispatch so the next one uses a distinct deployment version.
-      - name: Advance SHA for the next scheduled deployment
-        if: github.event_name != 'push'
+      - name: Advance Pages deployment version
+        if: steps.cadence.outputs.collect == 'true' && github.event_name != 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          git merge --ff-only origin/main
           git commit --allow-empty -m 'Refresh Pages data [skip ci]'
           git push origin HEAD:main
-
+      - name: Record failure
+        if: failure() && github.event_name != 'pull_request'
+        run: echo '::error::Tracker update failed. The previous checkpoint and published site have been kept. Review the failed step before resetting any data.'
   deploy:
+    if: needs.build.outputs.deploy == 'true'
     timeout-minutes: 10
     needs: build
     runs-on: ubuntu-latest
@@ -92,26 +133,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-
       - name: Recover interrupted Pages deployments
         uses: actions/github-script@v8
         with:
           retries: 2
           script: |
-            const recoverPages = require('./.github/scripts/recover-pages.cjs');
-            await recoverPages({ github, context, core });
-
+            await require('./.github/scripts/recover-pages.cjs')({ github, context, core });
       - id: deployment
         uses: actions/deploy-pages@v5
-
-      - name: Clean up an interrupted deployment
+      - name: Clean up interrupted deployment
         if: failure() || cancelled()
         uses: actions/github-script@v8
         with:
-          retries: 2
           script: |
-            const recoverPages = require('./.github/scripts/recover-pages.cjs');
-            await recoverPages({ github, context, core }, { currentOnly: true });
-
-
-
+            await require('./.github/scripts/recover-pages.cjs')({ github, context, core }, { currentOnly: true });

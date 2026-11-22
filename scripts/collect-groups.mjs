@@ -1,149 +1,86 @@
-// Public Roblox group data for the GitHub Pages build. History starts when a
-// group is first tracked; visits and favorites include its public experiences.
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { requestJson, previousJson, writeJson, validateRaw, nonnegative, updateLedger, aggregate, RANGES } from './data-store.mjs';
 
-const here = path.dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = process.env.OUT_DIR || "_site";
-const SITE_URL = (process.env.SITE_URL || "").replace(/\/+$/, "");
-const GROUPS = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8"));
-const GAMES = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
-const DAY = 86400;
-const RETENTION_DAYS = 90;
-const RANGES = { "1d": [DAY, 300], "7d": [7 * DAY, 1800], all: [null, 3600] };
-
-async function getJson(url) {
-  for (let attempt = 0; attempt < 3; attempt++) {
+export async function collectGroups({ outDir = process.env.OUT_DIR || '_site', stateDir = process.env.STATE_DATA_DIR, siteUrl = process.env.SITE_URL || '', fetchImpl = fetch, now = Math.floor(Date.now() / 1000), groups, catalog, bootstrap } = {}) {
+  const options = { outDir, stateDir, siteUrl, fetchImpl, bootstrap };
+  const raw = await previousJson('group-raw.json', { ...options, validate: value => validateRaw(value, 'groups'), empty: { v: 1, groups: {}, meta: {} } });
+  const previous = await previousJson('group-live.json', { ...options, optional: true });
+  groups ||= JSON.parse(await readFile(new URL('./groups.json', import.meta.url), 'utf8'));
+  catalog ||= JSON.parse(await readFile(new URL('./games.json', import.meta.url), 'utf8'));
+  const old = new Map((previous?.groups || []).map(group => [String(group.id), group]));
+  raw.meta ||= {}; raw.meta.ledger ||= {};
+  const get = url => requestJson(url, { fetchImpl });
+  const optional = url => get(url).catch(() => null);
+  const ids = groups.map(group => group.id).join(',');
+  const [batch, icons] = await Promise.all([
+    optional(`https://groups.roblox.com/v2/groups?groupIds=${ids}`),
+    optional(`https://thumbnails.roblox.com/v1/groups/icons?groupIds=${ids}&size=420x420&format=Png&isCircular=false`),
+  ]);
+  const metadata = new Map((batch?.data || []).map(group => [String(group.id), group]));
+  const pictures = new Map((icons?.data || []).map(icon => [String(icon.targetId), icon.imageUrl]));
+  async function publicGames(id) {
+    const list = [], seen = new Set();
+    let cursor = '';
+    for (let page = 0; page < 100; page++) {
+      const query = new URLSearchParams({ accessFilter: '2', limit: '50', sortOrder: 'Asc', ...(cursor ? { cursor } : {}) });
+      const data = await get(`https://games.roblox.com/v2/groups/${id}/gamesV2?${query}`);
+      if (!Array.isArray(data.data)) throw new Error('Incomplete public game list');
+      list.push(...data.data); cursor = data.nextPageCursor;
+      if (!cursor) return [...new Map(list.map(game => [String(game.id), game])).values()];
+      if (seen.has(cursor)) throw new Error('Repeated public game cursor');
+      seen.add(cursor);
+    }
+    throw new Error('Public game pagination limit reached');
+  }
+  const stamp = new Date(now * 1000).toISOString();
+  const liveGroups = [];
+  // A failed group must not discard measurements from the other groups.
+  for (const seed of groups) {
+    const id = String(seed.id), cached = old.get(id), points = raw.groups[id] ||= [];
+    const ledger = updateLedger(points, raw.meta.ledger[id]);
     try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(15000), headers: { accept: "application/json" } });
-      if (!response.ok) {
-        if ((response.status === 429 || response.status >= 500) && attempt < 2) {
-          await new Promise((resolve) => setTimeout(resolve, 800 * (attempt + 1)));
-          continue;
-        }
-        throw new Error(`HTTP ${response.status} for ${url}`);
+      const info = await get(`https://groups.roblox.com/v1/groups/${id}`);
+      if (!nonnegative(info.memberCount)) throw new Error('Missing member count');
+      let games = null;
+      try { games = await publicGames(id); } catch { /* Keep totals unknown, never zero. */ }
+      const details = new Map();
+      if (games) for (let index = 0; index < games.length; index += 50) {
+        const data = await optional(`https://games.roblox.com/v1/games?universeIds=${games.slice(index, index + 50).map(game => game.id).join(',')}`);
+        for (const game of data?.data || []) details.set(String(game.id), game);
       }
-      return await response.json();
+      const total = key => !games ? null : games.every(game => nonnegative(details.get(String(game.id))?.[key])) ? games.reduce((sum, game) => sum + details.get(String(game.id))[key], 0) : null;
+      const totalVisits = total('visits'), totalFavorites = total('favoritedCount'), totalPlayers = total('playing');
+      const sample = [now, info.memberCount, totalVisits, totalFavorites, totalPlayers];
+      if (points.length && now - points.at(-1)[0] < 60) points[points.length - 1] = sample;
+      else points.push(sample);
+      const nextLedger = updateLedger([sample], ledger); raw.meta.ledger[id] = nextLedger;
+      const ownerId = info.owner?.userId ?? metadata.get(id)?.owner?.id;
+      liveGroups.push({ id, name: info.name || seed.name, description: info.description || '', createdAt: metadata.get(id)?.created || cached?.createdAt || null,
+        owner: ownerId ? { id: ownerId, name: info.owner?.displayName || info.owner?.username || String(ownerId), username: info.owner?.username || null, hasVerifiedBadge: info.owner?.hasVerifiedBadge === true } : null,
+        members: info.memberCount, totalVisits, totalFavorites, totalPlayers,
+        completeMetrics: { members: true, totalVisits: totalVisits !== null, totalFavorites: totalFavorites !== null, totalPlayers: totalPlayers !== null },
+        stale: false, hasVerifiedBadge: info.hasVerifiedBadge === true, iconUrl: pictures.get(id) || cached?.iconUrl || null,
+        trackingSince: nextLedger.firstTrackedAt, measuredAt: stamp,
+        gameSlugs: catalog.filter(game => String(game.ownerUrl || '').includes(`/communities/${id}/`)).map(game => game.slug) });
     } catch (error) {
-      if (attempt === 2) throw error;
-      await new Promise((resolve) => setTimeout(resolve, 800 * (attempt + 1)));
+      const last = points.at(-1);
+      raw.meta.ledger[id] = ledger;
+      liveGroups.push({ ...cached, id, name: cached?.name || seed.name, members: cached?.members ?? last?.[1] ?? null,
+        totalVisits: cached?.totalVisits ?? last?.[2] ?? null, totalFavorites: cached?.totalFavorites ?? last?.[3] ?? null, totalPlayers: cached?.totalPlayers ?? last?.[4] ?? null,
+        stale: true, error: error.message, trackingSince: ledger.firstTrackedAt || null, measuredAt: cached?.measuredAt || (last ? new Date(last[0] * 1000).toISOString() : null) });
     }
   }
+  for (const id of Object.keys(raw.groups)) raw.groups[id] = raw.groups[id].filter(point => point[0] >= now - 90 * 86400);
+  const complete = liveGroups.every(group => !group.stale && Object.values(group.completeMetrics).every(Boolean));
+  const times = liveGroups.map(group => Date.parse(group.measuredAt)).filter(Number.isFinite);
+  const live = { ok: true, source: 'roblox', complete, checkedAt: stamp, fetchedAt: times.length ? new Date(Math.max(...times)).toISOString() : null,
+    warning: complete ? null : 'Some group readings are incomplete or could not be updated. Missing totals are shown as unavailable.', groups: liveGroups };
+  const directory = path.join(outDir, 'data');
+  await Promise.all([writeJson(directory, 'group-raw.json', raw), writeJson(directory, 'group-live.json', live),
+    ...Object.keys(RANGES).map(range => writeJson(directory, `group-history-${range}.json`, aggregate(raw, range, now, { field: 'groups', metrics: ['members', 'totalVisits', 'totalFavorites', 'totalPlayers'] })))]);
+  console.log(`Collected ${liveGroups.filter(group => !group.stale).length}/${groups.length} group member readings.`);
+  return { raw, live };
 }
-
-async function groupGames(id) {
-  const games = [];
-  let cursor = null;
-  const seen = new Set();
-  for (let page = 0; page < 100; page++) {
-    const params = new URLSearchParams({ accessFilter: "2", limit: "50", sortOrder: "Asc" });
-    if (cursor) params.set("cursor", cursor);
-    const response = await getJson(`https://games.roblox.com/v2/groups/${id}/gamesV2?${params}`);
-    games.push(...(response.data || []));
-    cursor = response.nextPageCursor;
-    if (!cursor) return games;
-    if (seen.has(cursor)) throw new Error(`Repeated game cursor for group ${id}`);
-    seen.add(cursor);
-  }
-  throw new Error(`Too many game pages for group ${id}`);
-}
-
-async function previousRaw() {
-  const empty = { v: 1, groups: {} };
-  if (SITE_URL) {
-    const url = `${SITE_URL}/data/group-raw.json?t=${Date.now()}`;
-    const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
-    if (response.status === 404) return empty;
-    if (!response.ok) throw new Error(`Could not read previous group history: HTTP ${response.status}`);
-    return { ...empty, ...(await response.json()) };
-  }
-  try { return { ...empty, ...JSON.parse(await readFile(path.join(OUT_DIR, "data", "group-raw.json"), "utf8")) }; }
-  catch { return empty; }
-}
-
-function history(raw, range, now) {
-  const [seconds, bucket] = RANGES[range];
-  const since = seconds === null ? null : now - seconds;
-  const series = {};
-  for (const [id, points] of Object.entries(raw.groups)) {
-    const buckets = new Map();
-    for (const [t, members, totalVisits, totalFavorites, totalPlayers] of points) {
-      if (since !== null && t < since) continue;
-      const key = Math.floor(t / bucket) * bucket;
-      const entry = buckets.get(key) || { members: 0, visits: 0, favorites: 0, players: 0, playersCount: 0, count: 0 };
-      entry.members += members;
-      entry.visits += totalVisits;
-      entry.favorites += totalFavorites;
-      if (Number.isFinite(totalPlayers)) { entry.players += totalPlayers; entry.playersCount++; }
-      entry.count++;
-      buckets.set(key, entry);
-    }
-    series[id] = [...buckets.entries()].sort((a, b) => a[0] - b[0]).map(([t, value]) => ({
-      t: new Date(t * 1000).toISOString(),
-      members: Math.round(value.members / value.count),
-      totalVisits: Math.round(value.visits / value.count),
-      totalFavorites: Math.round(value.favorites / value.count),
-      totalPlayers: value.playersCount ? Math.round(value.players / value.playersCount) : null,
-    }));
-  }
-  return { ok: true, range, bucketSeconds: bucket, generatedAt: new Date(now * 1000).toISOString(), series };
-}
-
-const raw = await previousRaw();
-raw.groups ||= {};
-const now = Math.floor(Date.now() / 1000);
-const ids = GROUPS.map((group) => group.id).join(",");
-const [batch, icons, ...details] = await Promise.all([
-  getJson(`https://groups.roblox.com/v2/groups?groupIds=${ids}`),
-  getJson(`https://thumbnails.roblox.com/v1/groups/icons?groupIds=${ids}&size=420x420&format=Png&isCircular=false`),
-  ...GROUPS.map((group) => getJson(`https://groups.roblox.com/v1/groups/${group.id}`)),
-]);
-const batchById = new Map((batch.data || []).map((group) => [String(group.id), group]));
-const iconById = new Map((icons.data || []).map((icon) => [String(icon.targetId), icon.imageUrl || null]));
-const publicGames = new Map(await Promise.all(GROUPS.map(async (group) => [String(group.id), await groupGames(group.id)])));
-const universeIds = [...new Set([...publicGames.values()].flatMap((games) => games.map((game) => String(game.id))))];
-const gameDetails = new Map();
-for (let i = 0; i < universeIds.length; i += 50) {
-  const response = await getJson(`https://games.roblox.com/v1/games?universeIds=${universeIds.slice(i, i + 50).join(",")}`);
-  for (const game of response.data || []) gameDetails.set(String(game.id), game);
-}
-
-const liveGroups = GROUPS.map((seed, index) => {
-  const id = String(seed.id);
-  const info = details[index];
-  const created = batchById.get(id);
-  if (!created || !Number.isFinite(info.memberCount)) throw new Error(`Incomplete Roblox data for group ${id}`);
-  const games = publicGames.get(id) || [];
-  const totalVisits = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.visits ?? game.placeVisits ?? 0), 0);
-  const totalFavorites = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.favoritedCount ?? 0), 0);
-  const totalPlayers = games.reduce((sum, game) => sum + (gameDetails.get(String(game.id))?.playing ?? game.playing ?? 0), 0);
-  const points = (raw.groups[id] ||= []);
-  const sample = [now, info.memberCount, totalVisits, totalFavorites, totalPlayers];
-  if (points.length && now - points.at(-1)[0] < 60) points[points.length - 1] = sample;
-  else points.push(sample);
-  const ownerId = info.owner?.userId ?? created.owner?.id ?? null;
-  return {
-    id, name: info.name || created.name || seed.name,
-    description: info.description || created.description || "",
-    createdAt: created.created || null,
-    owner: ownerId ? { id: ownerId, name: info.owner?.displayName || info.owner?.username || String(ownerId), username: info.owner?.username || null, hasVerifiedBadge: info.owner?.hasVerifiedBadge === true } : null,
-    members: info.memberCount, totalVisits, totalFavorites, totalPlayers,
-    hasVerifiedBadge: info.hasVerifiedBadge === true,
-    iconUrl: iconById.get(id) || null,
-    trackingSince: new Date(points[0][0] * 1000).toISOString(),
-    gameSlugs: GAMES.filter((game) => String(game.ownerUrl || "").includes(`/communities/${id}/`)).map((game) => game.slug),
-    measuredAt: new Date(now * 1000).toISOString(),
-  };
-});
-
-const cutoff = now - RETENTION_DAYS * DAY;
-for (const id of Object.keys(raw.groups)) raw.groups[id] = raw.groups[id].filter(([time]) => time >= cutoff);
-const dataDir = path.join(OUT_DIR, "data");
-await mkdir(dataDir, { recursive: true });
-await Promise.all([
-  writeFile(path.join(dataDir, "group-raw.json"), JSON.stringify(raw)),
-  writeFile(path.join(dataDir, "group-live.json"), JSON.stringify({ ok: true, source: "roblox", fetchedAt: new Date(now * 1000).toISOString(), groups: liveGroups })),
-  ...Object.keys(RANGES).map((range) => writeFile(path.join(dataDir, `group-history-${range}.json`), JSON.stringify(history(raw, range, now)))),
-]);
-console.log(`Stored ${liveGroups.length} groups and ${Object.values(raw.groups).reduce((sum, points) => sum + points.length, 0)} group history points.`);
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) collectGroups().catch(error => { console.error(error.message); process.exitCode = 1; });

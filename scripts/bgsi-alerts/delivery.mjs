@@ -1,11 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { CATEGORIES, WEBHOOK_ENV, webhookPayload, delay } from './core.mjs';
+import { executeWebhook, webhookUrl } from '../../shared/discord-webhook.mjs';
 
 export function validateWebhook(url, category) {
-  const parsed = new URL(url || '');
-  if (parsed.protocol !== 'https:' || parsed.hostname !== 'discord.com' || !/^\/api\/webhooks\/\d+\/[\w-]+$/.test(parsed.pathname)) throw new Error(`Invalid ${category} Discord webhook configuration`);
-  return parsed.href;
+  return webhookUrl(url, category).href.replace('?wait=true', '');
 }
 export async function loadWebhooks(configPath = process.env.BGSI_WEBHOOK_CONFIG || '.github/bgsi-webhooks.json') {
   let configured = {};
@@ -18,33 +17,13 @@ export async function postImages(webhook, jobs, images, { fetchImpl = fetch, wai
   if (!images.length || images.length > 10) throw new Error('Discord image batch must contain 1–10 PNG files');
   const filenames = images.map(image => path.basename(image.filename));
   const payload = webhookPayload(jobs, filenames);
-  const url = new URL(webhook); url.searchParams.set('wait', 'true');
-  for (let attempt = 0; attempt < 4; attempt++) {
+  const message = await executeWebhook(webhook, () => {
     const form = new FormData();
     form.set('payload_json', JSON.stringify(payload));
     images.forEach((image, index) => form.set(`files[${index}]`, new Blob([image.bytes], { type: 'image/png' }), filenames[index]));
-    let response;
-    try { response = await fetchImpl(url, { method: 'POST', body: form, signal: AbortSignal.timeout(45000) }); }
-    catch { const error = new Error('Discord delivery result is unknown after a connection failure'); error.uncertain = true; throw error; }
-    if (response.status === 429 && attempt < 3) {
-      const limited = await response.json().catch(() => ({}));
-      await wait(Math.min(60000, Math.max(1000, Number(limited.retry_after) * 1000 || 3000)));
-      continue;
-    }
-    if (!response.ok) {
-      const error = new Error(`Discord rejected the ${jobs[0].category} notification (HTTP ${response.status})`);
-      if (response.status >= 500) error.uncertain = true;
-      throw error;
-    }
-    let message;
-    try { message = await response.json(); }
-    catch { const error = new Error('Discord returned an unreadable delivery confirmation'); error.uncertain = true; throw error; }
-    if (!message.id || message.attachments?.length !== images.length || message.mention_everyone !== true) {
-      const error = new Error('Discord delivery confirmation did not include all images and the everyone mention'); error.uncertain = true; throw error;
-    }
-    return { id: message.id, channelId: message.channel_id, attachmentCount: message.attachments.length };
-  }
-  throw new Error('Discord rate limit did not clear');
+    return form;
+  }, { fetchImpl, wait, attempts: 4, verify: message => message.attachments?.length === images.length && message.mention_everyone === true });
+  return { id: message.id, channelId: message.channel_id, attachmentCount: message.attachments.length };
 }
 
 export async function deliverQueue(state, { store, hooks, render, directory, send = postImages, readImage = file => readFile(file), maxMessages = 8 } = {}) {

@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="../../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrackCCU">
+<meta name="mobile-web-app-capable" content="yes">
 <script>window.SITE_ROOT = "../../";</script>
 <link rel="icon" href="../../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png"><link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script src="https://cdn.tailwindcss.com"></script><script src="../../tailwind-config.js"></script>
+<link rel="stylesheet" href="../../utility.css?v=d95a6e0f440b">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../site.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../site.css?v=d95a6e0f440b">
 <title>Mining Simulator - TrackCCU</title>
 <meta name="theme-color" content="#5CDDFA">
 <meta name="description" content="Roblox player counts and history.">
@@ -19,11 +24,12 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mining Simulator - TrackCCU">
 <meta name="twitter:description" content="Roblox player counts and history.">
+<script defer src="../../contact.js?v=20261122"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-  <a href="../../games" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg> All games</a>
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
+  <a href="../../games.html" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true" ><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg> All games</a>
   <div id="notice" class="hidden bg-amber-400/10 border border-amber-400/30 text-amber-200 text-sm rounded-xl px-4 py-3"></div>
   <div id="notFound" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-10 text-center"><h1 class="text-2xl font-bold">Game not found</h1><p class="text-slate-400 mt-2">This game isn't tracked anymore.</p></div>
 
@@ -60,12 +66,10 @@
       <div class="stat-panel"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg> Peak · 30 days</span><strong id="peak30">—</strong><small id="peak30when">Collecting history…</small></div>
     </section>
 
-    <section class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+    <section class="game-detail-metrics">
       <div class="metric-card"><span class="metric-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true" ><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Visits</span><strong id="visits">—</strong></div>
+      <div class="game-vote-panel"><div class="game-vote-main"><div class="game-vote-score"><span class="game-vote-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3Z"/><path d="M7 10 12 2a3 3 0 0 1 3 3v3h4.5a2.5 2.5 0 0 1 2.45 3l-1.8 9A2.5 2.5 0 0 1 17.7 22H7"/></svg> Rating</span><strong id="rating">—</strong></div><div class="game-vote-counts"><span title="Upvotes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3Z"/><path d="M7 10 12 2a3 3 0 0 1 3 3v3h4.5a2.5 2.5 0 0 1 2.45 3l-1.8 9A2.5 2.5 0 0 1 17.7 22H7"/></svg><strong id="upvotes">—</strong></span><span title="Downvotes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V2h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3Z"/><path d="m17 14-5 8a3 3 0 0 1-3-3v-3H4.5a2.5 2.5 0 0 1-2.45-3l1.8-9A2.5 2.5 0 0 1 6.3 2H17"/></svg><strong id="downvotes">—</strong></span></div></div><div class="game-vote-bar" role="img" aria-label="Game rating unavailable"><span id="gameVoteBarFill"></span></div></div>
       <div class="metric-card"><span class="metric-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm" aria-hidden="true" ><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg> Favourites</span><strong id="favs">—</strong></div>
-      <div class="metric-card"><span class="metric-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-warm" aria-hidden="true" ><path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"/><path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"/><path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"/></svg> Rating</span><strong id="rating">—</strong></div>
-      <div class="metric-card"><span class="metric-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-up" aria-hidden="true" ><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/></svg> Upvotes</span><strong id="upvotes">—</strong></div>
-      <div class="metric-card"><span class="metric-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-down" aria-hidden="true" ><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/><path d="M17 14V2"/></svg> Downvotes</span><strong id="downvotes">—</strong></div>
     </section>
     </div>
 
@@ -121,6 +125,7 @@
         <div id="eventPeriod" class="collectibles-tabs event-period" role="group" aria-label="Event period" hidden><button id="currentEvents" type="button" aria-pressed="true">Current</button><button id="pastEvents" type="button" aria-pressed="false">Past</button></div>
         <div class="collectibles-tabs" role="tablist" aria-label="Choose collectibles">
           <button id="passesTab" type="button" role="tab" aria-selected="true" aria-controls="collectiblesPanel">Passes</button>
+          <button id="productsTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Products</button>
           <button id="badgesTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Badges</button>
           <button id="eventsTab" type="button" role="tab" aria-selected="false" aria-controls="collectiblesPanel">Events</button>
         </div>
@@ -137,10 +142,32 @@
       <img id="eventModalImage" class="event-dialog-image" alt="" hidden>
       <div class="event-dialog-body"><p id="eventModalStatus" class="event-dialog-status"></p><h2 id="eventModalTitle"></h2><p id="eventModalSubtitle" class="event-dialog-subtitle" hidden></p><div class="event-dialog-links"><span id="eventModalInterested" class="event-interested"></span><a id="eventModalLink" href="#" target="_blank" rel="noopener noreferrer" class="event-roblox-link">Open on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div><div class="event-dialog-times"><div><span>Starts</span><time id="eventModalStart"></time></div><div><span>Ends</span><time id="eventModalEnd"></time></div></div><p id="eventModalDescription" class="event-dialog-description" hidden></p></div>
     </dialog>
+    <dialog id="badgeDialog" class="pass-dialog badge-dialog" aria-labelledby="badgeModalTitle">
+      <button id="badgeDialogClose" type="button" class="event-dialog-close pass-dialog-close" aria-label="Close badge details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <div class="pass-dialog-content">
+        <div class="pass-dialog-hero"><img id="badgeModalImage" alt="" hidden><div><p class="pass-dialog-game">From <a id="badgeModalGame" href="#" target="_blank" rel="noopener noreferrer"></a></p><h2 id="badgeModalTitle"></h2><p id="badgeModalDescription" class="pass-dialog-description" hidden></p></div></div>
+        <div class="badge-dialog-facts">
+          <div class="pass-dialog-metric"><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg> Won Ever</span><strong id="badgeModalWon"></strong></div>
+          <div class="pass-dialog-metric"><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3 6 6.6 1-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6L2.4 9 9 8z"/></svg> Rarity</span><strong id="badgeModalRarity"></strong></div>
+          <div class="pass-dialog-dates"><div><span class="pass-dialog-label">Created</span><strong id="badgeModalCreated"></strong><small id="badgeModalCreatedExact"></small></div><div><span class="pass-dialog-label">Updated</span><strong id="badgeModalUpdated"></strong><small id="badgeModalUpdatedExact"></small></div></div>
+        </div>
+        <a id="badgeModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer">Open badge on Roblox <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+      </div>
+    </dialog>
+    <dialog id="passDialog" class="pass-dialog" aria-labelledby="passModalTitle">
+      <button id="passDialogClose" type="button" class="event-dialog-close pass-dialog-close" aria-label="Close pass details"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <div class="pass-dialog-content">
+        <div class="pass-dialog-hero"><img id="passModalImage" alt="" hidden><div><p class="pass-dialog-game">From <a id="passModalGame" href="#" target="_blank" rel="noopener noreferrer"></a></p><h2 id="passModalTitle"></h2><p id="passModalDescription" class="pass-dialog-description" hidden></p></div></div>
+        <div class="pass-dialog-facts"><div class="pass-dialog-metric"><span class="pass-dialog-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg> Price</span><strong id="passModalPrice" class="pass-dialog-price"></strong></div>
+        <div class="pass-dialog-dates"><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg> Created</span><strong id="passModalCreated"></strong><small id="passModalCreatedExact"></small></div><div><span class="pass-dialog-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.36 6.36L3 16"/><path d="M8 16H3v5"/></svg> Updated</span><strong id="passModalUpdated"></strong><small id="passModalUpdatedExact"></small></div></div></div>
+        <div class="pass-dialog-history"><div class="pass-dialog-history-heading"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 2 5-6"/></svg> Price history</h3></div><div id="passPriceChart" class="pass-price-chart" aria-label="Price history chart"></div></div>
+        <a id="passModalLink" class="pass-dialog-link" href="#" target="_blank" rel="noopener noreferrer"><span id="passModalLinkText">Open pass on Roblox</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+      </div>
+    </dialog>
   </div>
 </main>
 <div id="site-footer"></div>
-<script src="../../config.js"></script><script src="../../site.js?v=20261111-branding"></script>
+<script src="../../config.js"></script><script src="../../chart-tools.js?v=7d4f5dc25c4b"></script><script src="../../site.js?v=edc70d05256a"></script>
 <script>
 (() => {
   "use strict";
@@ -156,9 +183,12 @@
   icon.addEventListener("error",()=>{ if(icon.dataset.fallback==="0"){icon.dataset.fallback="1";icon.src=`${ROOT}assets/${game.slug}-icon.png`;}else icon.src=iconFallback; });
   const thumb=$("thumbnail"); thumb.src=`${ROOT}assets/${game.slug}-thumbnail.png`; thumb.onerror=()=>{thumb.onerror=null;thumb.src=iconFallback;};
 
+  let requestedRange="1d", loadedRange=null;
+  document.querySelector(".game-detail-info").dataset.slug=game.slug;
   let latest=null, chartRange="1d", chartMetric="playing", chartPoints=[], rangePoints=[], rangeRows=[], allPoints=[], trendPoints=[], chartRequest=0;
   const chartLabels={playing:"Players",favorites:"Favorites",visits:"Visits"};
   let navStart=0, navEnd=1, navDrag=null;
+  const dataView=ChartTools.dataView($("gameChartPanel"),{headers:()=>["Time (UTC)",chartLabels[chartMetric]],rows:()=>chartPoints.map(point=>[new Date(point.x).toISOString(),point.y]),filename:`trackccu-${game.slug}.csv`});
   function paintOwner(d){
     const owner=$("owner"), name=d.creator||game.ownerName||"—";
     const groupId=d.creatorType==="Group"&&d.creatorId?String(d.creatorId):groupIdForGame(game);
@@ -176,7 +206,12 @@
 
   function paintLive(payload){
     const d=(payload.games||[]).find(x=>x.slug===game.slug); if(!d)return; latest=d;
-    setText($("ccu"),fmt(d.playing)); $("visits").textContent=fmt(d.visits); $("favs").textContent=fmt(d.favorites); $("rating").textContent=typeof d.ratingPercent==="number"?d.ratingPercent+"%":"—"; $("upvotes").textContent=fmt(d.upVotes); $("downvotes").textContent=fmt(d.downVotes);
+    setText($("ccu"),fmt(d.playing)); $("visits").textContent=fmt(d.visits); $("favs").textContent=fmt(d.favorites);
+    const up=d.upVotes,down=d.downVotes,hasVotes=Number.isFinite(up)&&Number.isFinite(down)&&up+down>0;
+    $("rating").textContent=hasVotes?`${Math.round(up/(up+down)*100)}%`:"—";
+    $("upvotes").textContent=Number.isFinite(up)?fmt(up):"—";$("downvotes").textContent=Number.isFinite(down)?fmt(down):"—";
+    $("gameVoteBarFill").style.width=hasVotes?`${up/(up+down)*100}%`:"0%";
+    document.querySelector(".game-vote-bar").setAttribute("aria-label",hasVotes?`Game rating: ${fmt(up)} upvotes and ${fmt(down)} downvotes`:"Game rating unavailable");
     for(const [valueId,exactId,stamp] of [["created","createdExact",d.createdAt],["updated","updatedExact",d.updatedAt]]){
       $(valueId).textContent=relativeTime(stamp);
       $(exactId).textContent=fullDateTime(stamp);
@@ -186,27 +221,38 @@
     if(d.iconUrl) icon.src=d.iconUrl; if(d.thumbnailUrl) thumb.src=d.thumbnailUrl; if(d.liveName) $("name").textContent=d.liveName;
     if(d.trackingSince){ $("trackingSince").textContent=relativeTime(d.trackingSince); $("trackingExact").textContent=fullDateTime(d.trackingSince); $("trackingSince").title=fullDateTime(d.trackingSince); }
     $("notice").classList.toggle("hidden",payload.source!=="database"); if(payload.source==="database") $("notice").textContent=payload.warning||"Showing the last stored reading.";
-    paintTrend();
+    paintTrend(); paintPeaks();
   }
 
   function pointsForWindow(ms){const cutoff=Date.now()-ms;return allPoints.filter(p=>p.x>=cutoff);}
   function peakInfo(ms){const pts=pointsForWindow(ms); if(!pts.length)return null; return pts.reduce((best,p)=>(p.peak??p.y)>(best.peak??best.y)?p:best,pts[0]);}
-  function paintPeaks(){ for(const [id,ms] of [["24",DAY],["7",7*DAY],["30",30*DAY]]){const p=peakInfo(ms); $("peak"+id).textContent=p?fmt(p.peak??p.y):"—"; $("peak"+id+"when").textContent=p?relativeTime(p.x):"Not enough history yet"; if(p) $("peak"+id+"when").title=fullDateTime(p.x);} }
+  function paintPeaks(){
+    for(const [id,key,ms] of [["24","24h",DAY],["7","7d",7*DAY],["30","30d",30*DAY]]){
+      const fallback=peakInfo(ms), value=latest?.[`peak${key}`]??fallback?.peak??fallback?.y;
+      const time=latest?.[`peak${key}At`]||(fallback?.peakAt?Date.parse(fallback.peakAt):null);
+      $("peak"+id).textContent=fmt(value);
+      $("peak"+id+"when").textContent=time?relativeTime(time):fallback?"Within this hour":"No measurements yet";
+      if(time)$("peak"+id+"when").title=fullDateTime(time);
+    }
+  }
+
   function paintTrend(){
     for(const [id,windowMs,label,toleranceMs] of [["trend1h",HOUR,"1h",20*60000],["trend24h",DAY,"24h",20*60000]]){
       const el=$(id);
-      if(!latest||!Number.isFinite(latest.playing)||!trendPoints.length){el.textContent="";continue;}
+      if(!latest||latest.stale||!Number.isFinite(latest.playing)||!trendPoints.length){el.textContent="";continue;}
       const target=Date.now()-windowMs;
       let near=trendPoints[0];
       for(const p of trendPoints)if(Math.abs(p.x-target)<Math.abs(near.x-target))near=p;
       if(Math.abs(near.x-target)>toleranceMs||!Number.isFinite(near.y)){el.textContent="";continue;}
       const diff=latest.playing-near.y;
-      el.textContent=diff===0?`No change in ${label}`:`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in ${label}`;
-      el.className=diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400";
+      if(diff===0)el.innerHTML=Tracker.zeroTrendHtml;
+      else el.textContent=`${diff>0?"▲ +":"▼ −"}${fmt(Math.abs(diff))} in ${label}`;
+      el.className=diff>0?"text-emerald-400":diff<0?"text-rose-400":"text-slate-400 trend-flat";
     }
   }
 
   function drawChart(){
+    dataView.update();
     const host=$("chartHost"), note=$("chartNote"), tip=$("chartTooltip"); tip.classList.add("hidden"); if(chartPoints.length<2){host.innerHTML="";$("chartStats").innerHTML="";note.textContent=`Collecting ${chartLabels[chartMetric].toLowerCase()} history…`;note.classList.remove("hidden");note.classList.add("flex");return;} note.classList.add("hidden");note.classList.remove("flex");
     const W=Math.max(260,host.clientWidth),H=Math.max(220,host.clientHeight);
     const PL=chartMetric==="visits"?82:chartMetric==="favorites"?76:60,PR=32,PT=18,PB=34;
@@ -216,12 +262,15 @@
     const axisLabel=value=>{if(value<1000000)return fmt(value);const unit=value>=1000000000?1000000000:1000000,suffix=unit===1000000000?"B":"M",digits=Math.min(5,Math.max(0,Math.ceil(Math.log10(unit/axis.step))));return `${(value/unit).toFixed(digits).replace(/(\.\d*?)0+$/,"$1").replace(/\.$/,"")}${suffix}`;};
     let grid="";for(const val of axis.ticks){const yy=y(val);grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-7}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${axisLabel(val)}</text>`;}
     const xTicks=Math.min(11,Math.max(3,Math.floor((W-PL-PR)/155)));let xt="";for(let i=0;i<xTicks;i++){const t=minX+i*(maxX-minX)/(xTicks-1),xx=x(t);xt+=`<text x="${xx}" y="${H-10}" text-anchor="middle" fill="#64748b" font-size="11">${chartRange==="1d"?clockLabel(t):dayLabel(t)}</text>`;}
-    const line=chartPoints.map((p,i)=>`${i?"L":"M"}${x(p.x).toFixed(1)} ${y(p.y).toFixed(1)}`).join(" "); const area=`${line} L${x(chartPoints.at(-1).x)} ${H-PB} L${x(chartPoints[0].x)} ${H-PB} Z`;
+    const gap=({"1d":300,"7d":1800,all:3600}[chartRange])*2500;
+    const line=ChartTools.line(chartPoints,x,y,"y",gap),area=ChartTools.area(chartPoints,x,y,H-PB,"y",gap);
     host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${chartLabels[chartMetric]} history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML=`<span class="chart-stat">High <b>${fmt(Math.max(...ys))}</b></span><span class="chart-stat">Low <b>${fmt(Math.min(...ys))}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(ys.reduce((a,b)=>a+b,0)/ys.length))}</b></span>`;
     const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"),halo=host.querySelector("#hoverHalo"),dot=host.querySelector("#hoverDot");
-    const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const xx=x(best.x),yy=y(best.y);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");for(const point of [halo,dot]){point.setAttribute("cx",xx);point.setAttribute("cy",yy);point.setAttribute("visibility","visible");}tip.innerHTML=`<b>${fmt(best.y)} ${chartLabels[chartMetric].toLowerCase()}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";};
-    svg.addEventListener("pointermove",move);svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");halo.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden");tip.classList.add("hidden");});
+    const move=e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;let best=chartPoints[0];for(const p of chartPoints)if(Math.abs(x(p.x)-px)<Math.abs(x(best.x)-px))best=p;const target=minX+(px-PL)/(W-PL-PR)*(maxX-minX);if(Math.abs(best.x-target)>({"1d":300,"7d":1800,all:3600}[chartRange])*1500){lineEl.setAttribute("visibility","hidden");halo.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden");tip.classList.add("hidden");return;}const xx=x(best.x),yy=y(best.y);lineEl.setAttribute("x1",xx);lineEl.setAttribute("x2",xx);lineEl.setAttribute("visibility","visible");for(const point of [halo,dot]){point.setAttribute("cx",xx);point.setAttribute("cy",yy);point.setAttribute("visibility","visible");}tip.innerHTML=`<b>${fmt(best.y)} ${chartLabels[chartMetric].toLowerCase()}</b><br><span class="text-slate-400">${chartDateTime(best.x)}</span>`;tip.classList.remove("hidden");tip.style.left=Math.min(r.width-160,Math.max(8,(xx/W)*r.width+10))+"px";tip.style.top="14px";};
+    svg.addEventListener("pointermove",move);
+    svg.addEventListener("pointerdown",event=>{if(event.pointerType==="touch")move(event);});
+    svg.addEventListener("pointerleave",()=>{lineEl.setAttribute("visibility","hidden");halo.setAttribute("visibility","hidden");dot.setAttribute("visibility","hidden");tip.classList.add("hidden");});
   }
 
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -255,8 +304,8 @@
     const low=Math.min(...values),high=Math.max(...values),spread=high-low||1;
     const x=stamp=>4+(stamp-first)/(last-first||1)*992;
     const y=value=>60-(value-low)/spread*48;
-    const line=rangePoints.map((point,index)=>`${index?"L":"M"}${x(point.x).toFixed(1)} ${y(point.y).toFixed(1)}`).join(" ");
-    const area=`${line} L${x(last).toFixed(1)} 68 L${x(first).toFixed(1)} 68 Z`;
+    const gap=({"1d":300,"7d":1800,all:3600}[chartRange])*2500;
+    const line=ChartTools.line(rangePoints,x,y,"y",gap),area=ChartTools.area(rangePoints,x,y,68,"y",gap);
     $("chartNavigatorPlot").innerHTML=`<defs><linearGradient id="navArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".25"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#navArea)"/><path d="${line}" fill="none" stroke="#55cce9" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`;
     applyNavSelection();
   }
@@ -314,27 +363,37 @@
   });
 
   async function loadRange(range,resetSelection=false){
+    requestedRange=range;
     if(resetSelection||chartRange!==range){navStart=0;navEnd=1;}
-    chartRange=range;
-    const request=++chartRequest;
-    const controls=$("gameRanges");
-    controls.setAttribute("aria-busy","true");
-    document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.range===range)));
+    chartRange=range; const request=++chartRequest;
+    const controls=$("gameRanges"); controls.setAttribute("aria-busy","true");
+    document.querySelectorAll("#gameRanges .range-btn").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.range===range)));
     try{
-      const r=await fetch(Tracker.CONFIG.history(range),{cache:"no-store"});
-      if(!r.ok) throw new Error("HTTP "+r.status);
-      const p=await r.json();
-      if(request!==chartRequest) return;
-      rangeRows=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),playing:row.playing,peak:row.peak,favorites:row.favorites,visits:row.visits})).filter(point=>Number.isFinite(point.x)&&Number.isFinite(point.playing)).sort((a,b)=>a.x-b.x);
+      const payload=await Tracker.requestJson(Tracker.CONFIG.history(range));
+      if(request!==chartRequest)return;
+      loadedRange=range;
+      rangeRows=(payload.series?.[game.slug]||[]).map(row=>({x:Date.parse(row.t),playing:row.playing,peak:row.peak,peakAt:row.peakAt,favorites:row.favorites,visits:row.visits})).filter(point=>Number.isFinite(point.x)&&Number.isFinite(point.playing)).sort((a,b)=>a.x-b.x);
       if(range==="1d"){trendPoints=rangeRows.map(row=>({x:row.x,y:row.playing}));paintTrend();}
-    }catch(e){if(request!==chartRequest)return;console.error(e);rangeRows=[];}
+      Tracker.setPanelState($("gameChartPanel")); setMetricPoints();
+    }catch(error){if(request===chartRequest){
+      if(loadedRange){chartRange=loadedRange;document.querySelectorAll("#gameRanges .range-btn").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.range===loadedRange)));}
+      Tracker.setPanelState($("gameChartPanel"),loadedRange?"Could not load the requested period. Showing the previously loaded period.":"Could not load chart history.");
+    }}
     finally{if(request===chartRequest)controls.removeAttribute("aria-busy");}
-    if(request===chartRequest)setMetricPoints();
   }
-  async function loadAll(){try{const r=await fetch(Tracker.CONFIG.history("all"),{cache:"no-store"}),p=await r.json();allPoints=((p.series&&p.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing,peak:row.peak}));paintPeaks();if(!latest?.trackingSince&&allPoints.length){$("trackingSince").textContent=relativeTime(allPoints[0].x);$("trackingExact").textContent=fullDateTime(allPoints[0].x);$("trackingSince").title=fullDateTime(allPoints[0].x);}if(chartRange!=="1d"){const dayResponse=await fetch(Tracker.CONFIG.history("1d"),{cache:"no-store"}),day=await dayResponse.json();trendPoints=((day.series&&day.series[game.slug])||[]).map(row=>({x:new Date(row.t).getTime(),y:row.playing}));paintTrend();}}catch(e){console.error(e);}}
+  async function loadAll(){
+    try{
+      const payload=await Tracker.requestJson(Tracker.CONFIG.history("all"));
+      allPoints=(payload.series?.[game.slug]||[]).map(row=>({x:Date.parse(row.t),y:row.playing,peak:row.peak,peakAt:row.peakAt}));paintPeaks();
+      if(chartRange!=="1d"){
+        const day=await Tracker.requestJson(Tracker.CONFIG.history("1d"));
+        trendPoints=(day.series?.[game.slug]||[]).map(row=>({x:Date.parse(row.t),y:row.playing}));paintTrend();
+      }
+    }catch(error){console.error("Record history unavailable:",error);}
+  }
 
   let extras=null, collectiblesTab="passes", priceSortAsc=false, eventPeriod="current";
-  const collectiblesQueries={passes:"",badges:"",events:""};
+  const collectiblesQueries={passes:"",products:"",badges:"",events:""};
   const expandedCollectibles=Object.create(null);
   // Robux 2019 logo: https://commons.wikimedia.org/wiki/File:Robux_2019_Logo_white.svg
   const robuxIcon='<svg viewBox="0 0 91.99 100.06" fill="currentColor" aria-hidden="true"><path d="M82,17.72A19.94,19.94,0,0,1,92,35V65.08A19.92,19.92,0,0,1,82,82.33L56,97.39a19.94,19.94,0,0,1-19.91,0L10,82.33A19.91,19.91,0,0,1,0,65.08V35A19.93,19.93,0,0,1,10,17.72L36,2.67A19.89,19.89,0,0,1,56,2.67ZM39.53,9.5,14.13,24.17a12.92,12.92,0,0,0-6.46,11.2V64.69a12.93,12.93,0,0,0,6.46,11.2l25.4,14.66a12.93,12.93,0,0,0,12.93,0l25.4-14.66a12.93,12.93,0,0,0,6.46-11.2V35.37a12.92,12.92,0,0,0-6.46-11.2L52.46,9.5a12.93,12.93,0,0,0-12.93,0ZM51.3,17.7l20,11.56a10.64,10.64,0,0,1,5.32,9.21V61.6a10.61,10.61,0,0,1-5.32,9.2l-20,11.57a10.61,10.61,0,0,1-10.62,0l-20-11.57a10.6,10.6,0,0,1-5.31-9.2V38.47a10.63,10.63,0,0,1,5.31-9.21l20-11.56a10.61,10.61,0,0,1,10.62,0ZM34.5,61.53h23v-23h-23Z"/></svg>';
@@ -346,6 +405,79 @@
     if(stamp){time.dateTime=stamp;time.dataset.exact=fullDateTime(stamp);time.setAttribute("aria-label",`${label}: ${fullDateTime(stamp)}`);}
     row.append(heading,time);return row;
   }
+  let openPassItem=null;
+  function drawPassPriceChart(item){
+    const chart=$("passPriceChart");
+    const readings=(item.priceHistory||[]).map(point=>({x:Date.parse(point.t),price:point.price})).filter(point=>Number.isFinite(point.x)&&(point.price===null||Number.isFinite(point.price))).sort((a,b)=>a.x-b.x);
+    const priced=readings.filter(point=>Number.isFinite(point.price));
+    if(!priced.length){chart.innerHTML='<p class="pass-chart-empty">No price data</p>';return;}
+    const first=readings[0].x,last=Math.max(readings.at(-1).x,Date.parse(item.priceLastObservedAt)||0);
+    const W=Math.max(280,chart.clientWidth),H=210,L=58,R=18,T=20,B=34;
+    const minX=last-first<60000?first-30*60000:first,maxX=last-first<60000?first+30*60000:last;
+    const prices=priced.map(point=>point.price),low=Math.min(...prices),high=Math.max(...prices);
+    const axis=niceAxis(Math.max(0,low-Math.max(1,(high-low)*.15,high*.08)),high+Math.max(1,(high-low)*.15,high*.08),4);
+    const x=value=>L+(value-minX)/(maxX-minX)*(W-L-R),y=value=>T+(1-(value-axis.min)/(axis.max-axis.min))*(H-T-B);
+    let grid="";for(const value of axis.ticks){const yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#293149"/><text x="${L-9}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${fmt(value)}</text>`;}
+    let paths="",dots="",pointIndex=0;
+    for(let i=0;i<readings.length;i++){
+      const point=readings[i];if(!Number.isFinite(point.price))continue;
+      const next=readings[i+1],end=next?next.x:last;
+      if(end>point.x)paths+=`M${x(point.x).toFixed(1)} ${y(point.price).toFixed(1)}H${x(end).toFixed(1)}`;
+      if(next&&Number.isFinite(next.price))paths+=`M${x(next.x).toFixed(1)} ${y(point.price).toFixed(1)}V${y(next.price).toFixed(1)}`;
+      dots+=`<circle cx="${x(point.x).toFixed(1)}" cy="${y(point.price).toFixed(1)}" r="5" fill="#34bfe5" stroke="#15192d" stroke-width="2"/><circle class="pass-price-hit" data-point="${pointIndex++}" cx="${x(point.x).toFixed(1)}" cy="${y(point.price).toFixed(1)}" r="16" fill="transparent" tabindex="0"/>`;
+    }
+    const dates=last-first<60000?`<text x="${x(first)}" y="${H-9}" text-anchor="middle" fill="#64748b" font-size="11">${dateLabel(first)}</text>`:`<text x="${L}" y="${H-9}" fill="#64748b" font-size="11">${dateLabel(first)}</text><text x="${W-R}" y="${H-9}" text-anchor="end" fill="#64748b" font-size="11">${dateLabel(last)}</text>`;
+    chart.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="210" aria-label="Recorded price history">${grid}<path d="${paths}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}${dates}</svg><div class="pass-price-tooltip" hidden></div>`;
+    const tooltip=chart.querySelector(".pass-price-tooltip");
+    const show=(hit)=>{
+      const point=priced[Number(hit.dataset.point)];if(!point)return;
+      tooltip.textContent=`${fmt(point.price)} Robux · ${fullDateTime(point.x)}`;
+      tooltip.hidden=false;
+      const svg=chart.querySelector("svg"),box=svg.getBoundingClientRect();
+      const pointX=Number(hit.getAttribute("cx"))/W*box.width,pointY=Number(hit.getAttribute("cy"))/H*box.height;
+      const half=tooltip.offsetWidth/2;
+      tooltip.style.left=`${Math.max(half+8,Math.min(chart.clientWidth-half-8,pointX))}px`;
+      tooltip.style.top=`${pointY}px`;
+      tooltip.classList.toggle("is-below",pointY<tooltip.offsetHeight+18);
+    };
+    chart.querySelectorAll(".pass-price-hit").forEach(hit=>{
+      const point=priced[Number(hit.dataset.point)];
+      hit.setAttribute("aria-label",`${fmt(point.price)} Robux, ${fullDateTime(point.x)}`);
+      hit.addEventListener("pointerdown",event=>event.preventDefault());
+      hit.addEventListener("pointerenter",()=>show(hit));hit.addEventListener("focus",()=>show(hit));
+      hit.addEventListener("pointerleave",()=>tooltip.hidden=true);hit.addEventListener("blur",()=>tooltip.hidden=true);
+    });
+  }
+  function openPass(item,kind="passes"){
+    openPassItem=item;
+    const dialog=$("passDialog"),image=$("passModalImage"),description=$("passModalDescription"),price=$("passModalPrice");
+    $("passModalTitle").textContent=item.name||(kind==="products"?"Untitled product":"Untitled pass");$("passModalGame").textContent=latest?.liveName||game.label;$("passModalGame").href=game.url;
+    description.textContent=item.description||"";description.hidden=!item.description;
+    image.hidden=!item.iconUrl;dialog.querySelector(".pass-dialog-hero").classList.toggle("no-image",!item.iconUrl);if(item.iconUrl)image.src=item.iconUrl;else image.removeAttribute("src");
+    price.replaceChildren();price.classList.toggle("is-offsale",!item.isForSale);if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}else price.textContent=item.unavailable?"Unavailable":"Offsale";
+    for(const [label,exact,stamp] of [["passModalCreated","passModalCreatedExact",item.created],["passModalUpdated","passModalUpdatedExact",item.updated]]){$(label).textContent=relativeTime(stamp);$(exact).textContent=fullDateTime(stamp);}
+    let observed=document.getElementById("priceLastChecked");
+    if(!observed){observed=document.createElement("p");observed.id="priceLastChecked";observed.className="price-last-checked";$("passPriceChart").after(observed);}
+    observed.textContent=item.unavailable?"This item is no longer in the public list. Its recorded history has been kept.":item.priceLastObservedAt?`Last checked ${fullDateTime(item.priceLastObservedAt)}`:"";
+    $("passModalLink").href=kind==="products"?game.url:`https://www.roblox.com/game-pass/${encodeURIComponent(item.id)}/`;
+    $("passModalLinkText").textContent=kind==="products"?"Open game on Roblox":"Open pass on Roblox";
+    $("passDialogClose").setAttribute("aria-label",kind==="products"?"Close product details":"Close pass details");
+    dialog.showModal();document.body.classList.add("event-modal-open");drawPassPriceChart(item);$("passDialogClose").focus();
+  }
+  function openBadge(item){
+    const dialog=$("badgeDialog"),image=$("badgeModalImage"),description=$("badgeModalDescription");
+    $("badgeModalTitle").textContent=item.name||"Untitled badge";
+    $("badgeModalGame").textContent=latest?.liveName||game.label;$("badgeModalGame").href=game.url;
+    description.textContent=item.description||"";description.hidden=!item.description;
+    image.hidden=!item.iconUrl;dialog.querySelector(".pass-dialog-hero").classList.toggle("no-image",!item.iconUrl);
+    if(item.iconUrl)image.src=item.iconUrl;else image.removeAttribute("src");
+    $("badgeModalWon").textContent=fmt(item.awardedCount);
+    // Roblox supplies the win rate as a fraction; its game page shows the percentage to one decimal.
+    $("badgeModalRarity").textContent=Number.isFinite(item.winRatePercentage)?`${new Intl.NumberFormat("en-US",{minimumFractionDigits:1,maximumFractionDigits:1}).format(item.winRatePercentage*100)}%`:"—";
+    for(const [label,exact,stamp] of [["badgeModalCreated","badgeModalCreatedExact",item.created],["badgeModalUpdated","badgeModalUpdatedExact",item.updated]]){$(label).textContent=relativeTime(stamp);$(exact).textContent=fullDateTime(stamp);}
+    $("badgeModalLink").href=`https://www.roblox.com/badges/${encodeURIComponent(item.id)}/`;
+    dialog.showModal();document.body.classList.add("event-modal-open");$("badgeDialogClose").focus();
+  }
   function collectibleCard(item,kind){
     const card=document.createElement("article");card.className="collectible-card";
     const art=document.createElement("div");art.className="collectible-art";
@@ -355,10 +487,10 @@
     }else art.classList.add("collectible-art-empty");
     const nameLine=document.createElement("div");nameLine.className="collectible-name-line";
     const name=document.createElement("h3");name.textContent=item.name||"Untitled";nameLine.append(name);
-    if(kind==="passes"){
+    if(kind==="passes"||kind==="products"){
       const price=document.createElement("span");price.className=item.isForSale?"collectible-price":"collectible-offsale";
       if(item.isForSale&&Number.isFinite(item.price)){price.innerHTML=robuxIcon;price.append(document.createTextNode(fmt(item.price)));}
-      else price.textContent="Offsale";
+      else price.textContent=item.unavailable?"Unavailable":"Offsale";
       nameLine.append(price);
     }
     const dates=document.createElement("div");dates.className="collectible-dates";
@@ -369,7 +501,14 @@
       const count=document.createElement("strong");count.textContent=fmt(item.awardedCount);
       won.append(label,count);dates.append(won);
     }
-    card.append(art,nameLine,dates);return card;
+    card.append(art,nameLine,dates);
+    if(kind==="passes"||kind==="products"||kind==="badges"){
+      const open=()=>kind==="badges"?openBadge(item):openPass(item,kind);
+      card.classList.add("collectible-card-detail");card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Show details for ${item.name||kind}`);
+      card.addEventListener("click",()=>{card.focus();open();});
+      card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();open();}});
+    }
+    return card;
   }
   const eventCategories={newContent:"New Content",itemDrop:"Item Drop",newSeason:"New Season",contentUpdate:"Content Update",newFeature:"New Feature",quest:"Quest",systemUpdate:"System Update",locationUpdate:"Location Update",expansion:"Expansion",challenge:"Challenge"};
   const eventCategory=category=>eventCategories[category]||((category||"Event").replace(/([a-z])([A-Z])/g,"$1 $2").replace(/^./,letter=>letter.toUpperCase()));
@@ -410,14 +549,21 @@
   $("eventDialogClose").addEventListener("click",()=>$("eventDialog").close());
   $("eventDialog").addEventListener("click",event=>{if(event.target===$("eventDialog"))$("eventDialog").close();});
   $("eventDialog").addEventListener("close",()=>document.body.classList.remove("event-modal-open"));
+  $("passDialogClose").addEventListener("click",()=>$("passDialog").close());
+  $("passDialog").addEventListener("click",event=>{if(event.target===$("passDialog"))$("passDialog").close();});
+  $("passDialog").addEventListener("close",()=>{openPassItem=null;document.body.classList.remove("event-modal-open");});
+  $("badgeDialogClose").addEventListener("click",()=>$("badgeDialog").close());
+  $("badgeDialog").addEventListener("click",event=>{if(event.target===$("badgeDialog"))$("badgeDialog").close();});
+  $("badgeDialog").addEventListener("close",()=>document.body.classList.remove("event-modal-open"));
+  window.addEventListener("resize",()=>{if(openPassItem&&$("passDialog").open)requestAnimationFrame(()=>drawPassPriceChart(openPassItem));});
   function renderCollectibles(){
-    const passes=collectiblesTab==="passes",events=collectiblesTab==="events";
-    $("collectiblesTitle").textContent=passes?"Passes":events?"Events":"Badges";
-    for(const [tab,id] of [["passes","passesTab"],["badges","badgesTab"],["events","eventsTab"]]){
+    const passes=collectiblesTab==="passes",products=collectiblesTab==="products",priced=passes||products,events=collectiblesTab==="events";
+    $("collectiblesTitle").textContent=passes?"Passes":products?"Developer products":events?"Events":"Badges";
+    for(const [tab,id] of [["passes","passesTab"],["products","productsTab"],["badges","badgesTab"],["events","eventsTab"]]){
       $(id).setAttribute("aria-selected",String(collectiblesTab===tab));$(id).tabIndex=collectiblesTab===tab?0:-1;
     }
     $("collectiblesPanel").setAttribute("aria-labelledby",`${collectiblesTab}Tab`);
-    $("offsaleControl").hidden=!passes;
+    $("offsaleControl").hidden=!priced;
     $("priceSortToggle").hidden=!passes;
     $("eventPeriod").hidden=!events;
     $("currentEvents").setAttribute("aria-pressed",String(eventPeriod==="current"));
@@ -425,13 +571,13 @@
     $("priceSortToggle").setAttribute("aria-pressed",String(priceSortAsc));
     $("priceSortLabel").textContent=priceSortAsc?"Lowest price":"Highest price";
     const search=$("collectiblesSearch");
-    search.placeholder=passes?"Search passes...":events?"Search events...":"Search badges...";
-    search.setAttribute("aria-label",passes?"Search passes":events?"Search events":"Search badges");
+    search.placeholder=passes?"Search passes...":products?"Search products...":events?"Search events...":"Search badges...";
+    search.setAttribute("aria-label",passes?"Search passes":products?"Search products":events?"Search events":"Search badges");
     if(search.value!==collectiblesQueries[collectiblesTab])search.value=collectiblesQueries[collectiblesTab];
-    const list=extras?(passes?extras.passes||[]:events?extras.events||[]:extras.badges||[]):[];
+    const list=extras?(passes?extras.passes||[]:products?extras.products||[]:events?extras.events||[]:extras.badges||[]):[];
     const query=collectiblesQueries[collectiblesTab].trim().toLocaleLowerCase();
     const now=Date.now();
-    const visible=list.filter(item=>(!passes||$("showOffsale").checked||item.isForSale)&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
+    const visible=list.filter(item=>(!priced||$("showOffsale").checked||(!item.unavailable&&item.isForSale))&&(!events||(eventPeriod==="past"?Date.parse(item.end)<=now:Date.parse(item.end)>now))&&(!query||`${item.name||""} ${events?item.description||"":""}`.toLocaleLowerCase().includes(query)));
     if(passes)visible.sort((a,b)=>{
       const aPrice=a.isForSale&&Number.isFinite(a.price)?a.price:null;
       const bPrice=b.isForSale&&Number.isFinite(b.price)?b.price:null;
@@ -439,17 +585,18 @@
       if(bPrice===null)return -1;
       return priceSortAsc?aPrice-bPrice:bPrice-aPrice;
     });
+    if(products)visible.sort((a,b)=>(Date.parse(b.created)||0)-(Date.parse(a.created)||0));
     if(events)visible.sort((a,b)=>eventPeriod==="past"?Date.parse(b.end)-Date.parse(a.end):Number(Date.parse(a.start)>now)-Number(Date.parse(b.start)>now)||Date.parse(a.start)-Date.parse(b.start));
     const grid=$("collectiblesGrid");grid.classList.toggle("events-grid",events);
     const columns=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length);
     const limit=columns*2,view=events?`events:${eventPeriod}`:collectiblesTab,expanded=Boolean(expandedCollectibles[view]);
     grid.replaceChildren(...(expanded?visible:visible.slice(0,limit)).map(item=>events?eventCard(item):collectibleCard(item,collectiblesTab)));
-    const more=$("collectiblesMore");more.hidden=visible.length<=limit;more.textContent=expanded?"Show less":`Show more (${visible.length-limit})`;more.dataset.view=view;
+    const more=$("collectiblesMore");more.hidden=visible.length<=limit;more.textContent=expanded?"Show less":"Show more";more.dataset.view=view;
     const message=$("collectiblesMessage");
     message.hidden=Boolean(visible.length);
-    if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?eventPeriod==="past"?"No past events saved yet. Events move here after they end.":"No current or upcoming events found.":passes&&!$("showOffsale").checked&&list.length?"No passes are on sale. Turn on Show offsale to see the rest.":`No ${collectiblesTab} found.`;
+    if(!visible.length)message.textContent=!extras?"Loading…":events&&extras.eventsError&&!list.length?"Couldn't load events right now.":products&&extras.productsError&&!list.length?"Couldn't load developer products right now.":extras.error?"Couldn't load this collection right now.":query?`No ${collectiblesTab} match your search.`:events?eventPeriod==="past"?"No past events saved yet. Events move here after they end.":"No current or upcoming events found.":priced&&!$("showOffsale").checked&&list.length?`No ${collectiblesTab} are on sale. Turn on Show offsale to see the rest.`:`No ${collectiblesTab} found.`;
   }
-  const tabOrder=[["passesTab","passes"],["badgesTab","badges"],["eventsTab","events"]];
+  const tabOrder=[["passesTab","passes"],["productsTab","products"],["badgesTab","badges"],["eventsTab","events"]];
   for(const [index,[id,kind]] of tabOrder.entries()){
     $(id).addEventListener("click",()=>{collectiblesTab=kind;renderCollectibles();});
     $(id).addEventListener("keydown",event=>{if(event.key==="ArrowLeft"||event.key==="ArrowRight"){event.preventDefault();const next=tabOrder[(index+(event.key==="ArrowRight"?1:tabOrder.length-1))%tabOrder.length][0];$(next).click();$(next).focus();}});
@@ -463,10 +610,9 @@
   window.addEventListener("resize",()=>{if(collectiblesResizePending)return;collectiblesResizePending=true;requestAnimationFrame(()=>{collectiblesResizePending=false;renderCollectibles();});});
   async function loadExtras(){
     try{
-      const response=await fetch(`${ROOT}data/extras.json`,{cache:"no-store"});
-      if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      const payload=await response.json();extras=payload.games?.[game.slug]||{passes:[],badges:[],events:[]};
-    }catch(error){console.error("Collectibles request failed:",error);extras={error:true,passes:[],badges:[],events:[]};}
+      const payload=await Tracker.requestJson(`${ROOT}data/extras.json`);extras=payload.games?.[game.slug]||{passes:[],products:[],badges:[],events:[]};
+      Tracker.setPanelState($("collectiblesPanel").closest("section"),extras.error||extras.eventsError||extras.productsError?"Some collection details could not be refreshed. The last saved data is shown.":"");
+    }catch(error){console.error("Collectibles request failed:",error);if(!extras)extras={error:true,passes:[],products:[],badges:[],events:[]};Tracker.setPanelState($("collectiblesPanel").closest("section"),"Could not refresh this collection. Please retry.");}
     renderCollectibles();
   }
   loadExtras();
@@ -476,7 +622,6 @@
     new ResizeObserver(()=>{const wrap=$("chartWrap"),next=`${wrap.clientWidth}x${wrap.clientHeight}`;if(next===size)return;size=next;requestAnimationFrame(drawChart);}).observe($("chartWrap"));
   }
   document.querySelectorAll("#gameRanges .range-btn").forEach(b=>b.addEventListener("click",()=>loadRange(b.dataset.range,true)));
-  Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(chartRange);loadAll();});
+  Tracker.onLive(paintLive); Tracker.every(()=>{Tracker.loadLive();loadRange(requestedRange);loadAll();loadExtras();});
 })();
 </script></body></html>
-

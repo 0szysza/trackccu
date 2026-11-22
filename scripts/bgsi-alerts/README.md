@@ -2,7 +2,7 @@
 
 Monitors Bubble Gum Simulator INFINITY, universe `6504986360`, using its public Roblox APIs.
 
-The workflow uses the existing `ping` repository dispatch and a five-minute schedule fallback. Runs are serialized. Triggers arriving within 150 seconds reuse the pending queue instead of polling twice. Standard GitHub-hosted runners are free for this public repository.
+The workflow uses the existing `ping` repository dispatch and a five-minute schedule fallback. Runs are serialized. Triggers arriving within 150 seconds reuse the pending queue instead of polling twice.
 
 ## Notifications
 
@@ -36,3 +36,9 @@ State lives independently of the Pages deployment. Notifications continue even i
 A source push or manual workflow run also renders four preview PNGs to the `bgsi-notification-images` Actions artifact. These use current existing Roblox items and are labelled PREVIEW. They are not posted to Discord.
 
 To run locally, provide `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, the four routes, and an installed Playwright Chromium runtime. `ALERT_TIME_ZONE` defaults to `Europe/Berlin`.
+
+## Shared transport
+
+Delivery now uses `shared/discord-webhook.mjs`, also used by browser debug sends and the hourly digest. It validates exact Discord webhook destinations, adds `wait=true`, enforces a request timeout, handles known 429 delays and checks confirmation. Ambiguous network/server outcomes retain the existing no-blind-resend behavior.
+
+The owner explicitly chose to retain the public route configuration. The debug page remains a real send tool, not a dry-run sandbox. Unit tests use fake routes/HTTP and do not send messages. See `docs/operations.md` for measurement backups and the independent hourly digest queue.

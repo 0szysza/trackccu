@@ -1,32 +1,9 @@
-# assets
+# Artwork
 
-Eight files, all placeholders right now — overwrite them with real artwork,
-keeping the exact file names. Two files per game: a thumbnail (card
-background) and an icon (fallback before the live Roblox icon loads).
+The active catalog is `scripts/games.json` (currently 10 games); group definitions are in `scripts/groups.json`. Pages use current Roblox icon/thumbnail URLs from `data/live.json` and group icon URLs from `data/group-live.json`.
 
-| File | Used for | Suggested size |
-| --- | --- | --- |
-| `bgs-thumbnail.png` | Bubble Gum Simulator card background | 1280×720 |
-| `bgs-icon.png` | Bubble Gum Simulator icon fallback | 256×256 |
-| `bgsi-thumbnail.png` | Bubble Gum Simulator INFINITY card background | 1280×720 |
-| `bgsi-icon.png` | Bubble Gum Simulator INFINITY icon fallback | 256×256 |
-| `jailbreak-thumbnail.png` | Jailbreak card background | 1280×720 |
-| `jailbreak-icon.png` | Jailbreak icon fallback | 256×256 |
-| `petsim99-thumbnail.png` | Pet Simulator 99 card background | 1280×720 |
-| `petsim99-icon.png` | Pet Simulator 99 icon fallback | 256×256 |
+Existing `<slug>-icon.png` files are local fallbacks for BGS, BGSI, Jailbreak and Pet Simulator 99. Other games can use the generic fallback if Roblox images are unavailable. Optional `<slug>-thumbnail.png` artwork remains available; the main game details use live Roblox thumbnails when present. Keep these filenames stable when replacing files.
 
-The icon files only show for the split second before `/api/live` responds:
-the page then swaps in whatever icon each game currently uses on Roblox, so
-those stay correct on their own whenever a developer changes them.
+To add a game, edit `scripts/games.json` and run `npm run build`. The generator synchronizes catalog entries and detail pages; do not maintain a second catalog in the archived Netlify backend. An optional local icon should be square (256×256 or larger). This Pages build has no `/api/live` server endpoint.
 
-The thumbnails are never fetched from Roblox — they are exactly the files
-here. On **All Games** every game gets its own tile; on **Compare** the two
-picked games show in the left (cyan) and right (pink) card. The thumbnail sits
-behind the card at ~30% opacity under a dark gradient, so a busy image still
-leaves the numbers readable. Adjust `.game-card .art { opacity: ... }` in
-`site.css` to make it stronger or weaker.
-
-## Adding a fifth game later
-
-See the main `README.md` ("Dodawanie gry"): the game goes into `scripts/games.json` / `lib/games.ts`
-and `CATALOG` in `site.js`, plus `<slug>-thumbnail.png` and `<slug>-icon.png` here.
+`social/` contains interface social icons, `roblox-verified.svg` is the verification badge, and `debug/` contains generated BGSI preview images. Do not put webhook URLs or delivery state in artwork.

@@ -43,10 +43,7 @@ function trendLine(now, before) {
   return `${diff > 0 ? "▲" : "▼"} ${diff > 0 ? "+" : "−"}${num(Math.abs(diff))}${pct} vs 1h ago`;
 }
 
-export async function sendDigest({ webhook, live, raw, history1d, siteUrl, games }) {
-  if (!WEBHOOK_PREFIXES.some((prefix) => webhook.startsWith(prefix))) {
-    throw new Error("DISCORD_WEBHOOK_URL is not a Discord webhook URL");
-  }
+export function buildDigestPayload({ live, raw, history1d, siteUrl, games, now = Date.now() }) {
 
   const embeds = live.map((game) => {
     const seed = games.find((g) => g.slug === game.slug);
@@ -73,8 +70,8 @@ export async function sendDigest({ webhook, live, raw, history1d, siteUrl, games
   last.timestamp = new Date().toISOString();
 
   const total = live.reduce((sum, g) => sum + g.playing, 0);
-  const unix = Math.floor(Date.now() / 1000);
-  const payload = {
+  const unix = Math.floor(now / 1000);
+  return {
     username: "ROBLOX CCU Tracker",
     ...(site ? { avatar_url: `${site}/favicon.png` } : {}),
     content: `**${num(total)} players** across ${embeds.length} tracked games · <t:${unix}:t>${site ? `\n<${site}>` : ""}`,
@@ -82,11 +79,4 @@ export async function sendDigest({ webhook, live, raw, history1d, siteUrl, games
     allowed_mentions: { parse: [] },
   };
 
-  const response = await fetch(webhook, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(10000),
-  });
-  if (!response.ok) throw new Error(`Discord webhook responded ${response.status}: ${(await response.text().catch(() => "")).slice(0, 300)}`);
 }
