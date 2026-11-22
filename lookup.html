@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="TrackCCU">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<script src="https://cdn.tailwindcss.com"></script><script src="tailwind-config.js"></script>
+<link rel="stylesheet" href="utility.css?v=20261122">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css?v=20260927-2">
@@ -26,11 +26,12 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Game lookup - TrackCCU">
 <meta name="twitter:description" content="Look up a Roblox game.">
+<script defer src="contact.js?v=20261122"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
 <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
-  <a href="games" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M6 8 2 12l4 4M2 12h20"/></svg> All games</a>
+  <a href="games.html" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M6 8 2 12l4 4M2 12h20"/></svg> All games</a>
   <div id="loading" class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-8 text-slate-400" role="status">Loading game stats…</div>
   <div id="error" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-8" role="alert"><h1 class="text-2xl font-bold text-white">Game unavailable</h1><p id="errorText" class="text-slate-400 mt-2"></p></div>
   <div id="page" class="hidden space-y-3">
@@ -53,6 +54,6 @@
   </div>
 </main>
 <div id="site-footer"></div>
-<script src="config.js"></script><script src="site.js?v=20261111-branding"></script><script src="lookup.js?v=20261111-branding"></script>
+<script src="config.js"></script><script src="chart-tools.js?v=20261122"></script><script src="site.js?v=20261111-branding"></script><script src="lookup.js?v=20261111-branding"></script>
 </body>
 </html>

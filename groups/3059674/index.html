@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="../../manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrackCCU">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="../../tailwind-config.js"></script>
+<link rel="stylesheet" href="../../utility.css?v=d95a6e0f440b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../site.css?v=908ecb207da9">
+<link rel="stylesheet" href="../../site.css?v=d95a6e0f440b">
 <title>Badimo - TrackCCU</title>
 <meta name="theme-color" content="#5CDDFA">
 <meta name="description" content="Roblox group members and history.">
@@ -23,11 +27,12 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Badimo - TrackCCU">
 <meta name="twitter:description" content="Roblox group members and history.">
+<script defer src="../../contact.js?v=20261122"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 <div id="site-header"></div>
 <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
-  <a href="../../groups" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg> All groups</a>
+  <a href="../../groups.html" class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon" aria-hidden="true"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg> All groups</a>
   <div id="notFound" class="hidden bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-10 text-center"><h1 class="text-2xl font-bold">Group not found</h1><p class="text-slate-400 mt-2">This group isn't tracked.</p></div>
   <div id="page" class="hidden space-y-3">
     <section class="group-detail-hero rounded-2xl border border-roblox-cardBorder bg-roblox-cardBg">
@@ -46,8 +51,8 @@
     </section>
 
     <section id="groupChartPanel" class="fullscreen-chart-panel bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-4 sm:p-5">
-      <div class="chart-heading"><div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M13 17V9"/><path d="M18 17V5"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-3"/></svg> History</p><h2 class="text-lg font-bold text-white mt-1">Members</h2></div>
-        <div class="chart-controls"><div id="groupRanges" class="compare-ranges" role="group" aria-label="Chart time range"><button type="button" class="range-btn" data-range="1d" aria-pressed="true">1D</button><button type="button" class="range-btn" data-range="7d" aria-pressed="false">7D</button><button type="button" class="range-btn" data-range="all" aria-pressed="false">All</button></div><button id="groupFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-label="Show fullscreen" title="Show fullscreen" aria-pressed="false"><svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16v5h-5"/><path d="M21 8V3h-5"/><path d="M3 16v5h5"/><path d="m3 21 6-6"/><path d="M3 8V3h5"/><path d="M9 9 3 3"/></svg><svg class="shrink-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg></button></div>
+      <div class="chart-heading"><div><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M13 17V9"/><path d="M18 17V5"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-3"/></svg> History</p><h2 id="groupChartTitle" class="text-lg font-bold text-white mt-1">Members</h2></div>
+        <div class="chart-controls"><div id="groupRanges" class="compare-ranges" role="group" aria-label="Chart time range"><button type="button" class="range-btn" data-range="1d" aria-pressed="true">1D</button><button type="button" class="range-btn" data-range="7d" aria-pressed="false">7D</button><button type="button" class="range-btn" data-range="all" aria-pressed="false">All</button></div><div id="groupChartMetrics" class="collectibles-tabs" role="tablist" aria-label="Choose chart metric"><button type="button" class="chart-metric-tab" data-metric="members" role="tab" aria-selected="true" aria-controls="chartWrap">Members</button><button type="button" class="chart-metric-tab" data-metric="totalPlayers" role="tab" aria-selected="false" aria-controls="chartWrap" tabindex="-1">Total players</button></div><button id="groupFullscreenToggle" type="button" class="chart-fullscreen-toggle" aria-label="Show fullscreen" title="Show fullscreen" aria-pressed="false"><svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6"/><path d="m15 9 6-6"/><path d="M21 16v5h-5"/><path d="M21 8V3h-5"/><path d="M3 16v5h5"/><path d="m3 21 6-6"/><path d="M9 9 3 3"/></svg><svg class="shrink-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 15 6 6m-6-6v4.8m0-4.8h4.8"/><path d="M9 19.8V15m0 0H4.2M9 15l-6 6"/><path d="M15 4.2V9m0 0h4.8M15 9l6-6"/><path d="M9 4.2V9m0 0H4.2M9 9 3 3"/></svg></button></div>
       </div>
       <div id="chartStats" class="chart-stat-row flex flex-wrap gap-2"></div>
       <div id="chartWrap" class="chart-wrap relative h-[330px] sm:h-[430px] mt-4"><div id="chartHost" class="absolute inset-0"></div><div id="chartTooltip" class="hidden absolute z-20 pointer-events-none bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs shadow-xl"></div><div id="chartNote" class="absolute inset-0 flex items-center justify-center text-sm text-slate-500">Collecting member history…</div></div>
@@ -59,11 +64,10 @@
       <div class="game-meta-item"><span class="stat-kicker meta-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Tracked since</span><strong id="trackingSince" class="block text-xl text-white mt-1">—</strong><small id="trackingExact" class="block text-xs text-slate-500 mt-1">—</small></div>
     </section>
     <section class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> About</p><h2 class="text-lg font-bold text-white mt-1">Group description</h2><p id="description" class="text-sm leading-7 text-slate-400 mt-4 whitespace-pre-line">No description available.</p></section>
-    <section class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg> Games</p><h2 class="text-lg font-bold text-white mt-1">Tracked games</h2><div id="groupGames" class="home-game-strip mt-4" aria-label="Games tracked from this group"></div></section>
+    <section class="bg-roblox-cardBg border border-roblox-cardBorder rounded-2xl p-5 sm:p-6"><p class="text-xs uppercase tracking-[.16em] text-slate-500 font-bold inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ui-icon icon-accent" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg> Games</p><h2 class="text-lg font-bold text-white mt-1">Group games</h2><div id="groupGames" class="home-game-strip mt-4" aria-label="Games tracked from this group"></div></section>
   </div>
 </main>
 <div id="site-footer"></div>
-<script>window.SITE_ROOT="../../";</script><script src="../../config.js"></script><script src="../../site.js?v=20261111-branding"></script><script src="../../group-page.js?v=20261111-branding"></script>
+<script>window.SITE_ROOT="../../";</script><script src="../../config.js"></script><script src="../../chart-tools.js?v=7d4f5dc25c4b"></script><script src="../../site.js?v=9517593743c7"></script><script src="../../group-page.js?v=6e67ad83d958"></script>
 </body>
 </html>
-

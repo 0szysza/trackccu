@@ -1,18 +1,19 @@
 {
-  "name": "roblox-ccu-tracker",
-  "version": "1.0.0",
+  "name": "trackccu",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Live Roblox CCU tracker with persisted history on Netlify",
+  "description": "Roblox statistics on GitHub Pages",
   "scripts": {
-    "db:generate": "drizzle-kit generate"
-  },
-  "dependencies": {
-    "@netlify/database": "^2.0.1",
-    "drizzle-orm": "^1.0.0-beta.22"
+    "test": "node --test scripts/test/*.test.mjs debug/messages.test.mjs scripts/bgsi-alerts/test/*.test.mjs",
+    "lint": "node scripts/lint.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i styles/tailwind.css -o utility.css --minify",
+    "build": "node scripts/assemble.mjs",
+    "check": "npm run lint && npm test"
   },
   "devDependencies": {
-    "@netlify/functions": "^6.0.0",
-    "drizzle-kit": "^1.0.0-beta.22"
+    "tailwindcss": "3.4.17",
+    "eslint": "10.15.0",
+    "globals": "17.14.0"
   }
 }

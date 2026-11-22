@@ -14,8 +14,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="tailwind-config.js"></script>
+<link rel="stylesheet" href="utility.css?v=20261122">
 
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
@@ -36,6 +35,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Games - TrackCCU">
 <meta name="twitter:description" content="Track Roblox player counts and history.">
+<script defer src="contact.js?v=20261122"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 
@@ -93,7 +93,7 @@
 <div id="site-footer"></div>
 
 <script src="config.js"></script>
-<script src="site.js?v=20261111-branding"></script>
+<script src="chart-tools.js?v=20261122"></script><script src="site.js?v=20261111-branding"></script>
 <script>
 (() => {
   "use strict";
@@ -267,7 +267,7 @@
     for (const game of CATALOG) {
       const s = game.slug;
       const data = latest.get(s);
-      if (!data) continue;
+      if (!data) { for (const field of ["ccu","peak24","peak7","visits","favs"]) $(field+"-"+s).textContent="—"; continue; }
 
       setText($("ccu-" + s), fmt(data.playing));
       $("peak24-" + s).textContent = fmt(data.peak24h);
@@ -317,9 +317,9 @@
     const xOf = (t) => Math.min(W, Math.max(0, ((t - minX) / DAY) * W));
     const yOf = (v) => PAD + (H - PAD * 2) * (1 - (v - yMin) / (yMax - yMin));
 
-    const line = points.map((p, i) => `${i ? "L" : "M"}${xOf(p.x).toFixed(1)} ${yOf(p.y).toFixed(1)}`).join(" ");
+    const line = ChartTools.line(points,xOf,yOf,"y",750000);
     const first = points[0], last = points[points.length - 1];
-    const area = `${line} L${xOf(last.x).toFixed(1)} ${H} L${xOf(first.x).toFixed(1)} ${H} Z`;
+    const area = ChartTools.area(points,xOf,yOf,H,"y",750000);
     const gid = "sg-" + game.slug;
 
     const svg = `
@@ -385,8 +385,7 @@
 
   async function loadHistory() {
     try {
-      const res = await fetch(Tracker.CONFIG.history("1d"), { cache: "no-store" });
-      const payload = await res.json();
+      const payload = await Tracker.requestJson(Tracker.CONFIG.history("1d"));
       history = new Map(CATALOG.map((game) => [
         game.slug,
         ((payload.series && payload.series[game.slug]) || []).map((row) => ({ x: new Date(row.t).getTime(), y: row.playing })),

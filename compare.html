@@ -22,8 +22,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="tailwind-config.js"></script>
+<link rel="stylesheet" href="utility.css?v=20261122">
 
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css">
@@ -44,6 +43,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Compare - TrackCCU">
 <meta name="twitter:description" content="Compare Roblox player counts.">
+<script defer src="contact.js?v=20261122"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-roblox-darkBg text-slate-100 antialiased selection:bg-roblox-bgs selection:text-black">
 
@@ -164,7 +164,7 @@
 <div id="site-footer"></div>
 
 <script src="config.js"></script>
-<script src="site.js?v=20261111-branding"></script>
+<script src="chart-tools.js?v=20261122"></script><script src="site.js?v=20261111-branding"></script>
 <script>
 (() => {
   "use strict";
@@ -321,7 +321,8 @@
     show($("empty-" + slot), !filled);
     show($("body-" + slot), filled);
     $("card-" + slot).classList.toggle("tile-empty", !filled);
-    if (!filled) return;
+    if (!filled) { delete $("card-"+slot).dataset.slug; return; }
+    $("card-"+slot).dataset.slug = slug;
 
     $("name-" + slot).textContent = game.label;
     $("tag-" + slot).textContent = game.short;
@@ -477,7 +478,7 @@
     const bySlugLive = new Map(((payload && payload.games) || []).map((g) => [g.slug, g]));
     const rows = picked().map((p) => ({ ...p, live: bySlugLive.get(p.slug) }));
     const withData = rows.filter((r) => Number.isFinite(r.live?.playing));
-    const complete = rows.length >= 2 && withData.length === rows.length;
+    const complete = rows.length >= 2 && withData.length === rows.length && rows.every(row=>!row.live?.stale);
     for (const row of rows.filter((item) => !Number.isFinite(item.live?.playing))) {
       for (const field of ["ccu", "peak24", "peak7", "visits", "favs"]) $(field + "-" + row.slot).textContent = "—";
     }
@@ -527,6 +528,18 @@
   const cache = {}; // range -> payload
   let chart = null; // geometry + data of what is currently drawn
   let navStart = 0, navEnd = 1, navDrag = null, navBounds = null;
+  const dataView = ChartTools.dataView($("compareChartPanel"), {
+    headers: () => ["Time (UTC)", ...picked().map(item => item.game.label + (mode === "share" ? " share (%)" : " players"))],
+    rows: () => {
+      const series = cache[range] ? seriesFor(cache[range]) : [];
+      const within = time => !navBounds || (time >= navBounds.minX + navStart * (navBounds.maxX - navBounds.minX) && time <= navBounds.minX + navEnd * (navBounds.maxX - navBounds.minX));
+      if (mode === "share") return sharePairs(series, ({"1d":300,"7d":1800,all:3600}[range])*1000).filter(point => within(point.x)).map(point => [new Date(point.x).toISOString(), ...point.shares.map(value => Number(value.toFixed(4)))]);
+      const maps = series.map(item => new Map(item.points.map(point => [point.x, point.y])));
+      return [...new Set(series.flatMap(item => item.points.map(point => point.x)))].sort((a,b) => a-b)
+        .filter(time => !navBounds || (time >= navBounds.minX + navStart * (navBounds.maxX - navBounds.minX) && time <= navBounds.minX + navEnd * (navBounds.maxX - navBounds.minX)))
+        .map(time => [new Date(time).toISOString(), ...maps.map(map => map.get(time) ?? null)]);
+    }, filename: "trackccu-comparison.csv"
+  });
 
   function paintToggles() {
     for (const button of $("ranges").querySelectorAll(".range-btn")) {
@@ -621,7 +634,7 @@
       : series.map((item) => ({ color: item.color, points: item.points, key: "y" }));
     $("compareNavigatorPlot").innerHTML = previewSeries.map((item) => {
       if (!item.points.length) return "";
-      const line = item.points.map((point, index) => `${index ? "L" : "M"}${x(point.x).toFixed(1)} ${y(point[item.key]).toFixed(1)}`).join(" ");
+      const line = ChartTools.line(item.points,x,y,item.key,(cache[range]?.bucketSeconds||300)*2500);
       return `<path d="${line}" fill="none" stroke="${item.color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`;
     }).join("");
     paintNavigatorSelection();
@@ -674,6 +687,7 @@
     const to = navBounds ? navBounds.minX + navEnd * (navBounds.maxX - navBounds.minX) : Infinity;
     const series = fullSeries.map((item) => ({ ...item, points: visiblePoints(item.points, from, to) }));
     paintStats(series);
+    dataView.update();
 
     if (games.length === 0) return setNote(`Pick ${gameCount} games above to compare them here.`);
     if (mode === "share" && games.length < 2) return setNote("Pick another game to see how the players split.");
@@ -681,7 +695,7 @@
 
     const pairs = mode === "share" ? sharePairs(series, bucketMs) : null;
     const hasData = mode === "share" ? pairs.length > 0 : series.some((s) => s.points.length > 0);
-    if (!hasData) return setNote("No history stored for this range yet.");
+    if (!hasData) return setNote("No measurements in this period yet.");
     setNote(null);
 
     const xs = mode === "share" ? pairs.map((p) => p.x) : series.flatMap((s) => s.points.map((p) => p.x));
@@ -736,7 +750,7 @@
     }
 
     const chips = []; // right-edge value tags: { y, text, color }
-    const line = (pts, key) => pts.map((p, i) => `${i ? "L" : "M"}${xOf(p.x).toFixed(1)} ${yOf(p[key]).toFixed(1)}`).join(" ");
+    const line = (pts, key) => ChartTools.line(pts, xOf, yOf, key, bucketMs * 2.5);
 
     if (mode === "players") {
       series.forEach((s, i) => {
@@ -748,7 +762,7 @@
 
         const d = line(s.points, "y");
         const first = s.points[0], last = s.points[s.points.length - 1];
-        svgEl("path", { d: `${d} L${xOf(last.x).toFixed(1)} ${yOf(0).toFixed(1)} L${xOf(first.x).toFixed(1)} ${yOf(0).toFixed(1)} Z`, fill: `url(#${gid})` }, svg);
+        svgEl("path", { d: ChartTools.area(s.points, xOf, yOf, yOf(0), "y", bucketMs * 2.5), fill: `url(#${gid})` }, svg);
         const path = svgEl("path", {
           d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round", class: "chart-line",
         }, svg);
@@ -760,9 +774,13 @@
     } else {
       const last = pairs[pairs.length - 1];
       series.forEach((item, i) => {
-        const upper = line(pairs.map((point) => ({ x: point.x, y: point.bounds[i + 1] })), "y");
-        const lower = pairs.slice().reverse().map((point) => `L${xOf(point.x).toFixed(1)} ${yOf(point.bounds[i]).toFixed(1)}`).join(" ");
-        svgEl("path", { d: `${upper} ${lower} Z`, fill: item.color, "fill-opacity": 0.3 }, svg);
+        const upper = line(pairs.map(point => ({ x: point.x, y: point.bounds[i + 1] })), "y");
+        const regions = ChartTools.split(pairs, bucketMs * 2.5).map(segment => {
+          const top = line(segment.map(point => ({ x: point.x, y: point.bounds[i + 1] })), "y");
+          const bottom = segment.slice().reverse().map(point => `L${xOf(point.x).toFixed(1)} ${yOf(point.bounds[i]).toFixed(1)}`).join(" ");
+          return `${top} ${bottom} Z`;
+        }).join(" ");
+        svgEl("path", { d: regions, fill: item.color, "fill-opacity": 0.3 }, svg);
         if (i < series.length - 1) {
           svgEl("path", { d: upper, fill: "none", stroke: "#f1f5f9", "stroke-width": 1.8, "stroke-linejoin": "round" }, svg);
           svgEl("circle", { cx: xOf(last.x).toFixed(1), cy: yOf(last.bounds[i + 1]).toFixed(1), r: 3.5, fill: "#f1f5f9", stroke: "#15192d", "stroke-width": 2 }, svg);
@@ -829,10 +847,12 @@
     if (chart.mode === "players") {
       const anchorSeries = chart.series.find((s) => s.points.length);
       anchorX = nearest(anchorSeries.points, t).x;
+      if (Math.abs(anchorX - t) > chart.bucketMs * 1.5) return hideHover();
       const rows = [];
       chart.series.forEach((s, i) => {
         if (!s.points.length) return;
         const p = nearest(s.points, anchorX);
+        if (Math.abs(p.x - anchorX) > chart.bucketMs * 1.5) { chart.halos[i].setAttribute("visibility", "hidden"); chart.dots[i].setAttribute("visibility", "hidden"); return; }
         chart.halos[i].setAttribute("cx", chart.xOf(p.x).toFixed(1));
         chart.halos[i].setAttribute("cy", chart.yOf(p.y).toFixed(1));
         chart.halos[i].setAttribute("visibility", "visible");
@@ -849,6 +869,7 @@
       }
     } else {
       const p = nearest(chart.pairs, t);
+      if (Math.abs(p.x - t) > chart.bucketMs * 1.5) return hideHover();
       anchorX = p.x;
       chart.dots.forEach((dot, i) => {
         for (const marker of [dot, chart.halos[i]]) {
@@ -940,12 +961,12 @@
   async function loadHistory() {
     const key = range;
     try {
-      const res = await fetch(CONFIG.history(key), { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      cache[key] = await res.json();
+      cache[key] = await Tracker.requestJson(CONFIG.history(key));
+      Tracker.setPanelState($("compareChartPanel"));
       if (key === range) drawChart();
     } catch (error) {
       console.error("History request failed:", error);
+      Tracker.setPanelState($("compareChartPanel"), "Could not update history. The last loaded chart has been kept.");
       if (!cache[key] && key === range && picked().length) setNote("Couldn't load the history. It will retry automatically.");
     }
   }

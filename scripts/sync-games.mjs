@@ -34,7 +34,7 @@ const escapeHtml = value => String(value).replace(/[&<>"\u0027]/g, character => 
 
 const games = JSON.parse(await readFile(path.join(here, "games.json"), "utf8"));
 const groups = JSON.parse(await readFile(path.join(here, "groups.json"), "utf8"));
-const cssHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "site.css"))).digest("hex").slice(0, 12);
+const cssHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "site.css"))).update(await readFile(path.join(REPO_ROOT, "utility.css"))).digest("hex").slice(0, 12);
 for (const game of games) game.color ??= 65535; // default Discord embed colour (BGS blue)
 
 /* ---------- 1. site.js CATALOG block ---------- */
@@ -90,12 +90,13 @@ async function writeGamePages(jsHash) {
   for (const game of games) {
     const dir = path.join(gamesDir, String(game.placeId));
     await mkdir(dir, { recursive: true });
-    const page = template.replaceAll("__GAME_NAME__", escapeHtml(game.name)).replaceAll("__GAME_ID__", String(game.placeId)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash);
+    const page = template.replaceAll("__GAME_NAME__", escapeHtml(game.name)).replaceAll("__GAME_ID__", String(game.placeId)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__CHART_HASH__", chartHash);
     await writeFile(path.join(dir, "index.html"), page);
   }
   return gamesDir;
 }
 
+const chartHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "chart-tools.js"))).digest("hex").slice(0, 12);
 const siteJsTarget = await updateSiteJs();
 const jsHash = createHash("sha256").update(await readFile(siteJsTarget)).digest("hex").slice(0, 12);
 const groupPageHash = createHash("sha256").update(await readFile(path.join(REPO_ROOT, "group-page.js"))).digest("hex").slice(0, 12);
@@ -115,6 +116,6 @@ const groupTemplate = await readFile(path.join(here, "group-template.html"), "ut
 for (const group of groups) {
   const dir = path.join(OUT_DIR, "groups", String(group.id));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", escapeHtml(group.name)).replaceAll("__GROUP_ID__", String(group.id)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__GROUP_PAGE_HASH__", groupPageHash));
+  await writeFile(path.join(dir, "index.html"), groupTemplate.replaceAll("__GROUP_NAME__", escapeHtml(group.name)).replaceAll("__GROUP_ID__", String(group.id)).replaceAll("__CSS_HASH__", cssHash).replaceAll("__JS_HASH__", jsHash).replaceAll("__CHART_HASH__", chartHash).replaceAll("__GROUP_PAGE_HASH__", groupPageHash));
 }
 console.log(`Synced ${games.length} game(s) and ${groups.length} group(s) -> ${siteJsTarget}, ${gamesDir}, and ${path.join(OUT_DIR, "groups")}`);

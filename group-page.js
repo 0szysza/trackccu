@@ -49,6 +49,7 @@
     const data = (payload.groups || []).find((item) => String(item.id) === id);
     if (!data) return;
     latest = data;
+    $("page").dataset.groupId = id;
     $("groupName").textContent = data.name || group.label;
     appendVerified($("groupName"), data.hasVerifiedBadge);
     document.title = `${data.name || group.label} - TrackCCU`;
@@ -106,7 +107,7 @@
     let low = Infinity, high = -Infinity;
     for (const point of rangePoints) { low = Math.min(low, point.y); high = Math.max(high, point.y); }
     const spread = high - low || 1;
-    const path = rangePoints.map((point, i) => `${i ? "L" : "M"}${((point.x - first) / (last - first || 1) * 1000).toFixed(1)} ${(62 - (point.y - low) / spread * 50).toFixed(1)}`).join(" ");
+    const path = ChartTools.line(rangePoints, stamp => (stamp-first)/(last-first||1)*1000, value => 62-(value-low)/spread*50, "y", ({"1d":300,"7d":1800,all:3600}[range])*2500);
     $("chartNavigatorPlot").innerHTML = `<path d="${path}" fill="none" stroke="#34bfe5" stroke-width="1.6" vector-effect="non-scaling-stroke"/>`;
     $("chartNavigatorSelection").style.left = `${navStart * 100}%`;
     $("chartNavigatorSelection").style.width = `${(navEnd - navStart) * 100}%`;
@@ -132,7 +133,9 @@
     }
     drawChart();
   }
+  const dataView = ChartTools.dataView($("groupChartPanel"), { headers: () => ["Time (UTC)", metricLabels[metric]], rows: () => visible.map(point => [new Date(point.x).toISOString(), point.y]), filename: `trackccu-group-${id}.csv` });
   function drawChart() {
+    dataView.update();
     const host = $("chartHost"), note = $("chartNote"), tooltip = $("chartTooltip");
     tooltip.classList.add("hidden");
     paintNavigator();
@@ -153,8 +156,9 @@
     const xTicks = singlePoint ? 1 : Math.min(11, Math.max(3, Math.floor((W - PL - PR) / 155)));
     let labels = "";
     for (let i = 0; i < xTicks; i++) { const time = singlePoint ? first : first + i * (last - first) / (xTicks - 1); labels += `<text x="${x(time)}" y="${H - 10}" text-anchor="middle" fill="#64748b" font-size="11">${range === "1d" ? clockLabel(time) : dayLabel(time)}</text>`; }
-    const line = visible.map((point, i) => `${i ? "L" : "M"}${x(point.x).toFixed(1)} ${y(point.y).toFixed(1)}`).join(" ");
-    const area = `${line} L${x(last)} ${H - PB} L${x(first)} ${H - PB} Z`;
+    const gap = ({"1d":300,"7d":1800,all:3600}[range])*2500;
+    const line = ChartTools.line(visible,x,y,"y",gap);
+    const area = ChartTools.area(visible,x,y,H-PB,"y",gap);
     host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${metricLabels[metric]} history chart"><defs><linearGradient id="groupArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${labels}${singlePoint ? "" : `<path d="${area}" fill="url(#groupArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`}<circle cx="${x(first)}" cy="${y(visible[0].y)}" r="${singlePoint ? 5 : 0}" fill="#34bfe5"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H - PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML = `<span class="chart-stat">High <b>${fmt(high)}</b></span><span class="chart-stat">Low <b>${fmt(low)}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(sum / visible.length))}</b></span>`;
     const svg = host.querySelector("svg"), cross = host.querySelector("#hoverLine"), halo = host.querySelector("#hoverHalo"), dot = host.querySelector("#hoverDot");
@@ -162,6 +166,8 @@
       const rect = svg.getBoundingClientRect(), px = (event.clientX - rect.left) / rect.width * W;
       let best = visible[0];
       for (const point of visible) if (Math.abs(x(point.x) - px) < Math.abs(x(best.x) - px)) best = point;
+      const target = first + (px-PL)/(W-PL-PR)*(last-first);
+      if (Math.abs(best.x-target) > ({"1d":300,"7d":1800,all:3600}[range])*1500) { cross.setAttribute("visibility", "hidden"); halo.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); tooltip.classList.add("hidden"); return; }
       const xx = x(best.x), yy = y(best.y);
       cross.setAttribute("x1", xx); cross.setAttribute("x2", xx); cross.setAttribute("visibility", "visible");
       for (const marker of [halo, dot]) { marker.setAttribute("cx", xx); marker.setAttribute("cy", yy); marker.setAttribute("visibility", "visible"); }
@@ -218,24 +224,28 @@
     $("groupRanges").setAttribute("aria-busy", "true");
     document.querySelectorAll("#groupRanges .range-btn").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.range === range)));
     try {
-      const response = await fetch(Tracker.CONFIG.groupsHistory(next), { cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const payload = await response.json();
+      const payload = await Tracker.requestJson(Tracker.CONFIG.groupsHistory(next));
       if (current !== requestId) return;
       rangeRows = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), members: row.members, totalPlayers: row.totalPlayers })).filter((point) => Number.isFinite(point.x) && Number.isFinite(point.members)).sort((a, b) => a.x - b.x);
       rangePoints = rangeRows.map((row) => ({ x: row.x, y: row[metric] })).filter((point) => Number.isFinite(point.y));
       if (next === "1d") { trendPoints = rangeRows.map((row) => ({ x: row.x, y: row.members })); paintTrend(); }
-      selectPoints();
-    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); rangeRows = []; rangePoints = []; selectPoints(); } }
+      selectPoints(); Tracker.setPanelState($("groupChartPanel"));
+    } catch (error) { if (current === requestId) { console.error("Group history request failed:", error); Tracker.setPanelState($("groupChartPanel"), "Could not load this period. The last loaded chart has been kept."); } }
     finally { if (current === requestId) $("groupRanges").removeAttribute("aria-busy"); }
   }
   async function loadTrend() {
     if (range === "1d") return;
-    try { const response = await fetch(Tracker.CONFIG.groupsHistory("1d"), { cache: "no-store" }); if (!response.ok) return; const payload = await response.json(); trendPoints = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), y: row.members })); paintTrend(); }
+    try { const payload = await Tracker.requestJson(Tracker.CONFIG.groupsHistory("1d")); trendPoints = (payload.series?.[id] || []).map((row) => ({ x: Date.parse(row.t), y: row.members })); paintTrend(); }
     catch (error) { console.error("Group trend request failed:", error); }
   }
   document.querySelectorAll("#groupRanges .range-btn").forEach((button) => button.addEventListener("click", () => loadRange(button.dataset.range, true)));
-  document.querySelectorAll("#groupChartMetrics .chart-metric-tab").forEach((button) => button.addEventListener("click", () => selectMetric(button.dataset.metric)));
+  document.querySelectorAll("#groupChartMetrics .chart-metric-tab").forEach((button,index,buttons) => {
+    button.addEventListener("click",()=>selectMetric(button.dataset.metric));
+    button.addEventListener("keydown",event=>{
+      const next=event.key==="Home"?0:event.key==="End"?buttons.length-1:event.key==="ArrowRight"?(index+1)%buttons.length:event.key==="ArrowLeft"?(index+buttons.length-1)%buttons.length:null;
+      if(next===null)return;event.preventDefault();buttons[next].click();buttons[next].focus();
+    });
+  });
   Tracker.setupChartFullscreen($("groupChartPanel"), $("groupFullscreenToggle"));
   if (typeof ResizeObserver === "function") {
     let size = "";

@@ -822,3 +822,34 @@ body.event-modal-open { overflow:hidden; }
 }
 
 
+
+/* The existing palette and layout, with quieter interaction styling. */
+[data-copy-discord]{display:inline-flex;align-items:center;gap:7px;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+[data-copy-discord] svg{width:16px;height:16px;flex:none}
+[data-copy-discord]:focus-visible{outline:2px solid #5cddfa;outline-offset:4px}
+.copy-feedback{font-size:12px;color:#cbd5e1}
+
+.live-dot,.flash{animation:none;box-shadow:none}
+.glow-bgs,.glow-bgsi{box-shadow:none}.text-glow-bgs,.text-glow-bgsi{text-shadow:none}
+.tile-clickable:hover,.tile-clickable:focus-visible{transform:none;border-color:#475569}
+.tile,.home-game-chip,.compare-summary-panel,.feature-panel{box-shadow:none}
+.compare-summary-panel,.fullscreen-chart-panel,.game-card,.game-detail-hero,.group-detail-hero{border-radius:12px}
+.chart-stat,.compare-share-pill{box-shadow:none}
+.data-state{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 14px;padding:10px 0;border-bottom:1px solid #554324;color:#e8c677;font-size:14px;line-height:1.5}
+.data-state[hidden]{display:none}.data-state[data-state=loading]{color:#94a3b8;border-color:#293149}
+.data-state button,.chart-data-controls button{border:1px solid #3b475e;border-radius:6px;padding:6px 10px;background:#171d30;color:#e2e8f0;font:inherit;cursor:pointer}
+.stale-label{display:block;margin:8px 12px;color:#e8c677;font-size:12px;line-height:1.4}.data-stale{border-color:#6d582f}
+.chart-data-view{margin-top:18px;padding-top:12px;border-top:1px solid #293149;font-size:14px}
+.chart-data-view summary{cursor:pointer;color:#b8c5d8;width:max-content;padding:4px 0}
+.chart-data-content{margin-top:12px}.chart-data-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px}
+.chart-data-controls span{margin-right:auto;color:#94a3b8;font-size:13px}.chart-data-controls button:disabled{opacity:.45;cursor:default}
+.chart-data-scroll{max-height:420px;overflow:auto}.chart-data-view table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.chart-data-view th,.chart-data-view td{padding:9px 12px;text-align:left;border-bottom:1px solid #293149;white-space:nowrap}
+.chart-data-view th{position:sticky;top:0;background:#15192d;font-weight:600;color:#cbd5e1}
+.price-last-checked{margin:12px 0 0;color:#a6b3c7;font-size:13px;line-height:1.5}
+#liveStatus{font-size:12px}.compare-live-label{display:none}
+@media(max-width:639px){.chart-data-controls button{min-height:40px}.data-state{font-size:14px}.chart-data-scroll{max-width:100%}}
+
+.home-action-btn,.home-action-btn:hover,.home-action-btn:focus-visible{box-shadow:none;transform:none;background:#181f32}.home-action-btn::before,.home-action-btn::after,.home-action-arrow{display:none}
+
+.tile-ccu{text-shadow:none}
