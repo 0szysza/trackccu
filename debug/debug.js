@@ -1,12 +1,12 @@
-import { CATEGORIES, validateRoutes, loadPreview, sendDebugMessage } from './messages.js?v=20261010-en';
+import { CATEGORIES, validateRoutes, loadSamples, randomJob, sendDebugMessage } from './messages.js';
+import { buildEmbed } from '../shared/bgsi-embeds.mjs';
 
 const buttons = [...document.querySelectorAll('[data-send]')];
 const allButton = document.getElementById('sendAll');
 const pingInput = document.getElementById('pingEveryone');
 const pingDescription = document.getElementById('pingDescription');
 const overall = document.getElementById('overallStatus');
-let routes, ready = false, busy = false;
-const images = new Map();
+let routes, samples, ready = false, busy = false;
 const setOverall = (text, state = '') => { overall.textContent = text; overall.dataset.state = state; };
 function setBusy(value) {
   busy = value;
@@ -16,12 +16,21 @@ function setBusy(value) {
 }
 pingInput.addEventListener('change', () => { pingDescription.textContent = pingInput.checked ? 'Each test will notify @everyone' : 'Off for tests'; });
 
+function showPreview(job) {
+  const embed = buildEmbed(job, true);
+  const preview = document.querySelector(`[data-preview="${job.category}"]`);
+  preview.style.borderInlineStartColor = `#${embed.color.toString(16).padStart(6, '0')}`;
+  preview.querySelector('strong').textContent = embed.title;
+  preview.querySelector('p').textContent = embed.description || '';
+}
+
 async function sendOne(category, ping) {
   const result = document.querySelector(`[data-result="${category}"]`);
-  result.textContent = 'Sending image…'; result.dataset.state = 'sending';
+  result.textContent = 'Sending embed…'; result.dataset.state = 'sending';
   try {
-    if (!images.has(category)) images.set(category, await loadPreview(category));
-    const message = await sendDebugMessage({ category, webhook: routes[category], image: images.get(category), ping });
+    const job = randomJob(samples, category);
+    showPreview(job);
+    const message = await sendDebugMessage({ job, webhook: routes[category], ping });
     const stamp = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Berlin' }).format(new Date());
     result.textContent = `${ping && !message.pinged ? 'Sent, but the ping was not activated' : 'Test sent'} · ${stamp}`;
     result.dataset.state = ping && !message.pinged ? 'error' : 'success';
@@ -51,5 +60,7 @@ try {
   const response = await fetch(`webhooks.json?t=${Date.now()}`, { cache: 'no-store' });
   if (!response.ok) throw new Error(`Could not load channel configuration (${response.status}).`);
   routes = validateRoutes(await response.json());
+  samples = await loadSamples();
+  for (const category of CATEGORIES) if (samples[category].length) showPreview(randomJob(samples, category));
   ready = true; setBusy(false); setOverall('Ready. Each button sends a test to its assigned channel.');
 } catch (error) { setOverall(error.message || 'Could not prepare the tests.', 'error'); }

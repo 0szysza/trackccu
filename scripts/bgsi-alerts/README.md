@@ -1,4 +1,4 @@
-# BGSI image notifications
+# BGSI Discord embeds
 
 Monitors Bubble Gum Simulator INFINITY, universe `6504986360`, using its public Roblox APIs.
 
@@ -8,22 +8,22 @@ The workflow uses the existing `ping` repository dispatch and a five-minute sche
 
 | Channel route | Trigger |
 | --- | --- |
-| `updates` | Roblox's game `updated` timestamp advances. The image shows the current game title, artwork, description and update time. |
+| `updates` | Roblox's game `updated` timestamp advances. The embed includes the current game title, description, update time, player count and favorites. |
 | `events` | A previously unseen public event appears and has not ended. |
 | `passes` | A previously unseen game pass ID appears, including off-sale passes. |
 | `products` | A previously unseen developer product ID appears, including off-sale products. |
 
 The game `updated` timestamp is a publication/change signal, not a guarantee of a major content update. Price changes to existing items do not cause alerts. New event announcements are sent when discovered; starting an already announced event does not cause another ping.
 
-Each notification is a real PNG attachment, rendered with Chromium from HTML and the repository's `site.css`. Colors, typography and cards follow TrackCCU. Emoji in titles, subtitles and descriptions use embedded Apple PNG glyphs from the pinned `emoji-datasource-apple` package, keeping their macOS appearance consistent on Windows and Linux. Compound sequences, skin tones, flags and keycaps are handled as complete Unicode graphemes. Upstream data and artwork information: https://github.com/iamcal/emoji-data. The message content is exactly `@everyone`, with `allowed_mentions.parse` set to `everyone`. All item details are carried by the PNG attachments. Debug tests also send only the ping when enabled; when the debug ping is disabled, they send images with empty message content. The response is checked for PNG attachments and an active everyone mention.
+Notifications use native Discord embeds with category-specific fields. Live alerts send `@everyone`; the debug page starts with mentions off and labels each sample as a test.
 
-The four destinations are configured in `.github/bgsi-webhooks.json`. Corresponding environment variables / Actions secrets (`BGSI_UPDATES_WEBHOOK`, `BGSI_EVENTS_WEBHOOK`, `BGSI_PASSES_WEBHOOK`, `BGSI_PRODUCTS_WEBHOOK`) override those values. Destination URLs are never included in generated images or logs.
+The four destinations are configured in `.github/bgsi-webhooks.json`. Corresponding environment variables / Actions secrets (`BGSI_UPDATES_WEBHOOK`, `BGSI_EVENTS_WEBHOOK`, `BGSI_PASSES_WEBHOOK`, `BGSI_PRODUCTS_WEBHOOK`) override those values. Destination URLs are never included in embed payloads or logs.
 
 ## State and delivery
 
 The `bgsi-alert-state` branch stores `bgsi-alert-state.json`. The first successful read of each source creates a quiet baseline: existing content is recorded without sending historical announcements. A failed API does not erase the previous source's baseline or known IDs. Pagination must complete successfully before any IDs are compared.
 
-Detected changes enter a persisted queue. Before each Discord send, the affected jobs are saved as `sending`. A successful send records the delivered keys immediately. Up to ten PNGs from one category share a single message and everyone ping; up to eight messages are sent per run, with remaining work retained for subsequent runs.
+Detected changes enter a persisted queue. Before each Discord send, the affected jobs are saved as `sending`. A successful send records the delivered keys immediately. Up to ten embeds from one category share a single message and everyone ping; up to eight messages are sent per run, with remaining work retained for subsequent runs.
 
 Known Discord rate limits are retried. If a connection fails after transmission or a run stops during a send, its status is `uncertain` or `sending`. These jobs are not automatically pinged again. Inspect the relevant channel and Actions logs before deliberately changing them back to `pending`. This avoids blindly duplicating a message when Discord may already have received it.
 
@@ -31,11 +31,11 @@ State lives independently of the Pages deployment. Notifications continue even i
 
 ## Verification
 
-`node --test scripts/bgsi-alerts/test/*.test.mjs` verifies baselines, change detection, category routing, complete pagination, API failures, duplicate prevention, state persistence, image attachments and everyone mentions. Tests never contact the live Discord destinations.
+`node --test scripts/bgsi-alerts/test/*.test.mjs` verifies baselines, change detection, category routing, complete pagination, API failures, duplicate prevention, state persistence, embeds and everyone mentions. Tests never contact the live Discord destinations.
 
-A source push or manual workflow run also renders four preview PNGs to the `bgsi-notification-images` Actions artifact. These use current existing Roblox items and are labelled PREVIEW. They are not posted to Discord.
+Use the TrackCCU debug page to send one sample embed per category. Samples use published BGSI data.
 
-To run locally, provide `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, the four routes, and an installed Playwright Chromium runtime. `ALERT_TIME_ZONE` defaults to `Europe/Berlin`.
+To run locally, provide `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, and the four configured Discord destinations.
 
 ## Shared transport
 

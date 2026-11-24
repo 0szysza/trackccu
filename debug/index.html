@@ -35,7 +35,7 @@
       <div>
         <div class="debug-kicker"><span></span>DISCORD · BGSI</div>
         <h1>Message tests</h1>
-        <p>Choose a message type and send its image to the assigned Discord channel.</p>
+        <p>Choose a message type and send a sample embed to the assigned Discord channel.</p>
       </div>
       <div class="debug-mode">DEBUG</div>
     </section>
@@ -51,31 +51,31 @@
     <section class="debug-grid" aria-label="Test message types">
       <article class="debug-card" data-category="updates">
         <header><div><span class="card-kicker">UPDATES</span><h2>Game update</h2></div><span class="channel-tag"># updates</span></header>
-        <a class="image-preview" href="../assets/debug/bgsi-updates.png?v=20261010-apple-emoji" target="_blank" rel="noopener" aria-label="Open update preview"><img src="../assets/debug/bgsi-updates.png?v=20261010-apple-emoji" alt="BGSI game update image preview" loading="eager"></a>
+        <div class="embed-preview" data-preview="updates"><strong></strong><p></p></div>
         <div class="card-actions"><button type="button" data-send="updates" disabled>Send update test</button><p class="card-result" data-result="updates" aria-live="polite">Ready to test</p></div>
       </article>
       <article class="debug-card" data-category="events">
         <header><div><span class="card-kicker">EVENTS</span><h2>New event</h2></div><span class="channel-tag"># events</span></header>
-        <a class="image-preview" href="../assets/debug/bgsi-events.png?v=20261010-apple-emoji" target="_blank" rel="noopener" aria-label="Open event preview"><img src="../assets/debug/bgsi-events.png?v=20261010-apple-emoji" alt="BGSI event image preview" loading="eager"></a>
+        <div class="embed-preview" data-preview="events"><strong></strong><p></p></div>
         <div class="card-actions"><button type="button" data-send="events" disabled>Send event test</button><p class="card-result" data-result="events" aria-live="polite">Ready to test</p></div>
       </article>
       <article class="debug-card" data-category="passes">
         <header><div><span class="card-kicker">PASSES</span><h2>New game pass</h2></div><span class="channel-tag"># passes</span></header>
-        <a class="image-preview" href="../assets/debug/bgsi-passes.png?v=20261010-apple-emoji" target="_blank" rel="noopener" aria-label="Open game pass preview"><img src="../assets/debug/bgsi-passes.png?v=20261010-apple-emoji" alt="BGSI game pass image preview" loading="lazy"></a>
+        <div class="embed-preview" data-preview="passes"><strong></strong><p></p></div>
         <div class="card-actions"><button type="button" data-send="passes" disabled>Send game pass test</button><p class="card-result" data-result="passes" aria-live="polite">Ready to test</p></div>
       </article>
       <article class="debug-card" data-category="products">
         <header><div><span class="card-kicker">DEV PRODUCTS</span><h2>New developer product</h2></div><span class="channel-tag"># dev products</span></header>
-        <a class="image-preview" href="../assets/debug/bgsi-products.png?v=20261010-apple-emoji" target="_blank" rel="noopener" aria-label="Open product preview"><img src="../assets/debug/bgsi-products.png?v=20261010-apple-emoji" alt="BGSI developer product image preview" loading="lazy"></a>
+        <div class="embed-preview" data-preview="products"><strong></strong><p></p></div>
         <div class="card-actions"><button type="button" data-send="products" disabled>Send product test</button><p class="card-result" data-result="products" aria-live="polite">Ready to test</p></div>
       </article>
     </section>
-    <p class="debug-note">Tests use the sample BGSI images shown above. Message text is only @everyone when the ping is enabled.</p>
+    <p class="debug-note">Tests use existing BGSI data. The events, passes and developer products are selected at random.</p>
   </main>
   <div id="site-footer"></div>
   <script src="../config.js"></script>
   <script src="../site.js?v=20261111-branding"></script>
   <script>Tracker.mountChrome(''); Tracker.loadLive();</script>
-  <script type="module" src="debug.js?v=20261010-en"></script>
+  <script type="module" src="debug.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
-import { executeWebhook, webhookUrl } from '../shared/discord-webhook.mjs';
-export const CATEGORIES = ['updates', 'events', 'passes', 'products'];
+import { webhookUrl } from '../shared/discord-webhook.mjs';
+import { CATEGORIES, GAME, postEmbeds, webhookPayload } from '../shared/bgsi-embeds.mjs';
+export { CATEGORIES };
 export const GUILD_ID = '1426160845196623885';
 
 export function validateRoutes(routes) {
@@ -11,29 +12,31 @@ export function validateRoutes(routes) {
   return routes;
 }
 
-export function debugPayload(category, ping = false) {
+export async function loadSamples({ fetchImpl = fetch } = {}) {
+  const [live, extras] = await Promise.all(['live', 'extras'].map(async name => {
+    const response = await fetchImpl(`../data/${name}.json`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Could not load ${name} data (${response.status}).`);
+    return response.json();
+  }));
+  const game = live.games?.find(item => item.slug === GAME.slug);
+  const items = extras.games?.[GAME.slug];
+  return {
+    updates: game ? [{ ...game, name: game.liveName || game.name }] : [],
+    events: items?.events || [],
+    passes: items?.passes || [],
+    products: items?.products || [],
+  };
+}
+
+export function randomJob(samples, category, random = Math.random) {
   if (!CATEGORIES.includes(category)) throw new Error('Unknown test message type.');
-  const filename = `bgsi-test-${category}.png`;
-  return { username: 'BGSI · CCU Tracker', content: ping ? '@everyone' : '', allowed_mentions: { parse: ping ? ['everyone'] : [] }, attachments: [{ id: 0, filename }] };
+  const items = samples[category];
+  if (!items?.length) throw new Error(`No sample data for the ${category} channel.`);
+  return { category, item: items[Math.floor(random() * items.length)], detectedAt: new Date().toISOString() };
 }
 
-export async function loadPreview(category, { fetchImpl = fetch, baseUrl = '../assets/debug/' } = {}) {
-  if (!CATEGORIES.includes(category)) throw new Error('Unknown image type.');
-  const response = await fetchImpl(`${baseUrl}bgsi-${category}.png`, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`Could not download the image (${response.status}).`);
-  const blob = await response.blob();
-  const signature = new Uint8Array(await blob.slice(0, 8).arrayBuffer());
-  if ([137, 80, 78, 71, 13, 10, 26, 10].some((value, index) => signature[index] !== value)) throw new Error('The preview is not a valid PNG image.');
-  return new Blob([blob], { type: 'image/png' });
-}
-
-export async function sendDebugMessage({ category, webhook, image, ping = false, fetchImpl = fetch } = {}) {
-  validateRoutes(Object.fromEntries(CATEGORIES.map(key => [key, webhook])));
-  if (!image || image.type !== 'image/png') throw new Error('Missing PNG image to send.');
-  const payload = debugPayload(category, ping);
-  const form = new FormData();
-  form.set('payload_json', JSON.stringify(payload));
-  form.set('files[0]', image, payload.attachments[0].filename);
-  const message = await executeWebhook(webhook, () => form, { fetchImpl, verify: message => message.attachments?.length === 1 });
-  return { id: message.id, channelId: message.channel_id, pinged: message.mention_everyone === true, url: `https://discord.com/channels/${GUILD_ID}/${message.channel_id}/${message.id}` };
+export async function sendDebugMessage({ job, webhook, ping = false, fetchImpl = fetch } = {}) {
+  const payload = webhookPayload([job], { ping, test: true });
+  const message = await postEmbeds(webhook, payload, { fetchImpl });
+  return { ...message, url: `https://discord.com/channels/${GUILD_ID}/${message.channelId}/${message.id}` };
 }

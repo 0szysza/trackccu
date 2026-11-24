@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { GAME, CATEGORIES, emptyState, planNotifications, allPages, collectSnapshot, webhookPayload } from '../core.mjs';
+import { GAME, CATEGORIES, emptyState, planNotifications, allPages, collectSnapshot } from '../core.mjs';
 import { alertHtml } from '../render.mjs';
-import { postImages, deliverQueue, validateWebhook } from '../delivery.mjs';
+import { sendNotification, deliverQueue, validateWebhook } from '../delivery.mjs';
 import { GitHubState } from '../state.mjs';
 import { prepare } from '../main.mjs';
+import { webhookPayload } from '../../../shared/bgsi-embeds.mjs';
 
 const time = '2026-10-09T20:00:00.000Z';
 const game = { ...GAME, name: GAME.name, updatedAt: '2026-10-09T14:00:00.000Z', description: 'Current game description', playing: 7000, favorites: 291000 };
@@ -84,41 +85,48 @@ test('Roblox strings are escaped in HTML cards and cannot become scripts', () =>
   assert.ok(html.includes('&lt;img src=x onerror=evil()&gt;'));
   assert.ok(!html.includes('<script>'));
 });
-test('All notification categories and multi-image batches contain only the everyone ping', () => {
+test('Discord embed batches fit the character budget and have one everyone mention', () => {
   for (const category of CATEGORIES) {
-    const jobs = Array.from({ length: 5 }, (_, index) => ({ category, item: { id: String(index) } }));
-    const files = jobs.map((_, index) => `bgsi-${category}-${index}.png`);
-    const payload = webhookPayload(jobs, files);
+    const jobs = Array.from({ length: 10 }, (_, index) => ({
+      category, item: { id: String(index), name: '😀'.repeat(101), description: '😀'.repeat(500) },
+    }));
+    const payload = webhookPayload(jobs);
     assert.equal(payload.content, '@everyone');
     assert.deepEqual(payload.allowed_mentions, { parse: ['everyone'] });
-    assert.equal('embeds' in payload, false);
-    assert.deepEqual(payload.attachments, files.map((filename, id) => ({ id, filename })));
+    assert.equal(payload.embeds.length, 10);
+    assert.equal(payload.attachments, undefined);
+    const chars = payload.embeds.reduce((length, embed) => length + [embed.title, embed.description, embed.author.name,
+      embed.footer.text, ...embed.fields.flatMap(field => [field.name, field.value])].join('').length, 0);
+    assert.ok(chars <= 6000);
   }
 });
-test('Multipart webhook upload receives a confirmed image and real everyone mention', async () => {
+test('Live Discord sends use JSON with the intended embed and confirm the everyone mention', async () => {
   let seen;
-  const job = queued().queue.filter(item => item.category === 'passes');
-  const result = await postImages(fakeWebhook, job, [{ filename: 'image.png', bytes: Buffer.from('png') }], { fetchImpl: async (url, options) => {
-    seen = { url, payload: JSON.parse(options.body.get('payload_json')), file: options.body.get('files[0]') };
-    return response({ id: 'message-1', channel_id: 'channel-1', mention_everyone: true, attachments: [{ id: 'attachment-1' }] });
+  const jobs = queued().queue.filter(item => item.category === 'passes');
+  const result = await sendNotification(fakeWebhook, jobs, { fetchImpl: async (url, options) => {
+    seen = { url, payload: JSON.parse(options.body), headers: options.headers };
+    return response({ id: 'message-1', channel_id: 'channel-1', mention_everyone: true, embeds: [{}] });
   } });
   assert.equal(new URL(seen.url).searchParams.get('wait'), 'true');
-  assert.equal(seen.file.type, 'image/png');
-  assert.equal(seen.payload.embeds, undefined);
+  assert.equal(seen.headers['content-type'], 'application/json');
+  assert.equal(seen.payload.embeds[0].author.name, 'New game pass');
+  assert.equal(seen.payload.attachments, undefined);
   assert.equal(result.channelId, 'channel-1');
+  await assert.rejects(sendNotification(fakeWebhook, jobs, { fetchImpl: async () =>
+    response({ id: 'message-1', channel_id: 'channel-1', mention_everyone: false, embeds: [{}] }) }),
+  error => error.uncertain === true);
 });
 test('Known rate limits are retried; connection failures remain uncertain and are not blindly resent', async () => {
   let count = 0;
   const jobs = queued().queue.filter(item => item.category === 'passes');
-  const images = [{ filename: 'image.png', bytes: Buffer.from('png') }];
-  await postImages(fakeWebhook, jobs, images, { wait: async () => {}, fetchImpl: async () => ++count === 1 ? response({ retry_after: 0.001 }, 429) : response({ id: 'message', channel_id: 'channel', mention_everyone: true, attachments: [{}] }) });
+  await sendNotification(fakeWebhook, jobs, { wait: async () => {}, fetchImpl: async () => ++count === 1 ? response({ retry_after: 0.001 }, 429) : response({ id: 'message', channel_id: 'channel', mention_everyone: true, embeds: [{}] }) });
   assert.equal(count, 2);
-  await assert.rejects(postImages(fakeWebhook, jobs, images, { fetchImpl: async () => { throw new Error('network'); } }), error => error.uncertain === true);
+  await assert.rejects(sendNotification(fakeWebhook, jobs, { fetchImpl: async () => { throw new Error('network'); } }), error => error.uncertain === true);
 });
 test('Persisting state precedes every send, each type uses its own webhook, and success is deduplicated after restart', async () => {
   const state = queued(), writes = [], sent = [];
   const store = { write: async value => { writes.push(structuredClone(value)); } };
-  await deliverQueue(state, { store, hooks, directory: '/images', render: async () => {}, readImage: async () => Buffer.from('png'), send: async (hook, jobs) => {
+  await deliverQueue(state, { store, hooks, send: async (hook, jobs) => {
     assert.ok(writes.at(-1).queue.some(job => job.key === jobs[0].key && job.status === 'sending'));
     assert.equal(hook, hooks[jobs[0].category]);
     sent.push(jobs[0].category);
@@ -134,12 +142,12 @@ test('Rejected sends remain pending while uncertain sends are not pinged a secon
   for (const uncertain of [false, true]) {
     const state = queued(), writes = [];
     const error = new Error('send failed'); error.uncertain = uncertain;
-    await assert.rejects(deliverQueue(state, { store: { write: async value => writes.push(structuredClone(value)) }, hooks, directory: '/images', render: async () => {}, readImage: async () => Buffer.from('png'), send: async () => { throw error; } }), /send failed/);
+    await assert.rejects(deliverQueue(state, { store: { write: async value => writes.push(structuredClone(value)) }, hooks, send: async () => { throw error; } }), /send failed/);
     assert.equal(state.queue[0].status, uncertain ? 'uncertain' : 'pending');
     assert.equal(state.delivered.length, 0);
     if (uncertain) {
       const onlyUncertain = { ...state, queue: state.queue.filter(job => job.status === 'uncertain') };
-      assert.equal(await deliverQueue(onlyUncertain, { store: { write: async () => assert.fail() }, hooks, directory: '/images', send: async () => assert.fail() }), 0);
+      assert.equal(await deliverQueue(onlyUncertain, { store: { write: async () => assert.fail() }, hooks, send: async () => assert.fail() }), 0);
     }
   }
 });

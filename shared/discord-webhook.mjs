@@ -26,7 +26,7 @@ export async function executeWebhook(webhook, makeBody, { fetchImpl = fetch, hea
     try { message = await response.json(); }
     catch { const error = new Error('Could not read the delivery confirmation. Check the channel before sending again.'); error.uncertain = true; throw error; }
     if (!message.id || !message.channel_id || !verify(message)) {
-      const error = new Error('Image delivery was not confirmed. Check the channel before sending again.'); error.uncertain = true; throw error;
+      const error = new Error('Message delivery was not confirmed. Check the channel before sending again.'); error.uncertain = true; throw error;
     }
     return message;
   }

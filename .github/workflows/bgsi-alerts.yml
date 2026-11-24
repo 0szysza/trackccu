@@ -1,4 +1,4 @@
-name: BGSI Discord image notifications
+name: BGSI Discord embed notifications
 
 on:
   repository_dispatch:
@@ -12,7 +12,8 @@ on:
       - '.github/workflows/bgsi-alerts.yml'
       - '.github/bgsi-webhooks.json'
       - 'scripts/bgsi-alerts/**'
-      - 'site.css'
+      - 'shared/bgsi-embeds.mjs'
+      - 'shared/discord-webhook.mjs'
 
 permissions:
   contents: write
@@ -41,24 +42,7 @@ jobs:
           BGSI_EVENTS_WEBHOOK: ${{ secrets.BGSI_EVENTS_WEBHOOK }}
           BGSI_PASSES_WEBHOOK: ${{ secrets.BGSI_PASSES_WEBHOOK }}
           BGSI_PRODUCTS_WEBHOOK: ${{ secrets.BGSI_PRODUCTS_WEBHOOK }}
-      - name: Install image renderer
-        if: steps.check.outputs.has_notifications == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: npm ci --prefix scripts/bgsi-alerts --no-audit --no-fund
-      - name: Cache Chromium
-        if: steps.check.outputs.has_notifications == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: bgsi-chromium-${{ runner.os }}-${{ hashFiles('scripts/bgsi-alerts/package-lock.json') }}
-      - name: Install Chromium and fonts
-        if: steps.check.outputs.has_notifications == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: scripts/bgsi-alerts/node_modules/.bin/playwright install --with-deps chromium
-      - name: Render four notification previews
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: node scripts/bgsi-alerts/preview.mjs
-        env:
-          ALERT_TIME_ZONE: Europe/Berlin
-      - name: Send PNG images with everyone mentions
+      - name: Send embeds with everyone mentions
         if: steps.check.outputs.has_notifications == 'true'
         run: node scripts/bgsi-alerts/main.mjs --deliver
         env:
@@ -67,12 +51,3 @@ jobs:
           BGSI_EVENTS_WEBHOOK: ${{ secrets.BGSI_EVENTS_WEBHOOK }}
           BGSI_PASSES_WEBHOOK: ${{ secrets.BGSI_PASSES_WEBHOOK }}
           BGSI_PRODUCTS_WEBHOOK: ${{ secrets.BGSI_PRODUCTS_WEBHOOK }}
-          ALERT_TIME_ZONE: Europe/Berlin
-      - name: Save generated notification images
-        if: always() && (steps.check.outputs.has_notifications == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-        uses: actions/upload-artifact@v4
-        with:
-          name: bgsi-notification-images
-          path: _bgsi-alert-images/*.png
-          if-no-files-found: ignore
-          retention-days: 3

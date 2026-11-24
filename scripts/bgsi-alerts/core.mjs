@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
-export const GAME = { slug: 'bgsi', universeId: '6504986360', placeId: '85896571713843', name: 'Bubble Gum Simulator INFINITY', siteUrl: 'https://0szysza.github.io/trackccu/games/85896571713843/' };
-export const CATEGORIES = ['updates', 'events', 'passes', 'products'];
+import { GAME, CATEGORIES } from '../../shared/bgsi-embeds.mjs';
+export { GAME, CATEGORIES };
 export const LABELS = { updates: 'GAME UPDATE', events: 'NEW EVENT', passes: 'NEW GAME PASS', products: 'NEW DEVELOPER PRODUCT' };
 export const WEBHOOK_ENV = { updates: 'BGSI_UPDATES_WEBHOOK', events: 'BGSI_EVENTS_WEBHOOK', passes: 'BGSI_PASSES_WEBHOOK', products: 'BGSI_PRODUCTS_WEBHOOK' };
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -117,8 +117,3 @@ export function planNotifications(previous, snapshot, now = new Date().toISOStri
   return { state, added, changed: JSON.stringify(state) !== JSON.stringify(previous) };
 }
 
-export function webhookPayload(jobs, filenames) {
-  const category = jobs[0].category;
-  if (jobs.some(job => job.category !== category)) throw new Error('Mixed notification categories');
-  return { username: 'BGSI · CCU Tracker', content: '@everyone', allowed_mentions: { parse: ['everyone'] }, attachments: filenames.map((filename, id) => ({ id, filename })) };
-}
