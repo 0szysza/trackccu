@@ -262,8 +262,7 @@
     const axisLabel=value=>{if(value<1000000)return fmt(value);const unit=value>=1000000000?1000000000:1000000,suffix=unit===1000000000?"B":"M",digits=Math.min(5,Math.max(0,Math.ceil(Math.log10(unit/axis.step))));return `${(value/unit).toFixed(digits).replace(/(\.\d*?)0+$/,"$1").replace(/\.$/,"")}${suffix}`;};
     let grid="";for(const val of axis.ticks){const yy=y(val);grid+=`<line x1="${PL}" y1="${yy}" x2="${W-PR}" y2="${yy}" stroke="#283047" stroke-width="1"/><text x="${PL-7}" y="${yy+4}" text-anchor="end" fill="#64748b" font-size="11">${axisLabel(val)}</text>`;}
     const xTicks=Math.min(11,Math.max(3,Math.floor((W-PL-PR)/155)));let xt="";for(let i=0;i<xTicks;i++){const t=minX+i*(maxX-minX)/(xTicks-1),xx=x(t);xt+=`<text x="${xx}" y="${H-10}" text-anchor="middle" fill="#64748b" font-size="11">${chartRange==="1d"?clockLabel(t):dayLabel(t)}</text>`;}
-    const gap=({"1d":300,"7d":1800,all:3600}[chartRange])*2500;
-    const line=ChartTools.line(chartPoints,x,y,"y",gap),area=ChartTools.area(chartPoints,x,y,H-PB,"y",gap);
+    const line=ChartTools.line(chartPoints,x,y),area=ChartTools.area(chartPoints,x,y,H-PB);
     host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" role="img" aria-label="${chartLabels[chartMetric]} history chart"><defs><linearGradient id="gameArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".28"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs>${grid}${xt}<path d="${area}" fill="url(#gameArea)"/><path d="${line}" fill="none" stroke="#34bfe5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><line id="hoverLine" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="#94a3b8" stroke-dasharray="4 4" visibility="hidden"/><circle id="hoverHalo" r="9" fill="#34bfe5" opacity=".24" visibility="hidden"/><circle id="hoverDot" r="4.5" fill="#34bfe5" stroke="#15192d" stroke-width="2" visibility="hidden"/></svg>`;
     $("chartStats").innerHTML=`<span class="chart-stat">High <b>${fmt(Math.max(...ys))}</b></span><span class="chart-stat">Low <b>${fmt(Math.min(...ys))}</b></span><span class="chart-stat">Avg <b>${fmt(Math.round(ys.reduce((a,b)=>a+b,0)/ys.length))}</b></span>`;
     const svg=host.querySelector("svg"),lineEl=host.querySelector("#hoverLine"),halo=host.querySelector("#hoverHalo"),dot=host.querySelector("#hoverDot");
@@ -304,8 +303,7 @@
     const low=Math.min(...values),high=Math.max(...values),spread=high-low||1;
     const x=stamp=>4+(stamp-first)/(last-first||1)*992;
     const y=value=>60-(value-low)/spread*48;
-    const gap=({"1d":300,"7d":1800,all:3600}[chartRange])*2500;
-    const line=ChartTools.line(rangePoints,x,y,"y",gap),area=ChartTools.area(rangePoints,x,y,68,"y",gap);
+    const line=ChartTools.line(rangePoints,x,y),area=ChartTools.area(rangePoints,x,y,68);
     $("chartNavigatorPlot").innerHTML=`<defs><linearGradient id="navArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34bfe5" stop-opacity=".25"/><stop offset="1" stop-color="#34bfe5" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#navArea)"/><path d="${line}" fill="none" stroke="#55cce9" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`;
     applyNavSelection();
   }
