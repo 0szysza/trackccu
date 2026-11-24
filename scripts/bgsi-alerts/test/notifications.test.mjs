@@ -5,7 +5,8 @@ import { alertHtml } from '../render.mjs';
 import { sendNotification, deliverQueue, validateWebhook } from '../delivery.mjs';
 import { GitHubState } from '../state.mjs';
 import { prepare } from '../main.mjs';
-import { webhookPayload } from '../../../shared/bgsi-embeds.mjs';
+import { getPublishedPlaceVersion } from '../details.mjs';
+import { buildEmbed, embedCharacters, webhookPayload } from '../../../shared/bgsi-embeds.mjs';
 
 const time = '2026-10-09T20:00:00.000Z';
 const game = { ...GAME, name: GAME.name, updatedAt: '2026-10-09T14:00:00.000Z', description: 'Current game description', playing: 7000, favorites: 291000 };
@@ -85,21 +86,75 @@ test('Roblox strings are escaped in HTML cards and cannot become scripts', () =>
   assert.ok(html.includes('&lt;img src=x onerror=evil()&gt;'));
   assert.ok(!html.includes('<script>'));
 });
-test('Discord embed batches fit the character budget and have one everyone mention', () => {
-  for (const category of CATEGORIES) {
-    const jobs = Array.from({ length: 10 }, (_, index) => ({
-      category, item: { id: String(index), name: '😀'.repeat(101), description: '😀'.repeat(500) },
-    }));
+test('Event embeds keep their subtitle, long description and relative dates', () => {
+  const embed = buildEmbed({ category: 'events', item: { ...snapshot().events[0], subtitle: 'Northern Lights', description: 'x'.repeat(1200) }, detectedAt: time });
+  assert.ok(embed.description.startsWith('**_Northern Lights_**'));
+  assert.ok(embed.description.endsWith('x'.repeat(1200)));
+  assert.match(embed.fields[0].value, /^<t:\d+:R>$/);
+});
+
+test('Store embeds include price, description, dates and the Roblox thumbnail', () => {
+  const iconUrl = 'https://tr.rbxcdn.com/icon.png';
+  const embed = buildEmbed({ category: 'products', item: { name: 'Bundle', price: 1299, iconUrl, created: time }, detectedAt: time });
+  assert.equal(embed.title, 'New: Bundle');
+  assert.deepEqual(embed.thumbnail, { url: iconUrl });
+  assert.deepEqual(embed.fields.map(field => field.name), ['Price', 'Description', 'Created', 'Updated']);
+  assert.equal(embed.fields[0].value, '1,299 Robux');
+  assert.equal(embed.fields[1].value, '_No description provided_');
+});
+
+test('Long event embeds are split across messages without exceeding the Discord limit', async () => {
+  const state = emptyState();
+  state.queue = Array.from({ length: 3 }, (_, index) => ({
+    key: `event-${index}`, status: 'pending', category: 'events', item: { id: index, description: '😀'.repeat(2500) },
+  }));
+  assert.throws(() => webhookPayload(state.queue), /message limit/);
+  const sent = await deliverQueue(state, { hooks, store: { write: async () => {} }, send: async (_url, jobs) => {
     const payload = webhookPayload(jobs);
     assert.equal(payload.content, '@everyone');
     assert.deepEqual(payload.allowed_mentions, { parse: ['everyone'] });
-    assert.equal(payload.embeds.length, 10);
-    assert.equal(payload.attachments, undefined);
-    const chars = payload.embeds.reduce((length, embed) => length + [embed.title, embed.description, embed.author.name,
-      embed.footer.text, ...embed.fields.flatMap(field => [field.name, field.value])].join('').length, 0);
-    assert.ok(chars <= 6000);
-  }
+    assert.equal(payload.embeds.length, 1);
+    assert.ok(embedCharacters(payload.embeds[0]) <= 6000);
+    return { id: 'message', channelId: 'events' };
+  } });
+  assert.equal(sent, 3);
+  assert.equal(state.delivered.length, 3);
 });
+
+test('The published starting-place version is read only through authorized Roblox history', async () => {
+  assert.equal(await getPublishedPlaceVersion({ apiKey: '', fetchImpl: async () => assert.fail() }), null);
+  const cursors = [];
+  const version = await getPublishedPlaceVersion({ apiKey: 'MockKey', fetchImpl: async (url, options) => {
+    assert.match(url.pathname, /85896571713843\/history$/);
+    assert.equal(url.searchParams.get('isPublished'), 'true');
+    assert.equal(options.headers['x-api-key'], 'MockKey');
+    const cursor = url.searchParams.get('cursor');
+    cursors.push(cursor);
+    return cursor ? response({ placeVersions: [{ version: '43' }], hasMore: false })
+      : response({ placeVersions: [{ version: 41 }], hasMore: true, nextCursor: 'next' });
+  } });
+  assert.deepEqual(cursors, [null, 'next']);
+  assert.equal(version, 43);
+  const job = { category: 'updates', item: game, detectedAt: time };
+  assert.ok(!alertHtml(job).includes('Place version'));
+  assert.match(alertHtml({ ...job, item: { ...game, placeVersion: version } }), /Place version<\/span><strong>43<\/strong>/);
+});
+
+test('Update alerts upload one PNG with the existing everyone mention', async () => {
+  const jobs = queued().queue.filter(job => job.category === 'updates');
+  const result = await sendNotification(fakeWebhook, jobs, {
+    renderUpdate: async job => { assert.equal(job.category, 'updates'); return new Uint8Array([137, 80, 78, 71]); },
+    fetchImpl: async (_url, options) => {
+      const payload = JSON.parse(options.body.get('payload_json'));
+      assert.equal(payload.embeds, undefined);
+      assert.equal(payload.content, '@everyone');
+      assert.equal(options.body.get('files[0]').type, 'image/png');
+      return response({ id: 'message', channel_id: 'channel', mention_everyone: true, attachments: [{}] });
+    },
+  });
+  assert.equal(result.channelId, 'channel');
+});
+
 test('Live Discord sends use JSON with the intended embed and confirm the everyone mention', async () => {
   let seen;
   const jobs = queued().queue.filter(item => item.category === 'passes');
@@ -109,7 +164,7 @@ test('Live Discord sends use JSON with the intended embed and confirm the everyo
   } });
   assert.equal(new URL(seen.url).searchParams.get('wait'), 'true');
   assert.equal(seen.headers['content-type'], 'application/json');
-  assert.equal(seen.payload.embeds[0].author.name, 'New game pass');
+  assert.equal(seen.payload.embeds[0].title, 'New: New pass');
   assert.equal(seen.payload.attachments, undefined);
   assert.equal(result.channelId, 'channel-1');
   await assert.rejects(sendNotification(fakeWebhook, jobs, { fetchImpl: async () =>

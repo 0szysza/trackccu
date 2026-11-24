@@ -1,5 +1,5 @@
 import { webhookUrl } from '../shared/discord-webhook.mjs';
-import { CATEGORIES, GAME, postEmbeds, webhookPayload } from '../shared/bgsi-embeds.mjs';
+import { CATEGORIES, GAME, postEmbeds, postUpdateImage, UPDATE_IMAGE_PREVIEW, webhookPayload } from '../shared/bgsi-embeds.mjs';
 export { CATEGORIES };
 export const GUILD_ID = '1426160845196623885';
 
@@ -36,7 +36,15 @@ export function randomJob(samples, category, random = Math.random) {
 }
 
 export async function sendDebugMessage({ job, webhook, ping = false, fetchImpl = fetch } = {}) {
-  const payload = webhookPayload([job], { ping, test: true });
-  const message = await postEmbeds(webhook, payload, { fetchImpl });
+  let message;
+  if (job.category === 'updates') {
+    const response = await fetchImpl(UPDATE_IMAGE_PREVIEW);
+    if (!response.ok) throw new Error(`Could not load the sample update image (${response.status}).`);
+    const image = await response.blob();
+    if (image.type !== 'image/png') throw new Error('The sample update image is not a PNG.');
+    message = await postUpdateImage(webhook, image, { ping, test: true, fetchImpl });
+  } else {
+    message = await postEmbeds(webhook, webhookPayload([job], { ping, test: true }), { fetchImpl });
+  }
   return { ...message, url: `https://discord.com/channels/${GUILD_ID}/${message.channelId}/${message.id}` };
 }

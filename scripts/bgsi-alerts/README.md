@@ -1,4 +1,4 @@
-# BGSI Discord embeds
+# BGSI Discord notifications
 
 Monitors Bubble Gum Simulator INFINITY, universe `6504986360`, using its public Roblox APIs.
 
@@ -8,22 +8,22 @@ The workflow uses the existing `ping` repository dispatch and a five-minute sche
 
 | Channel route | Trigger |
 | --- | --- |
-| `updates` | Roblox's game `updated` timestamp advances. The embed includes the current game title, description, update time, player count and favorites. |
+| `updates` | Roblox's game `updated` timestamp advances. The PNG includes the current game title, description, update time, player count, favorites and the published starting-place version when Roblox provides it. |
 | `events` | A previously unseen public event appears and has not ended. |
 | `passes` | A previously unseen game pass ID appears, including off-sale passes. |
 | `products` | A previously unseen developer product ID appears, including off-sale products. |
 
 The game `updated` timestamp is a publication/change signal, not a guarantee of a major content update. Price changes to existing items do not cause alerts. New event announcements are sent when discovered; starting an already announced event does not cause another ping.
 
-Notifications use native Discord embeds with category-specific fields. Live alerts send `@everyone`; the debug page starts with mentions off and labels each sample as a test.
+Events, passes and developer products use native Discord embeds. Game updates attach a rendered PNG. Live alerts send `@everyone`; the debug page starts with mentions off and labels each sample as a test.
 
-The four destinations are configured in `.github/bgsi-webhooks.json`. Corresponding environment variables / Actions secrets (`BGSI_UPDATES_WEBHOOK`, `BGSI_EVENTS_WEBHOOK`, `BGSI_PASSES_WEBHOOK`, `BGSI_PRODUCTS_WEBHOOK`) override those values. Destination URLs are never included in embed payloads or logs.
+The four destinations are configured in `.github/bgsi-webhooks.json`. Corresponding environment variables / Actions secrets (`BGSI_UPDATES_WEBHOOK`, `BGSI_EVENTS_WEBHOOK`, `BGSI_PASSES_WEBHOOK`, `BGSI_PRODUCTS_WEBHOOK`) override those values. An optional `BGSI_PLACE_HISTORY_API_KEY` Actions secret enables published version lookup. It requires Roblox's `universe.place:read` scope for the BGSI experience. The version field is omitted if no authorized reading is available.
 
 ## State and delivery
 
 The `bgsi-alert-state` branch stores `bgsi-alert-state.json`. The first successful read of each source creates a quiet baseline: existing content is recorded without sending historical announcements. A failed API does not erase the previous source's baseline or known IDs. Pagination must complete successfully before any IDs are compared.
 
-Detected changes enter a persisted queue. Before each Discord send, the affected jobs are saved as `sending`. A successful send records the delivered keys immediately. Up to ten embeds from one category share a single message and everyone ping; up to eight messages are sent per run, with remaining work retained for subsequent runs.
+Detected changes enter a persisted queue. Before each Discord send, the affected jobs are saved as `sending`. A successful send records the delivered keys immediately. Up to ten embeds from one category share one message and everyone ping within Discord's 6,000-character limit. Update images are sent individually; up to eight messages are sent per run, with remaining work retained for subsequent runs.
 
 Known Discord rate limits are retried. If a connection fails after transmission or a run stops during a send, its status is `uncertain` or `sending`. These jobs are not automatically pinged again. Inspect the relevant channel and Actions logs before deliberately changing them back to `pending`. This avoids blindly duplicating a message when Discord may already have received it.
 
@@ -33,7 +33,7 @@ State lives independently of the Pages deployment. Notifications continue even i
 
 `node --test scripts/bgsi-alerts/test/*.test.mjs` verifies baselines, change detection, category routing, complete pagination, API failures, duplicate prevention, state persistence, embeds and everyone mentions. Tests never contact the live Discord destinations.
 
-Use the TrackCCU debug page to send one sample embed per category. Samples use published BGSI data.
+Use the TrackCCU debug page to send one sample per category. Updates use a bundled sample PNG and embed tests use published BGSI data.
 
 To run locally, provide `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, and the four configured Discord destinations.
 

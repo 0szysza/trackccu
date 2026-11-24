@@ -1,4 +1,4 @@
-name: BGSI Discord embed notifications
+name: BGSI Discord notifications
 
 on:
   repository_dispatch:
@@ -14,6 +14,7 @@ on:
       - 'scripts/bgsi-alerts/**'
       - 'shared/bgsi-embeds.mjs'
       - 'shared/discord-webhook.mjs'
+      - 'site.css'
 
 permissions:
   contents: write
@@ -42,7 +43,17 @@ jobs:
           BGSI_EVENTS_WEBHOOK: ${{ secrets.BGSI_EVENTS_WEBHOOK }}
           BGSI_PASSES_WEBHOOK: ${{ secrets.BGSI_PASSES_WEBHOOK }}
           BGSI_PRODUCTS_WEBHOOK: ${{ secrets.BGSI_PRODUCTS_WEBHOOK }}
-      - name: Send embeds with everyone mentions
+          BGSI_PLACE_HISTORY_API_KEY: ${{ secrets.BGSI_PLACE_HISTORY_API_KEY }}
+      - name: Install update image renderer
+        if: steps.check.outputs.has_update_images == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: npm ci --prefix scripts/bgsi-alerts --no-audit --no-fund
+      - name: Install Chromium
+        if: steps.check.outputs.has_update_images == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: scripts/bgsi-alerts/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify update image rendering
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: node scripts/bgsi-alerts/preview.mjs
+      - name: Send update images and embeds
         if: steps.check.outputs.has_notifications == 'true'
         run: node scripts/bgsi-alerts/main.mjs --deliver
         env:

@@ -42,9 +42,26 @@ test('Browser debug sends one labeled embed to Discord and pings only when enabl
 });
 test('Unconfirmed sends are not automatically repeated and rate limits show retry time', async () => {
   let calls = 0;
-  const job = randomJob(samples, 'updates');
+  const job = randomJob(samples, 'events');
   await assert.rejects(sendDebugMessage({ job, webhook, fetchImpl: async () => { calls++; throw new Error('network'); } }), /Check the channel/);
   assert.equal(calls, 1);
   await assert.rejects(sendDebugMessage({ job, webhook, fetchImpl: async () => response({ retry_after: 3.3 }, 429) }), /4 s/);
   await assert.rejects(sendDebugMessage({ job, webhook, fetchImpl: async () => response({ id: 'message', channel_id: 'channel', embeds: [] }) }), /Message delivery was not confirmed/);
+});
+
+test('Debug updates attach the bundled sample PNG and mark the post as a test', async () => {
+  const job = randomJob(samples, 'updates');
+  const result = await sendDebugMessage({ job, webhook, fetchImpl: async (target, options) => {
+    if (!options) {
+      assert.match(target, /bgsi-updates\.png$/);
+      return new Response(new Blob(['png'], { type: 'image/png' }));
+    }
+    const payload = JSON.parse(options.body.get('payload_json'));
+    assert.match(payload.content, /Test/);
+    assert.deepEqual(payload.allowed_mentions.parse, []);
+    assert.equal(payload.embeds, undefined);
+    assert.equal(options.body.get('files[0]').name, 'bgsi-test-update.png');
+    return response({ id: 'message', channel_id: 'channel', attachments: [{}] });
+  } });
+  assert.ok(result.url.endsWith('/channel/message'));
 });

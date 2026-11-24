@@ -17,16 +17,17 @@ function setBusy(value) {
 pingInput.addEventListener('change', () => { pingDescription.textContent = pingInput.checked ? 'Each test will notify @everyone' : 'Off for tests'; });
 
 function showPreview(job) {
+  if (job.category === 'updates') return;
   const embed = buildEmbed(job, true);
   const preview = document.querySelector(`[data-preview="${job.category}"]`);
   preview.style.borderInlineStartColor = `#${embed.color.toString(16).padStart(6, '0')}`;
   preview.querySelector('strong').textContent = embed.title;
-  preview.querySelector('p').textContent = embed.description || '';
+  preview.querySelector('p').textContent = embed.description || embed.fields.find(field => field.name === 'Description')?.value || '';
 }
 
 async function sendOne(category, ping) {
   const result = document.querySelector(`[data-result="${category}"]`);
-  result.textContent = 'Sending embed…'; result.dataset.state = 'sending';
+  result.textContent = category === 'updates' ? 'Sending image…' : 'Sending embed…'; result.dataset.state = 'sending';
   try {
     const job = randomJob(samples, category);
     showPreview(job);
