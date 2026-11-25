@@ -668,7 +668,7 @@
         "thumbnailAssetId": 124234524745401
       },
       "detectedAt": "2026-11-25T07:10:38.987Z",
-      "status": "pending",
+      "status": "sending",
       "game": {
         "slug": "bgsi",
         "universeId": "6504986360",
